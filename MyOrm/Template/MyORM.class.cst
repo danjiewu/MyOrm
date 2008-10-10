@@ -1,0 +1,121 @@
+<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a C# class for use with NHibnate" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context" Description="Table that the mapping file is based on" %>
+<%@ Property Name="Namespace" Type="System.String" Default="MyNamespace.Data" Category="Object" Description="The class namespace that the mapping file should use" %>
+<%@ Property Name="Assembly" Type="System.String" Default="MyApp.MyAssembly" Category="Object" Description="The assembly that the class will be used in" %>
+<%@ Property Name="RemoveTablePrefix" Type="System.String" Default="tbl" Category="Object" Description="The prefix to remove from table names" %>
+<%@ Property Name="PropertyConstPrefix" Type="System.String" Default=null Category="Object" Description="The prefix to add to const property name. Leave it empty if don't need to generate const property name." %>
+<%@ Property Name="UseNullable" Type="System.Boolean" Default="true" Category="Object" Description="Allow to use the type System.Nullable<T>." %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<!-- #include file="MyORM.inc" -->
+<script runat="template">
+
+</script>
+using System;
+using System.Data;
+using Data.Common;
+
+namespace <%= Namespace %>
+{	
+	#region <%= ClassName(SourceTable) %>
+	/// <summary>
+	/// <%= ClassName(SourceTable) %> object for table '<%= SourceTable.Name %>'.
+	/// </summary>
+	[Table("<%= SourceTable.Name %>")]
+	[Serializable]
+	public class <%= ClassName(SourceTable) %> 
+	{
+		<%if(!String.IsNullOrEmpty(PropertyConstPrefix)){%>
+		#region Constant
+		
+		<% foreach(ColumnSchema column in SourceTable.Columns) { %>
+		public const string	<%= PropertyConstPrefix + PropertyName(column )%> = "<%= PropertyName(column) %>";
+		<% } %>
+		
+		#endregion
+		
+		<%}%>		
+		#region Member Variables
+		
+		<% foreach(ColumnSchema column in SourceTable.Columns) { %>
+		private <%= MemberType(column) %> <%= MemberName(column) %>;
+		<% } %>		
+
+		#endregion
+
+		#region Public Properties
+
+		<% foreach(ColumnSchema column in SourceTable.Columns) { %>
+		/// <summary>
+		/// <%=column.Description%>
+		/// </summary>	
+		[Column<%=column.IsPrimaryKeyMember?"(IsPrimaryKey = true)":null%>]
+		public <%= MemberType(column) %> <%= PropertyName(column) %>
+		{
+			get { return <%= MemberName(column) %>; }			
+			set { <%= MemberName(column) %> = value; }
+		}
+		
+		<% } %>
+		#endregion
+	}
+	#endregion
+	<%if(SourceTable.ForeignKeys.Count!=0){%>
+	
+	#region <%= ViewClassName(SourceTable) %>
+	/// <summary>
+	/// <%= ViewClassName(SourceTable) %>.
+	/// </summary>	
+		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
+	[TableJoin(typeof(<%=ClassName(key.PrimaryKeyTable)%>), "<%=ForeignKeysName(key)%>", AliasName = <%=ViewClassName(SourceTable)+"."+ForeignTableAliasName(key)%>)]
+		<%}%>
+	public class <%= ViewClassName(SourceTable) %> : <%= ClassName(SourceTable) %>
+	{
+		#region Constant
+		
+		<%if(!String.IsNullOrEmpty(PropertyConstPrefix)){%>
+			<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
+				<%foreach(ColumnSchema column in key.PrimaryKeyTable.NonKeyColumns){%>
+		public const string	<%=PropertyConstPrefix + ForeignPropertyName(key,column)%> = "<%=ForeignPropertyName(key,column)%>";			
+				<%}%>			
+			<%}%>
+			
+		<%}%>		
+		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
+		private const string <%=ForeignTableAliasName(key)%> = "<%=ForeignTableAliasName(key)%>";
+		<%}%>
+		
+		#endregion
+		
+		#region Member Variables
+		
+		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
+			<%foreach(ColumnSchema column in key.PrimaryKeyTable.NonKeyColumns){%>
+		private <%= MemberType(column) %> <%= ForeignMemberName(key, column) %>;			
+			<%}%>			
+		<%}%>
+		
+		#endregion
+
+		#region Public Properties
+
+		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
+			<%foreach(ColumnSchema column in key.PrimaryKeyTable.NonKeyColumns){%>
+		[Column("<%=column.Name%>", Foreign = <%=ViewClassName(SourceTable)%>.<%=ForeignTableAliasName(key)%>, ColumnMode = ColumnMode.Read)]
+		public <%= MemberType(column) %> <%= ForeignPropertyName(key, column) %>
+		{
+			get { return <%= ForeignMemberName(key, column) %>; }			
+			set { <%= ForeignMemberName(key, column) %> = value; }
+		}
+		
+			<%}%>	
+		<% } %>
+		#endregion
+	}
+	#endregion	
+	<%}%>
+}

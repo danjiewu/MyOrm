@@ -1,0 +1,49 @@
+<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a C# class for use with NHibnate" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context" Description="Table that the mapping file is based on" %>
+<%@ Property Name="Namespace" Type="System.String" Default="MyNamespace.Data" Category="Object" Description="The class namespace that the mapping file should use" %>
+<%@ Property Name="Assembly" Type="System.String" Default="MyApp.MyAssembly" Category="Object" Description="The assembly that the class will be used in" %>
+<%@ Property Name="RemoveTablePrefix" Type="System.String" Default="tbl" Category="Object" Description="The prefix to remove from table names" %>
+<%@ Property Name="InterfaceNameFormat" Type="System.String" Default="I{0}DAO" Category="Object" Description="Name of interface of obejct DAO" %>
+<%@ Property Name="UseNullable" Type="System.Boolean" Default="true" Category="Object" Description="Allow to use the type System.Nullable<T>." %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<!-- #include file="MyORM.inc" -->
+<script runat="template">
+private string InterfaceName{
+ 	get{return string.Format(InterfaceNameFormat,ClassName(SourceTable));}
+}
+
+private string ViewInterfaceName{
+ 	get{return string.Format(InterfaceNameFormat,ViewClassName(SourceTable));}
+}
+</script>
+using System;
+using System.Data;
+using Data.Common;
+
+namespace <%= Namespace %>
+{	
+	#region <%= InterfaceName %>
+	/// <summary>
+	/// Interface of DAO for object '<%= ClassName(SourceTable) %>'.
+	/// </summary>	
+	public interface <%= InterfaceName %> : IObjectDAO<%="<"+ClassName(SourceTable)+">"%>, IObjectDAO
+	{		
+	}
+	#endregion
+	<%if(SourceTable.ForeignKeys.Count!=0){%>
+	
+	#region <%= ViewInterfaceName %>
+	/// <summary>
+	/// Interface of DAO for object's view '<%= ViewClassName(SourceTable) %>'.
+	/// </summary>	
+	public interface <%= ViewInterfaceName %> : IObjectViewDAO<%="<"+ViewClassName(SourceTable)+">"%>, IObjectViewDAO
+	{
+	}
+	#endregion	
+	<%}%>
+}
