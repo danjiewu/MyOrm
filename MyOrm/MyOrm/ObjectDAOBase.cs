@@ -258,7 +258,7 @@ namespace MyOrm
                 }
                 else
                 {
-                    expression = simpleCondition.Expression;
+                    expression = simpleCondition.Expression;//TODO
                 }
 
                 object value = simpleCondition.Value;
