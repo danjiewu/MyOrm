@@ -1,0 +1,254 @@
+<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="This Template Generates C# domain objects for NHibernate" Debug="true" %>
+<%@ Property Name="Namespace" Type="System.String" Default="MyNamespace.Data" Category="Object" Description="The class namespace that the mapping file should use" %>
+<%@ Property Name="Assembly" Type="System.String" Default="MyApp.MyAssembly" Category="Object" Description="The assembly that the class will be used in" %>
+<%@ Property Name="RemoveTablePrefix" Type="System.String" Default="tbl" Category="Object" Description="The prefix to remove from table names" %>
+<%@ Property Name="PropertyConstPrefix" Type="System.String" Default=null Category="Object" Description="The prefix to add to const property name. Leave it empty if don't need to generate const property name." %>
+<%@ Property Name="UseNullable" Type="System.Boolean" Default="true" Category="Object" Description="Allow to use the type System.Nullable<T>." %>
+<%@ Property Name="DAONameFormat" Type="System.String" Default="{0}DAO" Category="Object" Description="Name of obejct DAO" %>
+<%@ Property Name="InterfaceNameFormat" Type="System.String" Default="I{0}DAO" Category="Object" Description="Name of interface of obejct DAO" %>
+<%@ Assembly Name="System.Design" %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Xml" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Windows.Forms.Design" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+
+<script runat="template">
+	private DatabaseSchema _sourceDatabase;
+	private string _outputDirectory;
+    private bool _implementNotification = true;
+
+	private CodeTemplate _csharpTemplate;
+	private CodeTemplate _daoTemplate;
+	private CodeTemplate _interfaceTemplate;
+
+    [Category("Database")]
+    [Description("Database that the mapping file should be based on.")]
+    public DatabaseSchema SourceDatabase {
+        get { return _sourceDatabase; }
+        set { _sourceDatabase = value; }
+    }
+
+	[Editor(typeof(System.Windows.Forms.Design.FolderNameEditor), typeof(System.Drawing.Design.UITypeEditor))]
+	[Category("Class")]
+    [Description("The folder to save the generated class files.")]
+	public string OutputDirectory
+	{
+		get {return _outputDirectory;}
+		set {_outputDirectory= value;}
+	}
+
+	[Browsable(false)]
+	public CodeTemplate ClassTemplate
+	{
+		get
+		{
+			if (_csharpTemplate == null)
+				_csharpTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "MyORM.class.cst");
+
+			return _csharpTemplate;
+		}
+	}
+
+	[Browsable(false)]
+	public CodeTemplate DAOTemplate
+	{
+		get
+		{
+			if (_daoTemplate == null)
+				_daoTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "MyORM.DAO.cst");
+
+			return _daoTemplate;
+		}
+	}
+	
+	[Browsable(false)]
+	public CodeTemplate InterfaceTemplate
+	{
+		get
+		{
+			if (_interfaceTemplate == null)
+				_interfaceTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "MyORM.interface.cst");
+
+			return _interfaceTemplate;
+		}
+	}
+
+	public CodeTemplate CompileTemplate(string templateName)
+	{
+		CodeTemplateCompiler compiler = new CodeTemplateCompiler(templateName);
+		compiler.Compile();
+
+		if (compiler.Errors.Count == 0)
+		{
+			return compiler.CreateInstance();
+		}
+		else
+		{
+			for (int i = 0; i < compiler.Errors.Count; i++)
+			{
+				Response.WriteLine(compiler.Errors[i].ToString());
+			}
+			return null;
+		}
+
+	}
+
+	public void Generate()
+	{
+		foreach(TableSchema sourceTable in SourceDatabase.Tables)
+		{
+			Response.Write(string.Format("Processing Table {0} ... ", sourceTable.Name));
+
+			try
+			{
+			string className = sourceTable.Name;
+			if (className.StartsWith(RemoveTablePrefix))
+				className = className.Substring(RemoveTablePrefix.Length);
+
+			string classFileName = className;
+			classFileName += ".cs";
+			classFileName = Path.Combine(Path.Combine(OutputDirectory, "Entity"), classFileName);
+
+			string interfaceFileName = String.Format(InterfaceNameFormat,className) + ".cs";
+			interfaceFileName = Path.Combine(Path.Combine(OutputDirectory, "Interface"), interfaceFileName);
+
+			string daoFileName = String.Format(DAONameFormat,className) + ".cs";
+			daoFileName = Path.Combine(Path.Combine(OutputDirectory, "DAO"), daoFileName);
+
+			this.ClassTemplate.SetProperty("SourceTable", sourceTable);
+			this.ClassTemplate.SetProperty("Namespace", Namespace);
+			this.ClassTemplate.SetProperty("Assembly", Assembly);
+			this.ClassTemplate.SetProperty("RemoveTablePrefix", RemoveTablePrefix);
+			this.ClassTemplate.SetProperty("UseNullable", UseNullable);
+			this.ClassTemplate.SetProperty("PropertyConstPrefix", PropertyConstPrefix);			
+
+			this.ClassTemplate.RenderToFile(classFileName, true);
+
+			Response.Write(string.Format("{0} ", classFileName));
+			
+			this.InterfaceTemplate.SetProperty("SourceTable", sourceTable);
+			this.InterfaceTemplate.SetProperty("Namespace", Namespace);
+			this.InterfaceTemplate.SetProperty("Assembly", Assembly);
+			this.InterfaceTemplate.SetProperty("RemoveTablePrefix", RemoveTablePrefix);
+			this.ClassTemplate.SetProperty("UseNullable", UseNullable);
+			this.InterfaceTemplate.SetProperty("InterfaceNameFormat", InterfaceNameFormat);	
+
+			this.InterfaceTemplate.RenderToFile(interfaceFileName, true);
+
+			Response.WriteLine(string.Format("{0} ", interfaceFileName));
+
+			this.DAOTemplate.SetProperty("SourceTable", sourceTable);
+			this.DAOTemplate.SetProperty("Namespace", Namespace);
+			this.DAOTemplate.SetProperty("Assembly", Assembly);
+			this.DAOTemplate.SetProperty("RemoveTablePrefix", RemoveTablePrefix);
+			this.DAOTemplate.SetProperty("UseNullable", UseNullable);
+			this.DAOTemplate.SetProperty("PropertyConstPrefix", PropertyConstPrefix);
+			this.DAOTemplate.SetProperty("InterfaceNameFormat", InterfaceNameFormat);	
+			this.DAOTemplate.SetProperty("DAONameFormat", DAONameFormat);	
+
+			this.DAOTemplate.RenderToFile(daoFileName, true);
+
+			Response.WriteLine(string.Format("{0} ", daoFileName));
+
+			}
+			catch (Exception ex)
+			{
+				Response.WriteLine("Error: " + ex);
+			}
+		}
+	}
+</script>
+<script runat="template">
+private Regex cleanRegEx = new Regex(@"\s+|_|-|\.", RegexOptions.Compiled);
+private Regex cleanID = new Regex(@"(_ID|_id|_Id|\.ID|\.id|\.Id|ID|Id)", RegexOptions.Compiled);
+
+public string CleanName(string name)
+{
+	return cleanRegEx.Replace(name, "");
+}
+
+public string CamelCase(string name)
+{
+	string output = CleanName(name);
+	return char.ToLower(output[0]) + output.Substring(1);
+}
+
+public string PascalCase(string name)
+{
+	string output = CleanName(name);
+	return char.ToUpper(output[0]) + output.Substring(1);
+}
+
+public string MakePlural(string name)
+{
+	Regex plural1 = new Regex("(?<keep>[^aeiou])y$");
+	Regex plural2 = new Regex("(?<keep>[aeiou]y)$");
+	Regex plural3 = new Regex("(?<keep>[sxzh])$");
+	Regex plural4 = new Regex("(?<keep>[^sxzhy])$");
+
+	if(plural1.IsMatch(name))
+		return plural1.Replace(name, "${keep}ies");
+	else if(plural2.IsMatch(name))
+		return plural2.Replace(name, "${keep}s");
+	else if(plural3.IsMatch(name))
+		return plural3.Replace(name, "${keep}es");
+	else if(plural4.IsMatch(name))
+		return plural4.Replace(name, "${keep}s");
+
+	return name;
+}
+
+public string MakeSingle(string name)
+{
+	Regex plural1 = new Regex("(?<keep>[^aeiou])ies$");
+	Regex plural2 = new Regex("(?<keep>[aeiou]y)s$");
+	Regex plural3 = new Regex("(?<keep>[sxzh])es$");
+	Regex plural4 = new Regex("(?<keep>[^sxzhyu])s$");
+
+	if(plural1.IsMatch(name))
+		return plural1.Replace(name, "${keep}y");
+	else if(plural2.IsMatch(name))
+		return plural2.Replace(name, "${keep}");
+	else if(plural3.IsMatch(name))
+		return plural3.Replace(name, "${keep}");
+	else if(plural4.IsMatch(name))
+		return plural4.Replace(name, "${keep}");
+
+	return name;
+}
+
+public bool IsManyToManyTable(TableSchema table)
+{
+	if (table.Columns.Count == 2 && table.PrimaryKey != null && table.PrimaryKey.MemberColumns.Count == 2 && table.ForeignKeys.Count == 2)
+//	if (table.Columns.Count >= 2 && table.PrimaryKey != null && table.PrimaryKey.MemberColumns.Count == 2 && table.ForeignKeys.Count >= 2)
+		return true;
+	else
+		return false;
+}
+
+public bool IsSubClassTable(TableSchema sourceTable)
+{
+	int count = 0;
+	foreach(TableKeySchema foreignKey in sourceTable.ForeignKeys)
+	{
+		if (foreignKey.ForeignKeyMemberColumns[0].IsPrimaryKeyMember)
+		{
+			//Response.Write(String.Format(" {0}:", foreignKey.PrimaryKeyTable.Name));
+			foreach(TableKeySchema primaryKey in foreignKey.PrimaryKeyTable.PrimaryKeys)
+			{
+				//Response.Write(String.Format(" {0} ", primaryKey.ForeignKeyTable.Name ));
+				if (primaryKey.ForeignKeyMemberColumns[0].IsPrimaryKeyMember && primaryKey.ForeignKeyTable.PrimaryKey.MemberColumns.Count == 1)
+					count++;
+			}
+		}
+	}
+	if (count > 1)
+		return true;
+
+	return false;
+}
+</script>
+<% this.Generate();  %>

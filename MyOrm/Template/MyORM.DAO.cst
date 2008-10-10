@@ -1,0 +1,115 @@
+<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="Generates a C# class for use with NHibnate" %>
+<%@ Property Name="SourceTable" Type="SchemaExplorer.TableSchema" Category="Context" Description="Table that the mapping file is based on" %>
+<%@ Property Name="Namespace" Type="System.String" Default="MyNamespace.Data" Category="Object" Description="The class namespace that the mapping file should use" %>
+<%@ Property Name="Assembly" Type="System.String" Default="MyApp.MyAssembly" Category="Object" Description="The assembly that the class will be used in" %>
+<%@ Property Name="RemoveTablePrefix" Type="System.String" Default="tbl" Category="Object" Description="The prefix to remove from table names" %>
+<%@ Property Name="PropertyConstPrefix" Type="System.String" Default=null Category="Object" Description="The prefix to add to const property name. Leave it empty if don't need to generate const property name." %>
+<%@ Property Name="DAONameFormat" Type="System.String" Default="{0}DAO" Category="Object" Description="Name of obejct DAO" %>
+<%@ Property Name="InterfaceNameFormat" Type="System.String" Default="I{0}DAO" Category="Object" Description="Name of interface of obejct DAO" %>
+<%@ Property Name="UseNullable" Type="System.Boolean" Default="true" Category="Object" Description="Allow to use the type System.Nullable<T>." %>
+<%@ Property Name="OptimizeRead" Type="System.Boolean" Default="false" Category="Object" Description="Optimize the translation from data record to object." %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Assembly Name="System.Data" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.Data" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<!-- #include file="MyORM.inc" -->
+<script runat="template">
+private string DAOName{
+ 	get{return string.Format(DAONameFormat,ClassName(SourceTable));}
+}
+
+private string ViewDAOName{
+	get{return string.Format(DAONameFormat,ViewClassName(SourceTable));}
+}
+
+private string InterfaceName{
+ 	get{return string.Format(InterfaceNameFormat,ClassName(SourceTable));}
+}
+
+private string ViewInterfaceName{
+ 	get{return string.Format(InterfaceNameFormat,ViewClassName(SourceTable));}
+}
+
+private string RecordValue(string property, ColumnSchema column){	
+	if(column.AllowDBNull)
+	{
+		string typeCast = column.DataType == DbType.Object ? null : "(" + MemberType(column) + ")";
+		string nullValue = IsValueType(column) ? "default(" + MemberType(column) + ")" : "null";		
+		return "record.IsDBNull(record.GetOrdinal(" + property + "))? " + nullValue + " : " + typeCast + "record[" + property + "]";	
+	}
+	else
+	{
+		string typeCast = column.DataType == DbType.Object ? null : "(" + NativeType(column) + ")";
+		return typeCast + "record[" + property + "]";
+	}
+}
+
+private string PropertyString(ColumnSchema column, string calssName, string propertyName){
+	return (String.IsNullOrEmpty(PropertyConstPrefix) ? "\"" + propertyName + "\"" : calssName + "." + PropertyConstPrefix + propertyName);
+}
+
+</script>
+using System;
+using System.Data;
+using Data.Common;
+
+namespace <%= Namespace %>
+{	
+	#region <%= DAOName %>
+	/// <summary>
+	/// DAO for object '<%= ClassName(SourceTable) %>'.
+	/// </summary>	
+	public class <%= DAOName %> : ObjectDAO<%="<"+ClassName(SourceTable)+">"%><%= String.IsNullOrEmpty(InterfaceName) ? null :", " + InterfaceName%>
+	{
+		<%if(OptimizeRead){%>
+		#region Overrides Method
+		
+		protected override <%=ClassName(SourceTable)%> Read(IDataRecord record)
+		{
+			<%=ClassName(SourceTable)%> o = new <%=ClassName(SourceTable)%>();
+			<% foreach(ColumnSchema column in SourceTable.Columns) { %>
+			<% string property = PropertyString(column, ClassName(SourceTable), PropertyName(column)); %>
+			o.<%=PropertyName(column)%> = <%=RecordValue(property, column)%>;
+			<% } %>	
+			return o;
+		}
+		
+		#endregion Overrides Method
+		<% } %>	
+	}
+	#endregion
+	<%if(SourceTable.ForeignKeys.Count!=0){%>
+	
+	#region <%= ViewDAOName %>
+	/// <summary>
+	/// DAO for object's view '<%= ViewClassName(SourceTable) %>'.
+	/// </summary>	
+	public class <%= ViewDAOName %> : ObjectViewDAO<%="<"+ViewClassName(SourceTable)+">"%><%= String.IsNullOrEmpty(ViewInterfaceName) ? null :", " + ViewInterfaceName%>
+	{
+		<%if(OptimizeRead){%>
+		#region Overrides Method
+		
+		protected override <%=ViewClassName(SourceTable)%> Read(IDataRecord record)
+		{
+			<%=ViewClassName(SourceTable)%> o = new <%=ViewClassName(SourceTable)%>();
+			<% foreach(ColumnSchema column in SourceTable.Columns) { %>
+			<% string property = PropertyString(column, ClassName(SourceTable), PropertyName(column)); %>
+			o.<%=PropertyName(column)%> = <%=RecordValue(property, column)%>;
+			<% } %>
+			<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
+				<%foreach(ColumnSchema column in key.PrimaryKeyTable.NonKeyColumns){%>
+				<% string property = PropertyString(column, ViewClassName(SourceTable), ForeignPropertyName(key, column)); %>
+			o.<%=ForeignPropertyName(key, column)%> = <%=RecordValue(property, column)%>;
+				<%}%>			
+			<%}%>
+			return o;
+		}
+		
+		#endregion Overrides Method
+		<%}%>
+	}
+	#endregion	
+	<%}%>
+}
