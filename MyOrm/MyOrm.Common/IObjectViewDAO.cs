@@ -4,7 +4,7 @@ using System.Text;
 using System.Data;
 using System.Collections;
 
-namespace MyOrm
+namespace MyOrm.Common
 {
     #region IObjectViewDAO<T>
     /// <summary>

@@ -4,6 +4,7 @@ using System.Text;
 using System.Data;
 using System.Collections;
 using MyOrm.Metadata;
+using MyOrm.Common;
 
 namespace MyOrm
 {

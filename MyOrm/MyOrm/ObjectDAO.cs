@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using MyOrm.Metadata;
+using MyOrm.Common;
 
 namespace MyOrm
 {
@@ -109,7 +110,6 @@ namespace MyOrm
             return command;
         }
         #endregion
-
 
         #region ·½·¨
         /// <summary>

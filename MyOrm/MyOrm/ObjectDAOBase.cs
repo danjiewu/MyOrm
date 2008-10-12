@@ -5,6 +5,7 @@ using System.Text;
 using System.Data;
 using System.Text.RegularExpressions;
 using MyOrm.Metadata;
+using MyOrm.Common;
 
 namespace MyOrm
 {
@@ -82,22 +83,15 @@ namespace MyOrm
                     StringBuilder strFromTable = new StringBuilder(ToSqlName(TableName));
                     foreach (TableJoinInfo tableJoin in Table.JoinTables)
                     {
-                        if (tableJoin.TargetTable != null)
+                        if (tableJoin.ForeignKeys.Count != tableJoin.TargetTable.Keys.Count) throw new Exception(String.Format("Different number between foreign keys of table \"{0}\" and primary keys of table \"{1}\".  ", Table.TableName, tableJoin.TargetTable.TableName));
+                        StringBuilder strConditions = new StringBuilder();
+                        int index = 0;
+                        foreach (ColumnInfo key in tableJoin.TargetTable.Keys)
                         {
-                            if (tableJoin.ForeignKeys.Count != tableJoin.TargetTable.Keys.Count) throw new Exception(String.Format("Different number between foreign keys of table \"{0}\" and primary keys of table \"{1}\".  ", Table.TableName, tableJoin.TargetTable.TableName));
-                            StringBuilder strConditions = new StringBuilder();
-                            int index = 0;
-                            foreach (ColumnInfo key in tableJoin.TargetTable.Keys)
-                            {
-                                if (index != 0) strConditions.Append(" and ");
-                                strConditions.AppendFormat("{0}.{1} = {2}.{3}", ToSqlName(TableName), ToSqlName(tableJoin.ForeignKeys[index]), ToSqlName(tableJoin.TargetTable.TableName), ToSqlName(key.ColumnName));
-                            }
-                            strFromTable.AppendFormat(" {0} join {1} {2} on {3}", tableJoin.JoinType, ToSqlName(tableJoin.TargetTable.TableName), string.IsNullOrEmpty(tableJoin.AliasName) ? null : ToSqlName(tableJoin.AliasName), strConditions);
+                            if (index != 0) strConditions.Append(" and ");
+                            strConditions.AppendFormat("{0}.{1} = {2}.{3}", ToSqlName(TableName), ToSqlName(tableJoin.ForeignKeys[index]), ToSqlName(tableJoin.TargetTable.TableName), ToSqlName(key.ColumnName));
                         }
-                        else
-                        {
-                            strFromTable.AppendFormat(" {0} join {1} {2} on {3}", tableJoin.JoinType, ToSqlName(tableJoin.TargetTableName), string.IsNullOrEmpty(tableJoin.AliasName) ? null : ToSqlName(tableJoin.AliasName), String.Join(" and ", tableJoin.JoinConditions.ToArray()));
-                        }
+                        strFromTable.AppendFormat(" {0} join {1} {2} on {3}", tableJoin.JoinType, ToSqlName(tableJoin.TargetTable.TableName), string.IsNullOrEmpty(tableJoin.AliasName) ? null : ToSqlName(tableJoin.AliasName), strConditions);
                     }
                     fromTable = strFromTable.ToString();
                 }
@@ -241,26 +235,26 @@ namespace MyOrm
         /// <returns>Éú³ÉµÄSQLÓï¾ä</returns>
         protected string BuildSimpleConditionSql(SimpleCondition simpleCondition, IList outputParams)
         {
-            if ((simpleCondition.Value == null || simpleCondition.Value == DBNullValue) && simpleCondition.Operator == ConditionOperator.Equals)
-                return string.Format("{0} is null", simpleCondition.Expression);
-            else if ((simpleCondition.Value == null || simpleCondition.Value == DBNullValue) && simpleCondition.Operator == ConditionOperator.NotEquals)
-                return string.Format("{0} is not null", simpleCondition.Expression);
+            string expression;
+            if (simpleCondition.ExpressionType == ExpressionType.Property)
+            {
+                ColumnInfo column = Table.GetColumnByProperty(simpleCondition.Expression);
+                if (column == null)
+                    throw new Exception(String.Format("Property \"{0}\" does not exist in type \"{1}\".", simpleCondition.Expression, Table.ObjectType.FullName));
+                else
+                    expression = string.Format("{0}.{1}", ToSqlName(String.IsNullOrEmpty(column.ForeignTable) ? Table.TableName : column.ForeignTable), ToSqlName(column.ColumnName));
+            }
             else
             {
-                string expression;
-                if (simpleCondition.ExpressionType == ExpressionType.Property)
-                {
-                    ColumnInfo column = Table.GetColumnByProperty(simpleCondition.Expression);
-                    if (column == null)
-                        throw new Exception(String.Format("Property \"{0}\" does not exist in type \"{1}\".", simpleCondition.Expression, Table.ObjectType.FullName));
-                    else
-                        expression = string.Format("{0}.{1}", ToSqlName(String.IsNullOrEmpty(column.ForeignTable) ? Table.TableName : column.ForeignTable), ToSqlName(column.ColumnName));
-                }
-                else
-                {
-                    expression = simpleCondition.Expression;//TODO
-                }
+                expression = simpleCondition.Expression;//TODO
+            }
 
+            if ((simpleCondition.Value == null || simpleCondition.Value == DBNullValue) && simpleCondition.Operator == ConditionOperator.Equals)
+                return string.Format("{0} is null", expression);
+            else if ((simpleCondition.Value == null || simpleCondition.Value == DBNullValue) && simpleCondition.Operator == ConditionOperator.NotEquals)
+                return string.Format("{0} is not null", expression);
+            else
+            {
                 object value = simpleCondition.Value;
                 ConditionOperator positiveOp = simpleCondition.Operator & ConditionOperator.Not;
                 if (positiveOp == ConditionOperator.Contains || positiveOp == ConditionOperator.EndsWith || positiveOp == ConditionOperator.StartsWith)

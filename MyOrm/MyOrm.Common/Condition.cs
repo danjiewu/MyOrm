@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 
-namespace MyOrm
+namespace MyOrm.Common
 {
     /// <summary>
     /// ²éÑ¯Ìõ¼þ
