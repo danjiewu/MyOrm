@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.50727</ProductVersion>
+    <ProductVersion>9.0.21022</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{08845FE9-EB88-41A6-A71B-F91763524125}</ProjectGuid>
     <OutputType>Exe</OutputType>
@@ -14,6 +14,21 @@
     <OldToolsVersion>2.0</OldToolsVersion>
     <UpgradeBackupLocation>
     </UpgradeBackupLocation>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -38,6 +53,45 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Data\DAO\CategoriesDAO.cs" />
+    <Compile Include="Data\DAO\CustomerCustomerDemoDAO.cs" />
+    <Compile Include="Data\DAO\CustomerDemographicsDAO.cs" />
+    <Compile Include="Data\DAO\CustomersDAO.cs" />
+    <Compile Include="Data\DAO\EmployeesDAO.cs" />
+    <Compile Include="Data\DAO\EmployeeTerritoriesDAO.cs" />
+    <Compile Include="Data\DAO\Order DetailsDAO.cs" />
+    <Compile Include="Data\DAO\OrdersDAO.cs" />
+    <Compile Include="Data\DAO\ProductsDAO.cs" />
+    <Compile Include="Data\DAO\RegionDAO.cs" />
+    <Compile Include="Data\DAO\ShippersDAO.cs" />
+    <Compile Include="Data\DAO\SuppliersDAO.cs" />
+    <Compile Include="Data\DAO\TerritoriesDAO.cs" />
+    <Compile Include="Data\Entity\Categories.cs" />
+    <Compile Include="Data\Entity\CustomerCustomerDemo.cs" />
+    <Compile Include="Data\Entity\CustomerDemographics.cs" />
+    <Compile Include="Data\Entity\Customers.cs" />
+    <Compile Include="Data\Entity\Employees.cs" />
+    <Compile Include="Data\Entity\EmployeeTerritories.cs" />
+    <Compile Include="Data\Entity\Order Details.cs" />
+    <Compile Include="Data\Entity\Orders.cs" />
+    <Compile Include="Data\Entity\Products.cs" />
+    <Compile Include="Data\Entity\Region.cs" />
+    <Compile Include="Data\Entity\Shippers.cs" />
+    <Compile Include="Data\Entity\Suppliers.cs" />
+    <Compile Include="Data\Entity\Territories.cs" />
+    <Compile Include="Data\Interface\ICategoriesDAO.cs" />
+    <Compile Include="Data\Interface\ICustomerCustomerDemoDAO.cs" />
+    <Compile Include="Data\Interface\ICustomerDemographicsDAO.cs" />
+    <Compile Include="Data\Interface\ICustomersDAO.cs" />
+    <Compile Include="Data\Interface\IEmployeesDAO.cs" />
+    <Compile Include="Data\Interface\IEmployeeTerritoriesDAO.cs" />
+    <Compile Include="Data\Interface\IOrder DetailsDAO.cs" />
+    <Compile Include="Data\Interface\IOrdersDAO.cs" />
+    <Compile Include="Data\Interface\IProductsDAO.cs" />
+    <Compile Include="Data\Interface\IRegionDAO.cs" />
+    <Compile Include="Data\Interface\IShippersDAO.cs" />
+    <Compile Include="Data\Interface\ISuppliersDAO.cs" />
+    <Compile Include="Data\Interface\ITerritoriesDAO.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -61,6 +115,46 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Data\NORTHWND.LDF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>NORTHWND.MDF</DependentUpon>
+    </Content>
+    <Content Include="App_Data\NORTHWND.MDF">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="App_Data\NORTHWND_log.ldf">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <DependentUpon>NORTHWND.MDF</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.0">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.0 %28x86%29</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Sql.Server.Express.9.2">
+      <Visible>False</Visible>
+      <ProductName>SQL Server 2005 Express Edition SP2 %28x86%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

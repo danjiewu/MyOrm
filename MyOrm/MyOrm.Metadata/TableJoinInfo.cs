@@ -10,28 +10,17 @@ namespace MyOrm.Metadata
     public class TableJoinInfo
     {
         private TableInfo targetTable;
-        private string targetTableName;
         private string aliasName;
         private List<string> foreignKeys = new List<string>();
-        private List<string> joinConditions = new List<string>();
         private TableJoinType joinType;
 
         /// <summary>
-        /// 关联的表信息，TargetTable与TargetTableName不会共存
+        /// 关联的表信息
         /// </summary>
         public TableInfo TargetTable
         {
             get { return targetTable; }
             set { targetTable = value; }
-        }
-
-        /// <summary>
-        /// 关联的表名，TargetTable与TargetTableName不会共存
-        /// </summary>
-        public string TargetTableName
-        {
-            get { return targetTableName; }
-            set { targetTableName = value; }
         }
 
         /// <summary>
@@ -49,15 +38,7 @@ namespace MyOrm.Metadata
         public List<string> ForeignKeys
         {
             get { return foreignKeys; }
-        }
-
-        /// <summary>
-        /// 关联的条件，仅在TargetTableName存在时有意义
-        /// </summary>
-        public List<string> JoinConditions
-        {
-            get { return joinConditions; }
-        }
+        }        
 
         /// <summary>
         /// 关联类型

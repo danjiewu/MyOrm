@@ -7,6 +7,9 @@ using MyOrm.Attribute;
 
 namespace MyOrm.Metadata
 {
+    /// <summary>
+    /// 根据Attribute的表信息提供者
+    /// </summary>
     public class AttibuteTableInfoProvider : TableInfoProvider
     {
         private Dictionary<Type, TableInfo> tableInfoCache = new Dictionary<Type, TableInfo>();
@@ -90,16 +93,8 @@ namespace MyOrm.Metadata
                     TableJoinInfo tableJoin = new TableJoinInfo();
                     tableJoin.AliasName = att.AliasName;
                     tableJoin.JoinType = att.JoinType;
-                    if (att.TargetType != null)
-                    {
-                        tableJoin.TargetTable = GetTableInfo(att.TargetType);
-                        tableJoin.ForeignKeys.AddRange(att.ForeignKeys.Split(','));
-                    }
-                    else
-                    {
-                        tableJoin.TargetTableName = att.TargetTableName;
-                        tableJoin.JoinConditions.AddRange(att.Conditions);
-                    }
+                    tableJoin.TargetTable = GetTableInfo(att.TargetType);
+                    tableJoin.ForeignKeys.AddRange(att.ForeignKeys.Split(','));
                     tableJoins.Add(tableJoin);
                 }
             return tableJoins;

@@ -12,11 +12,9 @@ namespace MyOrm.Attribute
     public class TableJoinAttribute : System.Attribute
     {
         private Type targetType;
-        private string targetTableName;
         private string foreignKeys;
         private string aliasName;
         private TableJoinType joinType;
-        private string[] conditions;
 
         /// <summary>
         /// 指定关联的对象类型和外键生成关联信息
@@ -29,17 +27,6 @@ namespace MyOrm.Attribute
             this.foreignKeys = foreignKeys;
         }
 
-        /// <summary>
-        /// 指定表名和关联条件生成关联信息
-        /// </summary>
-        /// <param name="targetTableName">关联的表名</param>
-        /// <param name="conditions">关联条件</param>
-        [Obsolete("Use \"TableJoinAttribute(Type targetType, string foreignKeys)\" instead.")]
-        public TableJoinAttribute(string targetTableName, string[] conditions)
-        {
-            this.targetTableName = targetTableName;
-            this.conditions = conditions;
-        }
 
         /// <summary>
         /// 关联的对象类型
@@ -47,14 +34,6 @@ namespace MyOrm.Attribute
         public Type TargetType
         {
             get { return targetType; }
-        }
-
-        /// <summary>
-        /// 关联的表名
-        /// </summary>
-        public string TargetTableName
-        {
-            get { return targetTableName; }
         }
 
         /// <summary>
@@ -81,14 +60,6 @@ namespace MyOrm.Attribute
         public string ForeignKeys
         {
             get { return foreignKeys; }
-        }
-
-        /// <summary>
-        /// 关联条件
-        /// </summary>
-        public string[] Conditions
-        {
-            get { return conditions; }
         }
     }
 }

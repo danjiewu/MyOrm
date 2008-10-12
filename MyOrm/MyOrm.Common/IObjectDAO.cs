@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 
-namespace MyOrm
+namespace MyOrm.Common
 {
     #region IObjectDAO<T>
     /// <summary>
