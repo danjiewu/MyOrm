@@ -1,5 +1,0 @@
-D:\Visual Studio 2008\Projects\MyOrm\Samples\Northwind.Data\bin\Debug\Northwind.Data.dll
-D:\Visual Studio 2008\Projects\MyOrm\Samples\Northwind.Data\bin\Debug\Northwind.Data.pdb
-D:\Visual Studio 2008\Projects\MyOrm\Samples\Northwind.Data\obj\Debug\ResolveAssemblyReference.cache
-D:\Visual Studio 2008\Projects\MyOrm\Samples\Northwind.Data\obj\Debug\Northwind.Data.dll
-D:\Visual Studio 2008\Projects\MyOrm\Samples\Northwind.Data\obj\Debug\Northwind.Data.pdb
