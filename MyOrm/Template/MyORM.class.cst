@@ -31,29 +31,26 @@ namespace <%= Namespace %>
 	public class <%= ClassName(SourceTable) %> 
 	{
 		<%if(!String.IsNullOrEmpty(PropertyConstPrefix)){%>
-		#region Constant
-		
+		#region Constant		
 		<% foreach(ColumnSchema column in SourceTable.Columns) { %>
 		public const string	<%= PropertyConstPrefix + PropertyName(column )%> = "<%= PropertyName(column) %>";
-		<% } %>
-		
+		<% } %>		
 		#endregion
 		
 		<%}%>		
-		#region Member Variables
-		
+		#region Member Variables		
 		<% foreach(ColumnSchema column in SourceTable.Columns) { %>
 		private <%= MemberType(column) %> <%= MemberName(column) %>;
-		<% } %>		
-
+		<% } %>
 		#endregion
 
 		#region Public Properties
-
 		<% foreach(ColumnSchema column in SourceTable.Columns) { %>
+		<%if(!String.IsNullOrEmpty(column.Description)){%>
 		/// <summary>
 		/// <%=column.Description%>
-		/// </summary>	
+		/// </summary>
+		<%}%>
 		[Column<%=column.IsPrimaryKeyMember?"(IsPrimaryKey = true)":null%>]
 		public <%= MemberType(column) %> <%= PropertyName(column) %>
 		{
@@ -76,8 +73,7 @@ namespace <%= Namespace %>
 		<%}%>
 	public class <%= ViewClassName(SourceTable) %> : <%= ClassName(SourceTable) %>
 	{
-		#region Constant
-		
+		#region Constant		
 		<%if(!String.IsNullOrEmpty(PropertyConstPrefix)){%>
 			<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
 				<%foreach(ColumnSchema column in key.PrimaryKeyTable.NonKeyColumns){%>
@@ -87,25 +83,26 @@ namespace <%= Namespace %>
 			
 		<%}%>		
 		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
-		private const string <%=ForeignTableAliasName(key)%> = "<%=ForeignTableAliasName(key)%>";
-		<%}%>
-		
+		public const string <%=ForeignTableAliasName(key)%> = "<%=ForeignTableAliasName(key)%>";
+		<%}%>		
 		#endregion
 		
-		#region Member Variables
-		
+		#region Member Variables		
 		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
 			<%foreach(ColumnSchema column in key.PrimaryKeyTable.NonKeyColumns){%>
 		private <%= MemberType(column) %> <%= ForeignMemberName(key, column) %>;			
 			<%}%>			
-		<%}%>
-		
+		<%}%>		
 		#endregion
 
 		#region Public Properties
-
 		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
 			<%foreach(ColumnSchema column in key.PrimaryKeyTable.NonKeyColumns){%>
+				<%if(!String.IsNullOrEmpty(column.Description)){%>
+		/// <summary>
+		/// <%=column.Description%>
+		/// </summary>
+				<%}%>
 		[Column("<%=column.Name%>", Foreign = <%=ViewClassName(SourceTable)%>.<%=ForeignTableAliasName(key)%>, ColumnMode = ColumnMode.Read)]
 		public <%= MemberType(column) %> <%= ForeignPropertyName(key, column) %>
 		{
