@@ -11,18 +11,18 @@ namespace MyOrm
         /// <summary>
         /// 默认数据库连接配置
         /// </summary>
-        [ConfigurationProperty("ConnectionSettings")]
-        public ConnectionStringSettings ConnectionSettings
+        [ConfigurationProperty("DefaultConnection")]
+        public ConnectionStringSettings DefaultConnection
         {
-            get { return (ConnectionStringSettings)this["ConnectionSettings"]; }
-            set { this["ConnectionSettings"] = value; }
+            get { return (ConnectionStringSettings)this["DefaultConnection"]; }
+            set { this["DefaultConnection"] = value; }
         }
 
-        [ConfigurationProperty("TableInfoProvider", DefaultValue = "MyOrm.Metadata.AttibuteTableInfoProvider", IsRequired = true)]
+        [ConfigurationProperty("Provider", DefaultValue = "MyOrm.Metadata.AttibuteTableInfoProvider, MyOrm.Attribute", IsRequired = true)]
         public string TableInfoProvider
         {
-            get { return (string)this["TableInfoProvider"]; }
-            set { this["TableInfoProvider"] = value; }
+            get { return (string)this["Provider"]; }
+            set { this["Provider"] = value; }
         }
     }
     /// <summary>
@@ -44,14 +44,10 @@ namespace MyOrm
                 if (defaultConnection == null)
                 {
                     MyOrmConfigurationSection config = ConfigurationManager.GetSection("MyOrm") as MyOrmConfigurationSection;
-                    defaultConnection = DbProviderFactories.GetFactory(config.ConnectionSettings.ProviderName).CreateConnection();
-                    defaultConnection.ConnectionString = config.ConnectionSettings.ConnectionString;
+                    defaultConnection = DbProviderFactories.GetFactory(config.DefaultConnection.ProviderName).CreateConnection();
+                    defaultConnection.ConnectionString = config.DefaultConnection.ConnectionString;
                 }
                 return defaultConnection;
-            }
-            set
-            {
-                defaultConnection = value;
             }
         }
 

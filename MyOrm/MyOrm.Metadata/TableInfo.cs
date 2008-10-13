@@ -56,7 +56,7 @@ namespace MyOrm.Metadata
         }
 
         /// <summary>
-        /// 主键列，按名称顺序排列
+        /// 主键列，按属性名称的顺序排列
         /// </summary>
         public ReadOnlyCollection<ColumnInfo> Keys
         {
@@ -65,7 +65,7 @@ namespace MyOrm.Metadata
                 if (keys == null)
                 {
                     List<ColumnInfo> keyList = columns.FindAll(delegate(ColumnInfo column) { return column.IsPrimaryKey; });
-                    keyList.Sort(delegate(ColumnInfo column1, ColumnInfo column2) { return String.Compare(column1.ColumnName, column2.ColumnName); });
+                    keyList.Sort(delegate(ColumnInfo column1, ColumnInfo column2) { return String.Compare(column1.PropertyName, column2.PropertyName); });
                     keys = keyList.AsReadOnly();
                 }
                 return keys;

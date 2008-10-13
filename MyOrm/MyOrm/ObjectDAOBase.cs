@@ -342,7 +342,7 @@ namespace MyOrm
         /// 获取对象的主键值
         /// </summary>
         /// <param name="o">对象</param>
-        /// <returns>主键值，多个主键按照名称顺序排列</returns>
+        /// <returns>主键值，多个主键按照属性名称顺序排列</returns>
         protected virtual object[] GetKeyValues(object o)
         {
             List<object> values = new List<object>();
