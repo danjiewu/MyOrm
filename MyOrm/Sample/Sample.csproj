@@ -117,19 +117,6 @@
     <None Include="app.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\NORTHWND.LDF">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>NORTHWND.MDF</DependentUpon>
-    </Content>
-    <Content Include="App_Data\NORTHWND.MDF">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\NORTHWND_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>NORTHWND.MDF</DependentUpon>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.2.0">
       <Visible>False</Visible>
       <ProductName>.NET Framework 2.0 %28x86%29</ProductName>
