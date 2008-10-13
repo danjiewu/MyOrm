@@ -1,5 +1,7 @@
 using System;
 using System.Data;
+using System.Collections.Generic;
+using MyOrm.Common;
 using MyOrm;
 
 namespace Northwind.Data
@@ -10,6 +12,16 @@ namespace Northwind.Data
 	/// </summary>	
 	public class TerritoriesDAO : ObjectDAO<Territories>, ITerritoriesDAO
 	{
+		public Territories GetTerritories(EmployeeTerritories employeeTerritories)
+		{
+			return GetObject(employeeTerritories.TerritoryID);
+		}
+		
+		public List<Territories> GetAllWithRegion(Region region)
+		{
+			return Search(new SimpleCondition(Territories._RegionID, region.RegionID));
+		}
+		
 	}
 	#endregion
 	
@@ -19,6 +31,16 @@ namespace Northwind.Data
 	/// </summary>	
 	public class TerritoriesViewDAO : ObjectViewDAO<TerritoriesView>, ITerritoriesViewDAO
 	{
+		public TerritoriesView GetTerritories(EmployeeTerritories employeeTerritories)
+		{
+			return GetObject(employeeTerritories.TerritoryID);
+		}
+		
+		public List<TerritoriesView> GetAllWithRegion(Region region)
+		{
+			return Search(new SimpleCondition(TerritoriesView._RegionID, region.RegionID));
+		}
+		
 	}
 	#endregion	
 }

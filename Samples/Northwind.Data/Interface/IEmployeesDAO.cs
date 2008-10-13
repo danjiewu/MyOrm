@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Collections.Generic;
 using MyOrm.Common;
 
 namespace Northwind.Data
@@ -9,7 +10,11 @@ namespace Northwind.Data
 	/// Interface of DAO for object 'Employees'.
 	/// </summary>	
 	public interface IEmployeesDAO : IObjectDAO<Employees>, IObjectDAO
-	{		
+	{
+		Employees GetEmployees(Orders orders);
+		Employees GetEmployees(EmployeeTerritories employeeTerritories);
+		Employees GetReportsToEmployees(Employees employees);
+		List<Employees> GetAllWithReportsToEmployees(Employees reportsToEmployees);
 	}
 	#endregion
 	
@@ -19,6 +24,10 @@ namespace Northwind.Data
 	/// </summary>	
 	public interface IEmployeesViewDAO : IObjectViewDAO<EmployeesView>, IObjectViewDAO
 	{
+		EmployeesView GetEmployees(Orders orders);
+		EmployeesView GetEmployees(EmployeeTerritories employeeTerritories);
+		EmployeesView GetReportsToEmployees(Employees employees);
+		List<EmployeesView> GetAllWithReportsToEmployees(Employees reportsToEmployees);
 	}
 	#endregion	
 }
