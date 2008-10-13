@@ -72,7 +72,7 @@ namespace <%= Namespace %>
 	/// <%= ViewClassName(SourceTable) %>.
 	/// </summary>	
 		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
-	[TableJoin(typeof(<%=ClassName(key.PrimaryKeyTable)%>), "<%=ForeignKeysName(key)%>", AliasName = <%=ViewClassName(SourceTable)+"."+ForeignTableAliasName(key)%>)]
+	[TableJoin(typeof(<%=ClassName(key.PrimaryKeyTable)%>), "<%=ForeignKeysName(key)%>", AliasName = <%=ViewClassName(SourceTable) + "." + ForeignTableAliasName(key)%>)]
 		<%}%>
 	public class <%= ViewClassName(SourceTable) %> : <%= ClassName(SourceTable) %>
 	{

@@ -23,6 +23,7 @@ private string ViewInterfaceName{
 </script>
 using System;
 using System.Data;
+using System.Collections.Generic;
 using MyOrm.Common;
 
 namespace <%= Namespace %>
@@ -32,7 +33,13 @@ namespace <%= Namespace %>
 	/// Interface of DAO for object '<%= ClassName(SourceTable) %>'.
 	/// </summary>	
 	public interface <%= InterfaceName %> : IObjectDAO<%="<"+ClassName(SourceTable)+">"%>, IObjectDAO
-	{		
+	{
+		<%foreach(TableKeySchema key in SourceTable.PrimaryKeys){%>
+		<%=ClassName(SourceTable)%> Get<%=ForeignTableAliasName(key)%>(<%=ClassName(key.ForeignKeyTable)%> <%=CamelCase(ClassName(key.ForeignKeyTable))%>);
+		<%}%>
+		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
+		<%="List<" + ClassName(SourceTable) + ">"%> GetAllWith<%=ForeignTableAliasName(key)%>(<%=ClassName(key.PrimaryKeyTable)%> <%=CamelCase(ForeignTableAliasName(key))%>);
+		<%}%>
 	}
 	#endregion
 	<%if(SourceTable.ForeignKeys.Count!=0){%>
@@ -43,6 +50,12 @@ namespace <%= Namespace %>
 	/// </summary>	
 	public interface <%= ViewInterfaceName %> : IObjectViewDAO<%="<"+ViewClassName(SourceTable)+">"%>, IObjectViewDAO
 	{
+		<%foreach(TableKeySchema key in SourceTable.PrimaryKeys){%>
+		<%=ViewClassName(SourceTable)%> Get<%=ForeignTableAliasName(key)%>(<%=ClassName(key.ForeignKeyTable)%> <%=CamelCase(ClassName(key.ForeignKeyTable))%>);
+		<%}%>
+		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
+		<%="List<" + ViewClassName(SourceTable) + ">"%> GetAllWith<%=ForeignTableAliasName(key)%>(<%=ClassName(key.PrimaryKeyTable)%> <%=CamelCase(ForeignTableAliasName(key))%>);
+		<%}%>
 	}
 	#endregion	
 	<%}%>
