@@ -91,6 +91,7 @@ namespace MyOrm.Metadata
                 foreach (TableJoinAttribute att in objectType.GetCustomAttributes(typeof(TableJoinAttribute), true))
                 {
                     TableJoinInfo tableJoin = new TableJoinInfo();
+                    tableJoin.SourceTable = att.SourceTable;
                     tableJoin.AliasName = att.AliasName;
                     tableJoin.JoinType = att.JoinType;
                     tableJoin.TargetTable = GetTableInfo(att.TargetType);

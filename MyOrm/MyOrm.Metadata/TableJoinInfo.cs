@@ -10,9 +10,19 @@ namespace MyOrm.Metadata
     public class TableJoinInfo
     {
         private TableInfo targetTable;
+        private string sourceTable;
         private string aliasName;
         private List<string> foreignKeys = new List<string>();
         private TableJoinType joinType;
+
+        /// <summary>
+        /// 源表
+        /// </summary>
+        public string SourceTable
+        {
+            get { return sourceTable; }
+            set { sourceTable = value; }
+        }
 
         /// <summary>
         /// 关联的表信息
@@ -33,7 +43,7 @@ namespace MyOrm.Metadata
         }
 
         /// <summary>
-        /// 关联的外键，仅在TargetTable存在时有意义
+        /// 关联的外键
         /// </summary>
         public List<string> ForeignKeys
         {

@@ -83,13 +83,13 @@ namespace MyOrm
                     StringBuilder strFromTable = new StringBuilder(ToSqlName(TableName));
                     foreach (TableJoinInfo tableJoin in Table.JoinTables)
                     {
-                        if (tableJoin.ForeignKeys.Count != tableJoin.TargetTable.Keys.Count) throw new Exception(String.Format("Different number between foreign keys of table \"{0}\" and primary keys of table \"{1}\".  ", Table.TableName, tableJoin.TargetTable.TableName));
+                        if (tableJoin.ForeignKeys.Count != tableJoin.TargetTable.Keys.Count) throw new Exception(String.Format("Different number between foreign keys of table \"{0}\" and primary keys of table \"{1}\".  ", TableName, tableJoin.TargetTable.TableName));
                         StringBuilder strConditions = new StringBuilder();
                         int index = 0;
                         foreach (ColumnInfo key in tableJoin.TargetTable.Keys)
                         {
                             if (index != 0) strConditions.Append(" and ");
-                            strConditions.AppendFormat("{0}.{1} = {2}.{3}", ToSqlName(TableName), ToSqlName(tableJoin.ForeignKeys[index]), ToSqlName(tableJoin.TargetTable.TableName), ToSqlName(key.ColumnName));
+                            strConditions.AppendFormat("{0}.{1} = {2}.{3}", ToSqlName(String.IsNullOrEmpty(tableJoin.SourceTable) ? TableName : tableJoin.SourceTable), ToSqlName(tableJoin.ForeignKeys[index]), ToSqlName(tableJoin.TargetTable.TableName), ToSqlName(key.ColumnName));
                         }
                         strFromTable.AppendFormat(" {0} join {1} {2} on {3}", tableJoin.JoinType, ToSqlName(tableJoin.TargetTable.TableName), string.IsNullOrEmpty(tableJoin.AliasName) ? null : ToSqlName(tableJoin.AliasName), strConditions);
                     }
@@ -124,7 +124,7 @@ namespace MyOrm
                     foreach (ColumnInfo column in SelectColumns)
                     {
                         if (strAllFields.Length != 0) strAllFields.Append(",");
-                        strAllFields.AppendFormat("{0}.{1} as {2}", ToSqlName(String.IsNullOrEmpty(column.ForeignTable) ? Table.TableName : column.ForeignTable), ToSqlName(column.ColumnName), ToSqlName(column.PropertyName));
+                        strAllFields.AppendFormat("{0}.{1} as {2}", ToSqlName(String.IsNullOrEmpty(column.ForeignTable) ? TableName : column.ForeignTable), ToSqlName(column.ColumnName), ToSqlName(column.PropertyName));
                     }
                     allFieldsSql = strAllFields.ToString();
                 }
@@ -242,7 +242,7 @@ namespace MyOrm
                 if (column == null)
                     throw new Exception(String.Format("Property \"{0}\" does not exist in type \"{1}\".", simpleCondition.Expression, Table.ObjectType.FullName));
                 else
-                    expression = string.Format("{0}.{1}", ToSqlName(String.IsNullOrEmpty(column.ForeignTable) ? Table.TableName : column.ForeignTable), ToSqlName(column.ColumnName));
+                    expression = string.Format("{0}.{1}", ToSqlName(String.IsNullOrEmpty(column.ForeignTable) ? TableName : column.ForeignTable), ToSqlName(column.ColumnName));
             }
             else
             {

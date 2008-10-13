@@ -9,15 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyOrm.Attribute", "MyOrm.At
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyOrm.Metadata", "MyOrm.Metadata\MyOrm.Metadata.csproj", "{00A1865D-27F5-458D-AAE5-3023AD1F17EC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Template", "Template", "{3F30E04F-60AE-417B-8E24-0187C8CA40DC}"
-	ProjectSection(SolutionItems) = preProject
-		Template\MyORM.class.cst = Template\MyORM.class.cst
-		Template\MyORM.cst = Template\MyORM.cst
-		Template\MyORM.DAO.cst = Template\MyORM.DAO.cst
-		Template\MyORM.inc = Template\MyORM.inc
-		Template\MyORM.interface.cst = Template\MyORM.interface.cst
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
