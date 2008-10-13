@@ -1,6 +1,7 @@
 using System;
 using System.Data;
-using Data.Common;
+using MyOrm.Metadata;
+using MyOrm.Attribute;
 
 namespace Northwind.Data
 {	

@@ -53,7 +53,7 @@ private string PropertyString(ColumnSchema column, string calssName, string prop
 </script>
 using System;
 using System.Data;
-using Data.Common;
+using MyOrm;
 
 namespace <%= Namespace %>
 {	
