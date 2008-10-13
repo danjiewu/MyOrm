@@ -1,6 +1,6 @@
 using System;
 using System.Data;
-using Data.Common;
+using MyOrm;
 
 namespace Northwind.Data
 {	
