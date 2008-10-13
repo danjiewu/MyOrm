@@ -1,5 +1,7 @@
 using System;
 using System.Data;
+using System.Collections.Generic;
+using MyOrm.Common;
 using MyOrm;
 
 namespace Northwind.Data
@@ -10,6 +12,26 @@ namespace Northwind.Data
 	/// </summary>	
 	public class EmployeesDAO : ObjectDAO<Employees>, IEmployeesDAO
 	{
+		public Employees GetEmployees(Orders orders)
+		{
+			return GetObject(orders.EmployeeID);
+		}
+		
+		public Employees GetEmployees(EmployeeTerritories employeeTerritories)
+		{
+			return GetObject(employeeTerritories.EmployeeID);
+		}
+		
+		public Employees GetReportsToEmployees(Employees employees)
+		{
+			return GetObject(employees.ReportsTo);
+		}
+		
+		public List<Employees> GetAllWithReportsToEmployees(Employees reportsToEmployees)
+		{
+			return Search(new SimpleCondition(Employees._ReportsTo, reportsToEmployees.EmployeeID));
+		}
+		
 	}
 	#endregion
 	
@@ -19,6 +41,26 @@ namespace Northwind.Data
 	/// </summary>	
 	public class EmployeesViewDAO : ObjectViewDAO<EmployeesView>, IEmployeesViewDAO
 	{
+		public EmployeesView GetEmployees(Orders orders)
+		{
+			return GetObject(orders.EmployeeID);
+		}
+		
+		public EmployeesView GetEmployees(EmployeeTerritories employeeTerritories)
+		{
+			return GetObject(employeeTerritories.EmployeeID);
+		}
+		
+		public EmployeesView GetReportsToEmployees(Employees employees)
+		{
+			return GetObject(employees.ReportsTo);
+		}
+		
+		public List<EmployeesView> GetAllWithReportsToEmployees(Employees reportsToEmployees)
+		{
+			return Search(new SimpleCondition(EmployeesView._ReportsTo, reportsToEmployees.EmployeeID));
+		}
+		
 	}
 	#endregion	
 }

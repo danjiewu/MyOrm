@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Collections.Generic;
 using MyOrm.Common;
 
 namespace Northwind.Data
@@ -9,7 +10,10 @@ namespace Northwind.Data
 	/// Interface of DAO for object 'Products'.
 	/// </summary>	
 	public interface IProductsDAO : IObjectDAO<Products>, IObjectDAO
-	{		
+	{
+		Products GetProducts(OrderDetails orderDetails);
+		List<Products> GetAllWithCategories(Categories categories);
+		List<Products> GetAllWithSuppliers(Suppliers suppliers);
 	}
 	#endregion
 	
@@ -19,6 +23,9 @@ namespace Northwind.Data
 	/// </summary>	
 	public interface IProductsViewDAO : IObjectViewDAO<ProductsView>, IObjectViewDAO
 	{
+		ProductsView GetProducts(OrderDetails orderDetails);
+		List<ProductsView> GetAllWithCategories(Categories categories);
+		List<ProductsView> GetAllWithSuppliers(Suppliers suppliers);
 	}
 	#endregion	
 }

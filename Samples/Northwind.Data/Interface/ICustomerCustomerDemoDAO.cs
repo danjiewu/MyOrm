@@ -1,5 +1,6 @@
 using System;
 using System.Data;
+using System.Collections.Generic;
 using MyOrm.Common;
 
 namespace Northwind.Data
@@ -9,7 +10,9 @@ namespace Northwind.Data
 	/// Interface of DAO for object 'CustomerCustomerDemo'.
 	/// </summary>	
 	public interface ICustomerCustomerDemoDAO : IObjectDAO<CustomerCustomerDemo>, IObjectDAO
-	{		
+	{
+		List<CustomerCustomerDemo> GetAllWithCustomerDemographics(CustomerDemographics customerDemographics);
+		List<CustomerCustomerDemo> GetAllWithCustomers(Customers customers);
 	}
 	#endregion
 	
@@ -19,6 +22,8 @@ namespace Northwind.Data
 	/// </summary>	
 	public interface ICustomerCustomerDemoViewDAO : IObjectViewDAO<CustomerCustomerDemoView>, IObjectViewDAO
 	{
+		List<CustomerCustomerDemoView> GetAllWithCustomerDemographics(CustomerDemographics customerDemographics);
+		List<CustomerCustomerDemoView> GetAllWithCustomers(Customers customers);
 	}
 	#endregion	
 }
