@@ -25,6 +25,9 @@ namespace <%= Namespace %>
 	#region <%= ClassName(SourceTable) %>
 	/// <summary>
 	/// <%= ClassName(SourceTable) %>.
+	<% if(!String.IsNullOrEmpty(SourceTable.Description)){%>
+	/// <%=SourceTable.Description%>
+	<% } %>
 	/// </summary>
 	[Table("<%= SourceTable.Name %>")]
 	[Serializable]
@@ -67,6 +70,9 @@ namespace <%= Namespace %>
 	#region <%= ViewClassName(SourceTable) %>
 	/// <summary>
 	/// <%= ViewClassName(SourceTable) %>.
+	<% if(!String.IsNullOrEmpty(SourceTable.Description)){%>
+	/// <%=SourceTable.Description%>
+	<% } %>
 	/// </summary>	
 		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
 	[TableJoin(typeof(<%=ClassName(key.PrimaryKeyTable)%>), "<%=ForeignKeysName(key)%>", AliasName = <%=ViewClassName(SourceTable) + "." + ForeignTableAliasName(key)%>)]
