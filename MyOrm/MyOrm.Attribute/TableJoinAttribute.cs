@@ -22,7 +22,7 @@ namespace MyOrm.Attribute
         /// </summary>
         /// <param name="sourceTable">关联的源表</param>
         /// <param name="targetType">关联的对象类型</param>
-        /// <param name="foreignKeys">外键，多个外键按关联表对应的主键名称顺序排列，以","分隔</param>
+        /// <param name="foreignKeys">外键，多个外键按关联表对应的主键的属性名称顺序排列，以","分隔</param>
         public TableJoinAttribute(string sourceTable, Type targetType, string foreignKeys)
         {
             this.sourceTable = sourceTable;
@@ -34,7 +34,7 @@ namespace MyOrm.Attribute
         /// 指定关联的对象类型和外键生成关联信息
         /// </summary>
         /// <param name="targetType">关联的对象类型</param>
-        /// <param name="foreignKeys">外键，多个外键按关联表对应的主键名称顺序排列，以","分隔</param>
+        /// <param name="foreignKeys">外键，多个外键按关联表对应的主键的属性名称顺序排列，以","分隔</param>
         public TableJoinAttribute(Type targetType, string foreignKeys)
         {
             this.targetType = targetType;
@@ -76,7 +76,7 @@ namespace MyOrm.Attribute
         }
 
         /// <summary>
-        /// 外键，多个外键按关联表对应的主键名称顺序排列，以","分隔
+        /// 外键，多个外键按关联表对应的主键的属性名称顺序排列，以","分隔
         /// </summary>
         public string ForeignKeys
         {
