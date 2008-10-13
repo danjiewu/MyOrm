@@ -24,7 +24,7 @@ namespace <%= Namespace %>
 {	
 	#region <%= ClassName(SourceTable) %>
 	/// <summary>
-	/// <%= ClassName(SourceTable) %> object for table '<%= SourceTable.Name %>'.
+	/// <%= ClassName(SourceTable) %>.
 	/// </summary>
 	[Table("<%= SourceTable.Name %>")]
 	[Serializable]
@@ -51,7 +51,7 @@ namespace <%= Namespace %>
 		/// <%=column.Description%>
 		/// </summary>
 		<%}%>
-		[Column<%=column.IsPrimaryKeyMember?"(IsPrimaryKey = true)":null%>]
+		[Column<%=column.IsPrimaryKeyMember ? "(IsPrimaryKey = true)" : null%>]
 		public <%= MemberType(column) %> <%= PropertyName(column) %>
 		{
 			get { return <%= MemberName(column) %>; }			
