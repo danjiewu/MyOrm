@@ -18,6 +18,44 @@ public string PascalCase(string name)
 	return char.ToUpper(output[0]) + output.Substring(1);
 }
 
+public string MakePlural(string name)
+{
+	Regex plural1 = new Regex("(?<keep>[^aeiou])y$");
+	Regex plural2 = new Regex("(?<keep>[aeiou]y)$");
+	Regex plural3 = new Regex("(?<keep>[sxzh])$");
+	Regex plural4 = new Regex("(?<keep>[^sxzhy])$");
+
+	if(plural1.IsMatch(name))
+		return plural1.Replace(name, "${keep}ies");
+	else if(plural2.IsMatch(name))
+		return plural2.Replace(name, "${keep}s");
+	else if(plural3.IsMatch(name))
+		return plural3.Replace(name, "${keep}es");
+	else if(plural4.IsMatch(name))
+		return plural4.Replace(name, "${keep}s");
+
+	return name;
+}
+
+public string MakeSingle(string name)
+{
+	Regex plural1 = new Regex("(?<keep>[^aeiou])ies$");
+	Regex plural2 = new Regex("(?<keep>[aeiou]y)s$");
+	Regex plural3 = new Regex("(?<keep>[sxzh])es$");
+	Regex plural4 = new Regex("(?<keep>[^sxzhyu])s$");
+
+	if(plural1.IsMatch(name))
+		return plural1.Replace(name, "${keep}y");
+	else if(plural2.IsMatch(name))
+		return plural2.Replace(name, "${keep}");
+	else if(plural3.IsMatch(name))
+		return plural3.Replace(name, "${keep}");
+	else if(plural4.IsMatch(name))
+		return plural4.Replace(name, "${keep}");
+
+	return name;
+}
+
 public string ClassName(TableSchema table)
 {
 	string className = table.Name;
@@ -26,17 +64,8 @@ public string ClassName(TableSchema table)
 	return String.Format("{0}", PascalCase(className));
 }
 
-public string ForeignKeysName(TableKeySchema foreignKey){
-	List<string> foreignKeys = new List<string>();
-	foreach(ColumnSchema column in foreignKey.ForeignKeyMemberColumns){
-		foreignKeys.Add(PropertyName(column));
-	}
-	foreignKeys.Sort();
-	return String.Join(",",foreignKeys.ToArray());
-}
-
 public string ForeignTableAliasName(TableKeySchema foreignKey){
-	string aliasName = ClassName(foreignKey.PrimaryKeyTable);
+	string aliasName = MakeSingle(ClassName(foreignKey.PrimaryKeyTable));
 	bool duplicate = false;
 	if(Equals(foreignKey.PrimaryKeyTable,foreignKey.ForeignKeyTable))
 		duplicate = true;
@@ -80,6 +109,10 @@ public string MemberName(ColumnSchema column)
 public string PropertyName(ColumnSchema column)
 {
 	return PascalCase(column.Name);
+}
+
+public string PropertyString(ColumnSchema column, string calssName, string propertyName){
+	return (String.IsNullOrEmpty(PropertyConstPrefix) ? "\"" + propertyName + "\"" : calssName + "." + PropertyConstPrefix + propertyName);
 }
 
 public string NativeType(ColumnSchema column){

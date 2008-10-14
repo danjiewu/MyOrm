@@ -46,10 +46,6 @@ private string RecordValue(string property, ColumnSchema column){
 	}
 }
 
-private string PropertyString(ColumnSchema column, string calssName, string propertyName){
-	return (String.IsNullOrEmpty(PropertyConstPrefix) ? "\"" + propertyName + "\"" : calssName + "." + PropertyConstPrefix + propertyName);
-}
-
 </script>
 using System;
 using System.Data;
@@ -83,7 +79,7 @@ namespace <%= Namespace %>
 		<% } %>
 		<%foreach(TableKeySchema key in SourceTable.PrimaryKeys){%>
 		<%string argName = CamelCase(ClassName(key.ForeignKeyTable));%>
-		public <%=ClassName(SourceTable)%> Get<%=ForeignTableAliasName(key)%>(<%=ClassName(key.ForeignKeyTable)%> <%=argName%>)
+		public <%=ClassName(SourceTable)%> Get<%=ForeignTableAliasName(key)%>Of<%=MakeSingle(ClassName(key.ForeignKeyTable))%>(<%=ClassName(key.ForeignKeyTable)%> <%=argName%>)
 		{
 			<%
 			SortedList<string,ColumnSchema> columns = new SortedList<string,ColumnSchema>();			
@@ -147,7 +143,7 @@ namespace <%= Namespace %>
 		<%}%>		
 		<%foreach(TableKeySchema key in SourceTable.PrimaryKeys){%>
 		<%string argName = CamelCase(ClassName(key.ForeignKeyTable));%>
-		public <%=ViewClassName(SourceTable)%> Get<%=ForeignTableAliasName(key)%>(<%=ClassName(key.ForeignKeyTable)%> <%=argName%>)
+		public <%=ViewClassName(SourceTable)%> Get<%=ForeignTableAliasName(key)%>Of<%=MakeSingle(ClassName(key.ForeignKeyTable))%>(<%=ClassName(key.ForeignKeyTable)%> <%=argName%>)
 		{
 			<%
 			SortedList<string,ColumnSchema> columns = new SortedList<string,ColumnSchema>();			
