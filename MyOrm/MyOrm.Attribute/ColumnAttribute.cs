@@ -20,10 +20,17 @@ namespace MyOrm.Attribute
         private bool allowNull;
         private ColumnMode columnMode = ColumnMode.Full;
 
+        /// <summary>
+        /// 默认构造函数
+        /// </summary>
         public ColumnAttribute()
         {
         }
 
+        /// <summary>
+        /// 指定列名的构造函数
+        /// </summary>
+        /// <param name="columnName">列名</param>
         public ColumnAttribute(string columnName)
         {
             this.columnName = columnName;

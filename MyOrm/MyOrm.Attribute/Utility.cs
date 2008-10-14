@@ -5,6 +5,9 @@ using System.Data;
 
 namespace MyOrm
 {
+    /// <summary>
+    /// π§æﬂ¿‡
+    /// </summary>
     public static class Utility
     {
         /// <summary>

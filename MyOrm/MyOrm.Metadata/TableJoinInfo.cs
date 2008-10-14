@@ -13,7 +13,7 @@ namespace MyOrm.Metadata
         private string sourceTable;
         private string aliasName;
         private List<string> foreignKeys = new List<string>();
-        private TableJoinType joinType;
+        private TableJoinType joinType = TableJoinType.Left;
 
         /// <summary>
         /// 源表
@@ -48,10 +48,10 @@ namespace MyOrm.Metadata
         public List<string> ForeignKeys
         {
             get { return foreignKeys; }
-        }        
+        }
 
         /// <summary>
-        /// 关联类型
+        /// 关联类型，默认为TableJoinType.Left
         /// </summary>
         public TableJoinType JoinType
         {
@@ -65,9 +65,25 @@ namespace MyOrm.Metadata
     /// </summary>
     public enum TableJoinType
     {
+        /// <summary>
+        /// 内连接
+        /// </summary>
+        Inner,
+        /// <summary>
+        /// 左连接
+        /// </summary>
         Left,
+        /// <summary>
+        /// 右连接
+        /// </summary>
         Right,
+        /// <summary>
+        /// 全外连接
+        /// </summary>
         Outer,
-        Inner
+        /// <summary>
+        /// 交叉连接
+        /// </summary>
+        Cross
     }
 }

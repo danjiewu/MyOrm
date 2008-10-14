@@ -109,7 +109,7 @@ namespace MyOrm
         /// <summary>
         /// 获取符合条件的对象个数
         /// </summary>
-        /// <param name="conditions">属性名与值的列表，若为null则表示没有条件</param>
+        /// <param name="condition">属性名与值的列表，若为null则表示没有条件</param>
         /// <returns>符合条件的对象个数</returns>
         public virtual int Count(Condition condition)
         {
@@ -122,7 +122,7 @@ namespace MyOrm
         /// <summary>
         /// 判断符合条件的对象是否存在
         /// </summary>
-        /// <param name="conditions">属性名与值的列表，若为null则表示没有条件</param>
+        /// <param name="condition">属性名与值的列表，若为null则表示没有条件</param>
         /// <returns>是否存在</returns>
         public virtual bool Exists(Condition condition)
         {
@@ -158,7 +158,7 @@ namespace MyOrm
         /// <summary>
         /// 根据条件查询，多个条件以逻辑与连接
         /// </summary>
-        /// <param name="conditions">属性名与值的列表，若为null则表示没有条件</param>
+        /// <param name="condition">属性名与值的列表，若为null则表示没有条件</param>
         /// <returns>符合条件的对象列表</returns>
         public virtual List<T> Search(Condition condition)
         {
@@ -171,7 +171,7 @@ namespace MyOrm
         /// <summary>
         /// 获取单个符合条件的对象
         /// </summary>
-        /// <param name="conditions">属性名与值的列表，若为null则表示没有条件</param>
+        /// <param name="condition">属性名与值的列表，若为null则表示没有条件</param>
         /// <returns>第一个符合条件的对象，若不存在则返回null</returns>
         public virtual T SearchOne(Condition condition)
         {
@@ -258,10 +258,10 @@ namespace MyOrm
         #region 常用方法
 
         /// <summary>
-        /// 读取所有记录并转化为List<T>，查询得到AllFieldsSQL时可用
+        /// 读取所有记录并转化为对象集合，查询得到AllFieldsSQL时可用
         /// </summary>
         /// <param name="reader">只读结果集</param>
-        /// <returns></returns>
+        /// <returns>对象列表</returns>
         protected List<T> ReadAll(IDataReader reader)
         {
             List<T> results = new List<T>();
