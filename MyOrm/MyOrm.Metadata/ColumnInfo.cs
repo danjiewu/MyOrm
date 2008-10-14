@@ -30,8 +30,8 @@ namespace MyOrm.Metadata
         public ColumnInfo(PropertyInfo property)
         {
             this.property = property;
-            this.setValueHandle = FastInvoke.GetMethodInvoker(property.GetSetMethod());
-            this.getValueHandle = FastInvoke.GetMethodInvoker(property.GetGetMethod());
+            if (property.CanWrite) this.setValueHandle = FastInvoke.GetMethodInvoker(property.GetSetMethod());
+            if (property.CanRead) this.getValueHandle = FastInvoke.GetMethodInvoker(property.GetGetMethod());
         }
 
         /// <summary>
