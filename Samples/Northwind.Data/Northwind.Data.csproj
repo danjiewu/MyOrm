@@ -60,12 +60,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="NorthwindFactory.cs" />
     <Compile Include="DAO\CategoriesDAO.cs" />
     <Compile Include="DAO\CustomerCustomerDemoDAO.cs" />
     <Compile Include="DAO\CustomerDemographicsDAO.cs" />
     <Compile Include="DAO\CustomersDAO.cs" />
-    <Compile Include="DAO\DAOFactory.cs" />
+    <Compile Include="DAOFactory.cs" />
     <Compile Include="DAO\EmployeesDAO.cs" />
     <Compile Include="DAO\EmployeeTerritoriesDAO.cs" />
     <Compile Include="DAO\Order DetailsDAO.cs" />
@@ -92,7 +91,7 @@
     <Compile Include="Interface\ICustomerCustomerDemoDAO.cs" />
     <Compile Include="Interface\ICustomerDemographicsDAO.cs" />
     <Compile Include="Interface\ICustomersDAO.cs" />
-    <Compile Include="Interface\IDAOFactory.cs" />
+    <Compile Include="IDAOFactory.cs" />
     <Compile Include="Interface\IEmployeesDAO.cs" />
     <Compile Include="Interface\IEmployeeTerritoriesDAO.cs" />
     <Compile Include="Interface\IOrder DetailsDAO.cs" />
