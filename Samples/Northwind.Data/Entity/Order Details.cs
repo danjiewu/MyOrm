@@ -73,171 +73,171 @@ namespace Northwind.Data
 	/// <summary>
 	/// OrderDetailsView.
 	/// </summary>	
-	[TableJoin(typeof(Orders), "OrderID", AliasName = OrderDetailsView.Orders)]
-	[TableJoin(typeof(Products), "ProductID", AliasName = OrderDetailsView.Products)]
+	[TableJoin(typeof(Orders), "OrderID", AliasName = OrderDetailsView.Order)]
+	[TableJoin(typeof(Products), "ProductID", AliasName = OrderDetailsView.Product)]
 	public class OrderDetailsView : OrderDetails
 	{
 		#region Constant		
-		public const string	_Orders_OrderDate = "Orders_OrderDate";			
-		public const string	_Orders_RequiredDate = "Orders_RequiredDate";			
-		public const string	_Orders_ShippedDate = "Orders_ShippedDate";			
-		public const string	_Orders_Freight = "Orders_Freight";			
-		public const string	_Orders_ShipName = "Orders_ShipName";			
-		public const string	_Orders_ShipAddress = "Orders_ShipAddress";			
-		public const string	_Orders_ShipCity = "Orders_ShipCity";			
-		public const string	_Orders_ShipRegion = "Orders_ShipRegion";			
-		public const string	_Orders_ShipPostalCode = "Orders_ShipPostalCode";			
-		public const string	_Orders_ShipCountry = "Orders_ShipCountry";			
-		public const string	_Products_ProductName = "Products_ProductName";			
-		public const string	_Products_QuantityPerUnit = "Products_QuantityPerUnit";			
-		public const string	_Products_UnitPrice = "Products_UnitPrice";			
-		public const string	_Products_UnitsInStock = "Products_UnitsInStock";			
-		public const string	_Products_UnitsOnOrder = "Products_UnitsOnOrder";			
-		public const string	_Products_ReorderLevel = "Products_ReorderLevel";			
-		public const string	_Products_Discontinued = "Products_Discontinued";			
+		public const string	_Order_OrderDate = "Order_OrderDate";			
+		public const string	_Order_RequiredDate = "Order_RequiredDate";			
+		public const string	_Order_ShippedDate = "Order_ShippedDate";			
+		public const string	_Order_Freight = "Order_Freight";			
+		public const string	_Order_ShipName = "Order_ShipName";			
+		public const string	_Order_ShipAddress = "Order_ShipAddress";			
+		public const string	_Order_ShipCity = "Order_ShipCity";			
+		public const string	_Order_ShipRegion = "Order_ShipRegion";			
+		public const string	_Order_ShipPostalCode = "Order_ShipPostalCode";			
+		public const string	_Order_ShipCountry = "Order_ShipCountry";			
+		public const string	_Product_ProductName = "Product_ProductName";			
+		public const string	_Product_QuantityPerUnit = "Product_QuantityPerUnit";			
+		public const string	_Product_UnitPrice = "Product_UnitPrice";			
+		public const string	_Product_UnitsInStock = "Product_UnitsInStock";			
+		public const string	_Product_UnitsOnOrder = "Product_UnitsOnOrder";			
+		public const string	_Product_ReorderLevel = "Product_ReorderLevel";			
+		public const string	_Product_Discontinued = "Product_Discontinued";			
 			
-		public const string Orders = "Orders";
-		public const string Products = "Products";
+		public const string Order = "Order";
+		public const string Product = "Product";
 		#endregion
 		
 		#region Member Variables		
-		private DateTime? orders_OrderDate;			
-		private DateTime? orders_RequiredDate;			
-		private DateTime? orders_ShippedDate;			
-		private decimal? orders_Freight;			
-		private string orders_ShipName;			
-		private string orders_ShipAddress;			
-		private string orders_ShipCity;			
-		private string orders_ShipRegion;			
-		private string orders_ShipPostalCode;			
-		private string orders_ShipCountry;			
-		private string products_ProductName;			
-		private string products_QuantityPerUnit;			
-		private decimal? products_UnitPrice;			
-		private short? products_UnitsInStock;			
-		private short? products_UnitsOnOrder;			
-		private short? products_ReorderLevel;			
-		private bool products_Discontinued;			
+		private DateTime? order_OrderDate;			
+		private DateTime? order_RequiredDate;			
+		private DateTime? order_ShippedDate;			
+		private decimal? order_Freight;			
+		private string order_ShipName;			
+		private string order_ShipAddress;			
+		private string order_ShipCity;			
+		private string order_ShipRegion;			
+		private string order_ShipPostalCode;			
+		private string order_ShipCountry;			
+		private string product_ProductName;			
+		private string product_QuantityPerUnit;			
+		private decimal? product_UnitPrice;			
+		private short? product_UnitsInStock;			
+		private short? product_UnitsOnOrder;			
+		private short? product_ReorderLevel;			
+		private bool product_Discontinued;			
 		#endregion
 
 		#region Public Properties
-		[Column("OrderDate", Foreign = OrderDetailsView.Orders, ColumnMode = ColumnMode.Read)]
-		public DateTime? Orders_OrderDate
+		[Column("OrderDate", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		public DateTime? Order_OrderDate
 		{
-			get { return orders_OrderDate; }			
-			set { orders_OrderDate = value; }
+			get { return order_OrderDate; }			
+			set { order_OrderDate = value; }
 		}
 		
-		[Column("RequiredDate", Foreign = OrderDetailsView.Orders, ColumnMode = ColumnMode.Read)]
-		public DateTime? Orders_RequiredDate
+		[Column("RequiredDate", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		public DateTime? Order_RequiredDate
 		{
-			get { return orders_RequiredDate; }			
-			set { orders_RequiredDate = value; }
+			get { return order_RequiredDate; }			
+			set { order_RequiredDate = value; }
 		}
 		
-		[Column("ShippedDate", Foreign = OrderDetailsView.Orders, ColumnMode = ColumnMode.Read)]
-		public DateTime? Orders_ShippedDate
+		[Column("ShippedDate", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		public DateTime? Order_ShippedDate
 		{
-			get { return orders_ShippedDate; }			
-			set { orders_ShippedDate = value; }
+			get { return order_ShippedDate; }			
+			set { order_ShippedDate = value; }
 		}
 		
-		[Column("Freight", Foreign = OrderDetailsView.Orders, ColumnMode = ColumnMode.Read)]
-		public decimal? Orders_Freight
+		[Column("Freight", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		public decimal? Order_Freight
 		{
-			get { return orders_Freight; }			
-			set { orders_Freight = value; }
+			get { return order_Freight; }			
+			set { order_Freight = value; }
 		}
 		
-		[Column("ShipName", Foreign = OrderDetailsView.Orders, ColumnMode = ColumnMode.Read)]
-		public string Orders_ShipName
+		[Column("ShipName", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		public string Order_ShipName
 		{
-			get { return orders_ShipName; }			
-			set { orders_ShipName = value; }
+			get { return order_ShipName; }			
+			set { order_ShipName = value; }
 		}
 		
-		[Column("ShipAddress", Foreign = OrderDetailsView.Orders, ColumnMode = ColumnMode.Read)]
-		public string Orders_ShipAddress
+		[Column("ShipAddress", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		public string Order_ShipAddress
 		{
-			get { return orders_ShipAddress; }			
-			set { orders_ShipAddress = value; }
+			get { return order_ShipAddress; }			
+			set { order_ShipAddress = value; }
 		}
 		
-		[Column("ShipCity", Foreign = OrderDetailsView.Orders, ColumnMode = ColumnMode.Read)]
-		public string Orders_ShipCity
+		[Column("ShipCity", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		public string Order_ShipCity
 		{
-			get { return orders_ShipCity; }			
-			set { orders_ShipCity = value; }
+			get { return order_ShipCity; }			
+			set { order_ShipCity = value; }
 		}
 		
-		[Column("ShipRegion", Foreign = OrderDetailsView.Orders, ColumnMode = ColumnMode.Read)]
-		public string Orders_ShipRegion
+		[Column("ShipRegion", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		public string Order_ShipRegion
 		{
-			get { return orders_ShipRegion; }			
-			set { orders_ShipRegion = value; }
+			get { return order_ShipRegion; }			
+			set { order_ShipRegion = value; }
 		}
 		
-		[Column("ShipPostalCode", Foreign = OrderDetailsView.Orders, ColumnMode = ColumnMode.Read)]
-		public string Orders_ShipPostalCode
+		[Column("ShipPostalCode", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		public string Order_ShipPostalCode
 		{
-			get { return orders_ShipPostalCode; }			
-			set { orders_ShipPostalCode = value; }
+			get { return order_ShipPostalCode; }			
+			set { order_ShipPostalCode = value; }
 		}
 		
-		[Column("ShipCountry", Foreign = OrderDetailsView.Orders, ColumnMode = ColumnMode.Read)]
-		public string Orders_ShipCountry
+		[Column("ShipCountry", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		public string Order_ShipCountry
 		{
-			get { return orders_ShipCountry; }			
-			set { orders_ShipCountry = value; }
+			get { return order_ShipCountry; }			
+			set { order_ShipCountry = value; }
 		}
 		
-		[Column("ProductName", Foreign = OrderDetailsView.Products, ColumnMode = ColumnMode.Read)]
-		public string Products_ProductName
+		[Column("ProductName", Foreign = OrderDetailsView.Product, ColumnMode = ColumnMode.Read)]
+		public string Product_ProductName
 		{
-			get { return products_ProductName; }			
-			set { products_ProductName = value; }
+			get { return product_ProductName; }			
+			set { product_ProductName = value; }
 		}
 		
-		[Column("QuantityPerUnit", Foreign = OrderDetailsView.Products, ColumnMode = ColumnMode.Read)]
-		public string Products_QuantityPerUnit
+		[Column("QuantityPerUnit", Foreign = OrderDetailsView.Product, ColumnMode = ColumnMode.Read)]
+		public string Product_QuantityPerUnit
 		{
-			get { return products_QuantityPerUnit; }			
-			set { products_QuantityPerUnit = value; }
+			get { return product_QuantityPerUnit; }			
+			set { product_QuantityPerUnit = value; }
 		}
 		
-		[Column("UnitPrice", Foreign = OrderDetailsView.Products, ColumnMode = ColumnMode.Read)]
-		public decimal? Products_UnitPrice
+		[Column("UnitPrice", Foreign = OrderDetailsView.Product, ColumnMode = ColumnMode.Read)]
+		public decimal? Product_UnitPrice
 		{
-			get { return products_UnitPrice; }			
-			set { products_UnitPrice = value; }
+			get { return product_UnitPrice; }			
+			set { product_UnitPrice = value; }
 		}
 		
-		[Column("UnitsInStock", Foreign = OrderDetailsView.Products, ColumnMode = ColumnMode.Read)]
-		public short? Products_UnitsInStock
+		[Column("UnitsInStock", Foreign = OrderDetailsView.Product, ColumnMode = ColumnMode.Read)]
+		public short? Product_UnitsInStock
 		{
-			get { return products_UnitsInStock; }			
-			set { products_UnitsInStock = value; }
+			get { return product_UnitsInStock; }			
+			set { product_UnitsInStock = value; }
 		}
 		
-		[Column("UnitsOnOrder", Foreign = OrderDetailsView.Products, ColumnMode = ColumnMode.Read)]
-		public short? Products_UnitsOnOrder
+		[Column("UnitsOnOrder", Foreign = OrderDetailsView.Product, ColumnMode = ColumnMode.Read)]
+		public short? Product_UnitsOnOrder
 		{
-			get { return products_UnitsOnOrder; }			
-			set { products_UnitsOnOrder = value; }
+			get { return product_UnitsOnOrder; }			
+			set { product_UnitsOnOrder = value; }
 		}
 		
-		[Column("ReorderLevel", Foreign = OrderDetailsView.Products, ColumnMode = ColumnMode.Read)]
-		public short? Products_ReorderLevel
+		[Column("ReorderLevel", Foreign = OrderDetailsView.Product, ColumnMode = ColumnMode.Read)]
+		public short? Product_ReorderLevel
 		{
-			get { return products_ReorderLevel; }			
-			set { products_ReorderLevel = value; }
+			get { return product_ReorderLevel; }			
+			set { product_ReorderLevel = value; }
 		}
 		
-		[Column("Discontinued", Foreign = OrderDetailsView.Products, ColumnMode = ColumnMode.Read)]
-		public bool Products_Discontinued
+		[Column("Discontinued", Foreign = OrderDetailsView.Product, ColumnMode = ColumnMode.Read)]
+		public bool Product_Discontinued
 		{
-			get { return products_Discontinued; }			
-			set { products_Discontinued = value; }
+			get { return product_Discontinued; }			
+			set { product_Discontinued = value; }
 		}
 		
 		#endregion

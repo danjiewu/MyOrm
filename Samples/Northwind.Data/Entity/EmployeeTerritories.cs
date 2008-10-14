@@ -46,171 +46,171 @@ namespace Northwind.Data
 	/// <summary>
 	/// EmployeeTerritoriesView.
 	/// </summary>	
-	[TableJoin(typeof(Employees), "EmployeeID", AliasName = EmployeeTerritoriesView.Employees)]
-	[TableJoin(typeof(Territories), "TerritoryID", AliasName = EmployeeTerritoriesView.Territories)]
+	[TableJoin(typeof(Employees), "EmployeeID", AliasName = EmployeeTerritoriesView.Employee)]
+	[TableJoin(typeof(Territories), "TerritoryID", AliasName = EmployeeTerritoriesView.Territory)]
 	public class EmployeeTerritoriesView : EmployeeTerritories
 	{
 		#region Constant		
-		public const string	_Employees_LastName = "Employees_LastName";			
-		public const string	_Employees_FirstName = "Employees_FirstName";			
-		public const string	_Employees_Title = "Employees_Title";			
-		public const string	_Employees_TitleOfCourtesy = "Employees_TitleOfCourtesy";			
-		public const string	_Employees_BirthDate = "Employees_BirthDate";			
-		public const string	_Employees_HireDate = "Employees_HireDate";			
-		public const string	_Employees_Address = "Employees_Address";			
-		public const string	_Employees_City = "Employees_City";			
-		public const string	_Employees_Region = "Employees_Region";			
-		public const string	_Employees_PostalCode = "Employees_PostalCode";			
-		public const string	_Employees_Country = "Employees_Country";			
-		public const string	_Employees_HomePhone = "Employees_HomePhone";			
-		public const string	_Employees_Extension = "Employees_Extension";			
-		public const string	_Employees_Photo = "Employees_Photo";			
-		public const string	_Employees_Notes = "Employees_Notes";			
-		public const string	_Employees_PhotoPath = "Employees_PhotoPath";			
-		public const string	_Territories_TerritoryDescription = "Territories_TerritoryDescription";			
+		public const string	_Employee_LastName = "Employee_LastName";			
+		public const string	_Employee_FirstName = "Employee_FirstName";			
+		public const string	_Employee_Title = "Employee_Title";			
+		public const string	_Employee_TitleOfCourtesy = "Employee_TitleOfCourtesy";			
+		public const string	_Employee_BirthDate = "Employee_BirthDate";			
+		public const string	_Employee_HireDate = "Employee_HireDate";			
+		public const string	_Employee_Address = "Employee_Address";			
+		public const string	_Employee_City = "Employee_City";			
+		public const string	_Employee_Region = "Employee_Region";			
+		public const string	_Employee_PostalCode = "Employee_PostalCode";			
+		public const string	_Employee_Country = "Employee_Country";			
+		public const string	_Employee_HomePhone = "Employee_HomePhone";			
+		public const string	_Employee_Extension = "Employee_Extension";			
+		public const string	_Employee_Photo = "Employee_Photo";			
+		public const string	_Employee_Notes = "Employee_Notes";			
+		public const string	_Employee_PhotoPath = "Employee_PhotoPath";			
+		public const string	_Territory_TerritoryDescription = "Territory_TerritoryDescription";			
 			
-		public const string Employees = "Employees";
-		public const string Territories = "Territories";
+		public const string Employee = "Employee";
+		public const string Territory = "Territory";
 		#endregion
 		
 		#region Member Variables		
-		private string employees_LastName;			
-		private string employees_FirstName;			
-		private string employees_Title;			
-		private string employees_TitleOfCourtesy;			
-		private DateTime? employees_BirthDate;			
-		private DateTime? employees_HireDate;			
-		private string employees_Address;			
-		private string employees_City;			
-		private string employees_Region;			
-		private string employees_PostalCode;			
-		private string employees_Country;			
-		private string employees_HomePhone;			
-		private string employees_Extension;			
-		private byte[] employees_Photo;			
-		private string employees_Notes;			
-		private string employees_PhotoPath;			
-		private string territories_TerritoryDescription;			
+		private string employee_LastName;			
+		private string employee_FirstName;			
+		private string employee_Title;			
+		private string employee_TitleOfCourtesy;			
+		private DateTime? employee_BirthDate;			
+		private DateTime? employee_HireDate;			
+		private string employee_Address;			
+		private string employee_City;			
+		private string employee_Region;			
+		private string employee_PostalCode;			
+		private string employee_Country;			
+		private string employee_HomePhone;			
+		private string employee_Extension;			
+		private byte[] employee_Photo;			
+		private string employee_Notes;			
+		private string employee_PhotoPath;			
+		private string territory_TerritoryDescription;			
 		#endregion
 
 		#region Public Properties
-		[Column("LastName", Foreign = EmployeeTerritoriesView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_LastName
+		[Column("LastName", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_LastName
 		{
-			get { return employees_LastName; }			
-			set { employees_LastName = value; }
+			get { return employee_LastName; }			
+			set { employee_LastName = value; }
 		}
 		
-		[Column("FirstName", Foreign = EmployeeTerritoriesView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_FirstName
+		[Column("FirstName", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_FirstName
 		{
-			get { return employees_FirstName; }			
-			set { employees_FirstName = value; }
+			get { return employee_FirstName; }			
+			set { employee_FirstName = value; }
 		}
 		
-		[Column("Title", Foreign = EmployeeTerritoriesView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_Title
+		[Column("Title", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_Title
 		{
-			get { return employees_Title; }			
-			set { employees_Title = value; }
+			get { return employee_Title; }			
+			set { employee_Title = value; }
 		}
 		
-		[Column("TitleOfCourtesy", Foreign = EmployeeTerritoriesView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_TitleOfCourtesy
+		[Column("TitleOfCourtesy", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_TitleOfCourtesy
 		{
-			get { return employees_TitleOfCourtesy; }			
-			set { employees_TitleOfCourtesy = value; }
+			get { return employee_TitleOfCourtesy; }			
+			set { employee_TitleOfCourtesy = value; }
 		}
 		
-		[Column("BirthDate", Foreign = EmployeeTerritoriesView.Employees, ColumnMode = ColumnMode.Read)]
-		public DateTime? Employees_BirthDate
+		[Column("BirthDate", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		public DateTime? Employee_BirthDate
 		{
-			get { return employees_BirthDate; }			
-			set { employees_BirthDate = value; }
+			get { return employee_BirthDate; }			
+			set { employee_BirthDate = value; }
 		}
 		
-		[Column("HireDate", Foreign = EmployeeTerritoriesView.Employees, ColumnMode = ColumnMode.Read)]
-		public DateTime? Employees_HireDate
+		[Column("HireDate", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		public DateTime? Employee_HireDate
 		{
-			get { return employees_HireDate; }			
-			set { employees_HireDate = value; }
+			get { return employee_HireDate; }			
+			set { employee_HireDate = value; }
 		}
 		
-		[Column("Address", Foreign = EmployeeTerritoriesView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_Address
+		[Column("Address", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_Address
 		{
-			get { return employees_Address; }			
-			set { employees_Address = value; }
+			get { return employee_Address; }			
+			set { employee_Address = value; }
 		}
 		
-		[Column("City", Foreign = EmployeeTerritoriesView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_City
+		[Column("City", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_City
 		{
-			get { return employees_City; }			
-			set { employees_City = value; }
+			get { return employee_City; }			
+			set { employee_City = value; }
 		}
 		
-		[Column("Region", Foreign = EmployeeTerritoriesView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_Region
+		[Column("Region", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_Region
 		{
-			get { return employees_Region; }			
-			set { employees_Region = value; }
+			get { return employee_Region; }			
+			set { employee_Region = value; }
 		}
 		
-		[Column("PostalCode", Foreign = EmployeeTerritoriesView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_PostalCode
+		[Column("PostalCode", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_PostalCode
 		{
-			get { return employees_PostalCode; }			
-			set { employees_PostalCode = value; }
+			get { return employee_PostalCode; }			
+			set { employee_PostalCode = value; }
 		}
 		
-		[Column("Country", Foreign = EmployeeTerritoriesView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_Country
+		[Column("Country", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_Country
 		{
-			get { return employees_Country; }			
-			set { employees_Country = value; }
+			get { return employee_Country; }			
+			set { employee_Country = value; }
 		}
 		
-		[Column("HomePhone", Foreign = EmployeeTerritoriesView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_HomePhone
+		[Column("HomePhone", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_HomePhone
 		{
-			get { return employees_HomePhone; }			
-			set { employees_HomePhone = value; }
+			get { return employee_HomePhone; }			
+			set { employee_HomePhone = value; }
 		}
 		
-		[Column("Extension", Foreign = EmployeeTerritoriesView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_Extension
+		[Column("Extension", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_Extension
 		{
-			get { return employees_Extension; }			
-			set { employees_Extension = value; }
+			get { return employee_Extension; }			
+			set { employee_Extension = value; }
 		}
 		
-		[Column("Photo", Foreign = EmployeeTerritoriesView.Employees, ColumnMode = ColumnMode.Read)]
-		public byte[] Employees_Photo
+		[Column("Photo", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		public byte[] Employee_Photo
 		{
-			get { return employees_Photo; }			
-			set { employees_Photo = value; }
+			get { return employee_Photo; }			
+			set { employee_Photo = value; }
 		}
 		
-		[Column("Notes", Foreign = EmployeeTerritoriesView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_Notes
+		[Column("Notes", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_Notes
 		{
-			get { return employees_Notes; }			
-			set { employees_Notes = value; }
+			get { return employee_Notes; }			
+			set { employee_Notes = value; }
 		}
 		
-		[Column("PhotoPath", Foreign = EmployeeTerritoriesView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_PhotoPath
+		[Column("PhotoPath", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_PhotoPath
 		{
-			get { return employees_PhotoPath; }			
-			set { employees_PhotoPath = value; }
+			get { return employee_PhotoPath; }			
+			set { employee_PhotoPath = value; }
 		}
 		
-		[Column("TerritoryDescription", Foreign = EmployeeTerritoriesView.Territories, ColumnMode = ColumnMode.Read)]
-		public string Territories_TerritoryDescription
+		[Column("TerritoryDescription", Foreign = EmployeeTerritoriesView.Territory, ColumnMode = ColumnMode.Read)]
+		public string Territory_TerritoryDescription
 		{
-			get { return territories_TerritoryDescription; }			
-			set { territories_TerritoryDescription = value; }
+			get { return territory_TerritoryDescription; }			
+			set { territory_TerritoryDescription = value; }
 		}
 		
 		#endregion

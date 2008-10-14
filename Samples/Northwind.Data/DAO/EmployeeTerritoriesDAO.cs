@@ -12,14 +12,14 @@ namespace Northwind.Data
 	/// </summary>	
 	public class EmployeeTerritoriesDAO : ObjectDAO<EmployeeTerritories>, IEmployeeTerritoriesDAO
 	{
-		public List<EmployeeTerritories> GetAllWithEmployees(Employees employees)
+		public List<EmployeeTerritories> GetAllWithEmployee(Employees employee)
 		{
-			return Search(new SimpleCondition(EmployeeTerritories._EmployeeID, employees.EmployeeID));
+			return Search(new SimpleCondition(EmployeeTerritories._EmployeeID, employee.EmployeeID));
 		}
 		
-		public List<EmployeeTerritories> GetAllWithTerritories(Territories territories)
+		public List<EmployeeTerritories> GetAllWithTerritory(Territories territory)
 		{
-			return Search(new SimpleCondition(EmployeeTerritories._TerritoryID, territories.TerritoryID));
+			return Search(new SimpleCondition(EmployeeTerritories._TerritoryID, territory.TerritoryID));
 		}
 		
 	}
@@ -31,14 +31,14 @@ namespace Northwind.Data
 	/// </summary>	
 	public class EmployeeTerritoriesViewDAO : ObjectViewDAO<EmployeeTerritoriesView>, IEmployeeTerritoriesViewDAO
 	{
-		public List<EmployeeTerritoriesView> GetAllWithEmployees(Employees employees)
+		public List<EmployeeTerritoriesView> GetAllWithEmployee(Employees employee)
 		{
-			return Search(new SimpleCondition(EmployeeTerritoriesView._EmployeeID, employees.EmployeeID));
+			return Search(new SimpleCondition(EmployeeTerritoriesView._EmployeeID, employee.EmployeeID));
 		}
 		
-		public List<EmployeeTerritoriesView> GetAllWithTerritories(Territories territories)
+		public List<EmployeeTerritoriesView> GetAllWithTerritory(Territories territory)
 		{
-			return Search(new SimpleCondition(EmployeeTerritoriesView._TerritoryID, territories.TerritoryID));
+			return Search(new SimpleCondition(EmployeeTerritoriesView._TerritoryID, territory.TerritoryID));
 		}
 		
 	}

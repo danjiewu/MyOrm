@@ -12,24 +12,24 @@ namespace Northwind.Data
 	/// </summary>	
 	public class OrdersDAO : ObjectDAO<Orders>, IOrdersDAO
 	{
-		public Orders GetOrders(OrderDetails orderDetails)
+		public Orders GetOrderOfOrderDetail(OrderDetails orderDetails)
 		{
 			return GetObject(orderDetails.OrderID);
 		}
 		
-		public List<Orders> GetAllWithCustomers(Customers customers)
+		public List<Orders> GetAllWithCustomer(Customers customer)
 		{
-			return Search(new SimpleCondition(Orders._CustomerID, customers.CustomerID));
+			return Search(new SimpleCondition(Orders._CustomerID, customer.CustomerID));
 		}
 		
-		public List<Orders> GetAllWithEmployees(Employees employees)
+		public List<Orders> GetAllWithEmployee(Employees employee)
 		{
-			return Search(new SimpleCondition(Orders._EmployeeID, employees.EmployeeID));
+			return Search(new SimpleCondition(Orders._EmployeeID, employee.EmployeeID));
 		}
 		
-		public List<Orders> GetAllWithShippers(Shippers shippers)
+		public List<Orders> GetAllWithShipper(Shippers shipper)
 		{
-			return Search(new SimpleCondition(Orders._ShipVia, shippers.ShipperID));
+			return Search(new SimpleCondition(Orders._ShipVia, shipper.ShipperID));
 		}
 		
 	}
@@ -41,24 +41,24 @@ namespace Northwind.Data
 	/// </summary>	
 	public class OrdersViewDAO : ObjectViewDAO<OrdersView>, IOrdersViewDAO
 	{
-		public OrdersView GetOrders(OrderDetails orderDetails)
+		public OrdersView GetOrderOfOrderDetail(OrderDetails orderDetails)
 		{
 			return GetObject(orderDetails.OrderID);
 		}
 		
-		public List<OrdersView> GetAllWithCustomers(Customers customers)
+		public List<OrdersView> GetAllWithCustomer(Customers customer)
 		{
-			return Search(new SimpleCondition(OrdersView._CustomerID, customers.CustomerID));
+			return Search(new SimpleCondition(OrdersView._CustomerID, customer.CustomerID));
 		}
 		
-		public List<OrdersView> GetAllWithEmployees(Employees employees)
+		public List<OrdersView> GetAllWithEmployee(Employees employee)
 		{
-			return Search(new SimpleCondition(OrdersView._EmployeeID, employees.EmployeeID));
+			return Search(new SimpleCondition(OrdersView._EmployeeID, employee.EmployeeID));
 		}
 		
-		public List<OrdersView> GetAllWithShippers(Shippers shippers)
+		public List<OrdersView> GetAllWithShipper(Shippers shipper)
 		{
-			return Search(new SimpleCondition(OrdersView._ShipVia, shippers.ShipperID));
+			return Search(new SimpleCondition(OrdersView._ShipVia, shipper.ShipperID));
 		}
 		
 	}

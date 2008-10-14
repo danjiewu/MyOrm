@@ -12,7 +12,7 @@ namespace Northwind.Data
 	/// </summary>	
 	public class ShippersDAO : ObjectDAO<Shippers>, IShippersDAO
 	{
-		public Shippers GetShippers(Orders orders)
+		public Shippers GetShipperOfOrder(Orders orders)
 		{
 			return GetObject(orders.ShipVia);
 		}

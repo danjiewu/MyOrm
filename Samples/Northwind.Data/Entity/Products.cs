@@ -118,144 +118,144 @@ namespace Northwind.Data
 	/// <summary>
 	/// ProductsView.
 	/// </summary>	
-	[TableJoin(typeof(Categories), "CategoryID", AliasName = ProductsView.Categories)]
-	[TableJoin(typeof(Suppliers), "SupplierID", AliasName = ProductsView.Suppliers)]
+	[TableJoin(typeof(Categories), "CategoryID", AliasName = ProductsView.Category)]
+	[TableJoin(typeof(Suppliers), "SupplierID", AliasName = ProductsView.Supplier)]
 	public class ProductsView : Products
 	{
 		#region Constant		
-		public const string	_Categories_CategoryName = "Categories_CategoryName";			
-		public const string	_Categories_Description = "Categories_Description";			
-		public const string	_Categories_Picture = "Categories_Picture";			
-		public const string	_Suppliers_CompanyName = "Suppliers_CompanyName";			
-		public const string	_Suppliers_ContactName = "Suppliers_ContactName";			
-		public const string	_Suppliers_ContactTitle = "Suppliers_ContactTitle";			
-		public const string	_Suppliers_Address = "Suppliers_Address";			
-		public const string	_Suppliers_City = "Suppliers_City";			
-		public const string	_Suppliers_Region = "Suppliers_Region";			
-		public const string	_Suppliers_PostalCode = "Suppliers_PostalCode";			
-		public const string	_Suppliers_Country = "Suppliers_Country";			
-		public const string	_Suppliers_Phone = "Suppliers_Phone";			
-		public const string	_Suppliers_Fax = "Suppliers_Fax";			
-		public const string	_Suppliers_HomePage = "Suppliers_HomePage";			
+		public const string	_Category_CategoryName = "Category_CategoryName";			
+		public const string	_Category_Description = "Category_Description";			
+		public const string	_Category_Picture = "Category_Picture";			
+		public const string	_Supplier_CompanyName = "Supplier_CompanyName";			
+		public const string	_Supplier_ContactName = "Supplier_ContactName";			
+		public const string	_Supplier_ContactTitle = "Supplier_ContactTitle";			
+		public const string	_Supplier_Address = "Supplier_Address";			
+		public const string	_Supplier_City = "Supplier_City";			
+		public const string	_Supplier_Region = "Supplier_Region";			
+		public const string	_Supplier_PostalCode = "Supplier_PostalCode";			
+		public const string	_Supplier_Country = "Supplier_Country";			
+		public const string	_Supplier_Phone = "Supplier_Phone";			
+		public const string	_Supplier_Fax = "Supplier_Fax";			
+		public const string	_Supplier_HomePage = "Supplier_HomePage";			
 			
-		public const string Categories = "Categories";
-		public const string Suppliers = "Suppliers";
+		public const string Category = "Category";
+		public const string Supplier = "Supplier";
 		#endregion
 		
 		#region Member Variables		
-		private string categories_CategoryName;			
-		private string categories_Description;			
-		private byte[] categories_Picture;			
-		private string suppliers_CompanyName;			
-		private string suppliers_ContactName;			
-		private string suppliers_ContactTitle;			
-		private string suppliers_Address;			
-		private string suppliers_City;			
-		private string suppliers_Region;			
-		private string suppliers_PostalCode;			
-		private string suppliers_Country;			
-		private string suppliers_Phone;			
-		private string suppliers_Fax;			
-		private string suppliers_HomePage;			
+		private string category_CategoryName;			
+		private string category_Description;			
+		private byte[] category_Picture;			
+		private string supplier_CompanyName;			
+		private string supplier_ContactName;			
+		private string supplier_ContactTitle;			
+		private string supplier_Address;			
+		private string supplier_City;			
+		private string supplier_Region;			
+		private string supplier_PostalCode;			
+		private string supplier_Country;			
+		private string supplier_Phone;			
+		private string supplier_Fax;			
+		private string supplier_HomePage;			
 		#endregion
 
 		#region Public Properties
-		[Column("CategoryName", Foreign = ProductsView.Categories, ColumnMode = ColumnMode.Read)]
-		public string Categories_CategoryName
+		[Column("CategoryName", Foreign = ProductsView.Category, ColumnMode = ColumnMode.Read)]
+		public string Category_CategoryName
 		{
-			get { return categories_CategoryName; }			
-			set { categories_CategoryName = value; }
+			get { return category_CategoryName; }			
+			set { category_CategoryName = value; }
 		}
 		
-		[Column("Description", Foreign = ProductsView.Categories, ColumnMode = ColumnMode.Read)]
-		public string Categories_Description
+		[Column("Description", Foreign = ProductsView.Category, ColumnMode = ColumnMode.Read)]
+		public string Category_Description
 		{
-			get { return categories_Description; }			
-			set { categories_Description = value; }
+			get { return category_Description; }			
+			set { category_Description = value; }
 		}
 		
-		[Column("Picture", Foreign = ProductsView.Categories, ColumnMode = ColumnMode.Read)]
-		public byte[] Categories_Picture
+		[Column("Picture", Foreign = ProductsView.Category, ColumnMode = ColumnMode.Read)]
+		public byte[] Category_Picture
 		{
-			get { return categories_Picture; }			
-			set { categories_Picture = value; }
+			get { return category_Picture; }			
+			set { category_Picture = value; }
 		}
 		
-		[Column("CompanyName", Foreign = ProductsView.Suppliers, ColumnMode = ColumnMode.Read)]
-		public string Suppliers_CompanyName
+		[Column("CompanyName", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		public string Supplier_CompanyName
 		{
-			get { return suppliers_CompanyName; }			
-			set { suppliers_CompanyName = value; }
+			get { return supplier_CompanyName; }			
+			set { supplier_CompanyName = value; }
 		}
 		
-		[Column("ContactName", Foreign = ProductsView.Suppliers, ColumnMode = ColumnMode.Read)]
-		public string Suppliers_ContactName
+		[Column("ContactName", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		public string Supplier_ContactName
 		{
-			get { return suppliers_ContactName; }			
-			set { suppliers_ContactName = value; }
+			get { return supplier_ContactName; }			
+			set { supplier_ContactName = value; }
 		}
 		
-		[Column("ContactTitle", Foreign = ProductsView.Suppliers, ColumnMode = ColumnMode.Read)]
-		public string Suppliers_ContactTitle
+		[Column("ContactTitle", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		public string Supplier_ContactTitle
 		{
-			get { return suppliers_ContactTitle; }			
-			set { suppliers_ContactTitle = value; }
+			get { return supplier_ContactTitle; }			
+			set { supplier_ContactTitle = value; }
 		}
 		
-		[Column("Address", Foreign = ProductsView.Suppliers, ColumnMode = ColumnMode.Read)]
-		public string Suppliers_Address
+		[Column("Address", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		public string Supplier_Address
 		{
-			get { return suppliers_Address; }			
-			set { suppliers_Address = value; }
+			get { return supplier_Address; }			
+			set { supplier_Address = value; }
 		}
 		
-		[Column("City", Foreign = ProductsView.Suppliers, ColumnMode = ColumnMode.Read)]
-		public string Suppliers_City
+		[Column("City", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		public string Supplier_City
 		{
-			get { return suppliers_City; }			
-			set { suppliers_City = value; }
+			get { return supplier_City; }			
+			set { supplier_City = value; }
 		}
 		
-		[Column("Region", Foreign = ProductsView.Suppliers, ColumnMode = ColumnMode.Read)]
-		public string Suppliers_Region
+		[Column("Region", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		public string Supplier_Region
 		{
-			get { return suppliers_Region; }			
-			set { suppliers_Region = value; }
+			get { return supplier_Region; }			
+			set { supplier_Region = value; }
 		}
 		
-		[Column("PostalCode", Foreign = ProductsView.Suppliers, ColumnMode = ColumnMode.Read)]
-		public string Suppliers_PostalCode
+		[Column("PostalCode", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		public string Supplier_PostalCode
 		{
-			get { return suppliers_PostalCode; }			
-			set { suppliers_PostalCode = value; }
+			get { return supplier_PostalCode; }			
+			set { supplier_PostalCode = value; }
 		}
 		
-		[Column("Country", Foreign = ProductsView.Suppliers, ColumnMode = ColumnMode.Read)]
-		public string Suppliers_Country
+		[Column("Country", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		public string Supplier_Country
 		{
-			get { return suppliers_Country; }			
-			set { suppliers_Country = value; }
+			get { return supplier_Country; }			
+			set { supplier_Country = value; }
 		}
 		
-		[Column("Phone", Foreign = ProductsView.Suppliers, ColumnMode = ColumnMode.Read)]
-		public string Suppliers_Phone
+		[Column("Phone", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		public string Supplier_Phone
 		{
-			get { return suppliers_Phone; }			
-			set { suppliers_Phone = value; }
+			get { return supplier_Phone; }			
+			set { supplier_Phone = value; }
 		}
 		
-		[Column("Fax", Foreign = ProductsView.Suppliers, ColumnMode = ColumnMode.Read)]
-		public string Suppliers_Fax
+		[Column("Fax", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		public string Supplier_Fax
 		{
-			get { return suppliers_Fax; }			
-			set { suppliers_Fax = value; }
+			get { return supplier_Fax; }			
+			set { supplier_Fax = value; }
 		}
 		
-		[Column("HomePage", Foreign = ProductsView.Suppliers, ColumnMode = ColumnMode.Read)]
-		public string Suppliers_HomePage
+		[Column("HomePage", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		public string Supplier_HomePage
 		{
-			get { return suppliers_HomePage; }			
-			set { suppliers_HomePage = value; }
+			get { return supplier_HomePage; }			
+			set { supplier_HomePage = value; }
 		}
 		
 		#endregion

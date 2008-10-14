@@ -12,7 +12,7 @@ namespace Northwind.Data
 	/// </summary>	
 	public class SuppliersDAO : ObjectDAO<Suppliers>, ISuppliersDAO
 	{
-		public Suppliers GetSuppliers(Products products)
+		public Suppliers GetSupplierOfProduct(Products products)
 		{
 			return GetObject(products.SupplierID);
 		}

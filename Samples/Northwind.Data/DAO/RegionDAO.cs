@@ -12,7 +12,7 @@ namespace Northwind.Data
 	/// </summary>	
 	public class RegionDAO : ObjectDAO<Region>, IRegionDAO
 	{
-		public Region GetRegion(Territories territories)
+		public Region GetRegionOfTerritory(Territories territories)
 		{
 			return GetObject(territories.RegionID);
 		}

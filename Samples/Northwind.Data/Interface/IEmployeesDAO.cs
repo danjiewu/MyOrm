@@ -9,12 +9,12 @@ namespace Northwind.Data
 	/// <summary>
 	/// Interface of DAO for object 'Employees'.
 	/// </summary>	
-	public interface IEmployeesDAO : IObjectDAO<Employees>, IObjectDAO
+	public interface IEmployeesDAO : IObjectDAO<Employees>, IObjectViewDAO<Employees>, IObjectDAO, IObjectViewDAO
 	{
-		Employees GetEmployees(Orders orders);
-		Employees GetEmployees(EmployeeTerritories employeeTerritories);
-		Employees GetReportsToEmployees(Employees employees);
-		List<Employees> GetAllWithReportsToEmployees(Employees reportsToEmployees);
+		Employees GetEmployeeOfOrder(Orders orders);
+		Employees GetEmployeeOfEmployeeTerritory(EmployeeTerritories employeeTerritories);
+		Employees GetReportsToEmployeeOfEmployee(Employees employees);
+		List<Employees> GetAllWithReportsToEmployee(Employees reportsToEmployee);
 	}
 	#endregion
 	
@@ -24,10 +24,10 @@ namespace Northwind.Data
 	/// </summary>	
 	public interface IEmployeesViewDAO : IObjectViewDAO<EmployeesView>, IObjectViewDAO
 	{
-		EmployeesView GetEmployees(Orders orders);
-		EmployeesView GetEmployees(EmployeeTerritories employeeTerritories);
-		EmployeesView GetReportsToEmployees(Employees employees);
-		List<EmployeesView> GetAllWithReportsToEmployees(Employees reportsToEmployees);
+		EmployeesView GetEmployeeOfOrder(Orders orders);
+		EmployeesView GetEmployeeOfEmployeeTerritory(EmployeeTerritories employeeTerritories);
+		EmployeesView GetReportsToEmployeeOfEmployee(Employees employees);
+		List<EmployeesView> GetAllWithReportsToEmployee(Employees reportsToEmployee);
 	}
 	#endregion	
 }
