@@ -7,35 +7,27 @@ namespace Northwind.Data
 {	
 	#region Categories
 	/// <summary>
-	/// Categories object for table 'Categories'.
+	/// Categories.
 	/// </summary>
 	[Table("Categories")]
 	[Serializable]
 	public class Categories 
 	{
-		#region Constant
-		
+		#region Constant		
 		public const string	_CategoryID = "CategoryID";
 		public const string	_CategoryName = "CategoryName";
 		public const string	_Description = "Description";
 		public const string	_Picture = "Picture";
-		
 		#endregion
 		
-		#region Member Variables
-		
+		#region Member Variables		
 		private int categoryID;
 		private string categoryName;
 		private string description;
 		private byte[] picture;
-
 		#endregion
 
 		#region Public Properties
-
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column(IsPrimaryKey = true)]
 		public int CategoryID
 		{
@@ -43,9 +35,6 @@ namespace Northwind.Data
 			set { categoryID = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string CategoryName
 		{
@@ -53,9 +42,6 @@ namespace Northwind.Data
 			set { categoryName = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string Description
 		{
@@ -63,9 +49,6 @@ namespace Northwind.Data
 			set { description = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public byte[] Picture
 		{

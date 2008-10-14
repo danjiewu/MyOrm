@@ -7,31 +7,23 @@ namespace Northwind.Data
 {	
 	#region CustomerDemographics
 	/// <summary>
-	/// CustomerDemographics object for table 'CustomerDemographics'.
+	/// CustomerDemographics.
 	/// </summary>
 	[Table("CustomerDemographics")]
 	[Serializable]
 	public class CustomerDemographics 
 	{
-		#region Constant
-		
+		#region Constant		
 		public const string	_CustomerTypeID = "CustomerTypeID";
 		public const string	_CustomerDesc = "CustomerDesc";
-		
 		#endregion
 		
-		#region Member Variables
-		
+		#region Member Variables		
 		private string customerTypeID;
 		private string customerDesc;
-
 		#endregion
 
 		#region Public Properties
-
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column(IsPrimaryKey = true)]
 		public string CustomerTypeID
 		{
@@ -39,9 +31,6 @@ namespace Northwind.Data
 			set { customerTypeID = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string CustomerDesc
 		{

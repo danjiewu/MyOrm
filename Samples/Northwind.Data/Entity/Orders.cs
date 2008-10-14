@@ -7,14 +7,13 @@ namespace Northwind.Data
 {	
 	#region Orders
 	/// <summary>
-	/// Orders object for table 'Orders'.
+	/// Orders.
 	/// </summary>
 	[Table("Orders")]
 	[Serializable]
 	public class Orders 
 	{
-		#region Constant
-		
+		#region Constant		
 		public const string	_OrderID = "OrderID";
 		public const string	_CustomerID = "CustomerID";
 		public const string	_EmployeeID = "EmployeeID";
@@ -29,11 +28,9 @@ namespace Northwind.Data
 		public const string	_ShipRegion = "ShipRegion";
 		public const string	_ShipPostalCode = "ShipPostalCode";
 		public const string	_ShipCountry = "ShipCountry";
-		
 		#endregion
 		
-		#region Member Variables
-		
+		#region Member Variables		
 		private int orderID;
 		private string customerID;
 		private int? employeeID;
@@ -48,14 +45,9 @@ namespace Northwind.Data
 		private string shipRegion;
 		private string shipPostalCode;
 		private string shipCountry;
-
 		#endregion
 
 		#region Public Properties
-
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column(IsPrimaryKey = true)]
 		public int OrderID
 		{
@@ -63,9 +55,6 @@ namespace Northwind.Data
 			set { orderID = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string CustomerID
 		{
@@ -73,9 +62,6 @@ namespace Northwind.Data
 			set { customerID = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public int? EmployeeID
 		{
@@ -83,9 +69,6 @@ namespace Northwind.Data
 			set { employeeID = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public DateTime? OrderDate
 		{
@@ -93,9 +76,6 @@ namespace Northwind.Data
 			set { orderDate = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public DateTime? RequiredDate
 		{
@@ -103,9 +83,6 @@ namespace Northwind.Data
 			set { requiredDate = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public DateTime? ShippedDate
 		{
@@ -113,9 +90,6 @@ namespace Northwind.Data
 			set { shippedDate = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public int? ShipVia
 		{
@@ -123,9 +97,6 @@ namespace Northwind.Data
 			set { shipVia = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public decimal? Freight
 		{
@@ -133,9 +104,6 @@ namespace Northwind.Data
 			set { freight = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string ShipName
 		{
@@ -143,9 +111,6 @@ namespace Northwind.Data
 			set { shipName = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string ShipAddress
 		{
@@ -153,9 +118,6 @@ namespace Northwind.Data
 			set { shipAddress = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string ShipCity
 		{
@@ -163,9 +125,6 @@ namespace Northwind.Data
 			set { shipCity = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string ShipRegion
 		{
@@ -173,9 +132,6 @@ namespace Northwind.Data
 			set { shipRegion = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string ShipPostalCode
 		{
@@ -183,9 +139,6 @@ namespace Northwind.Data
 			set { shipPostalCode = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string ShipCountry
 		{
@@ -206,8 +159,7 @@ namespace Northwind.Data
 	[TableJoin(typeof(Shippers), "ShipVia", AliasName = OrdersView.Shippers)]
 	public class OrdersView : Orders
 	{
-		#region Constant
-		
+		#region Constant		
 		public const string	_Customers_CompanyName = "Customers_CompanyName";			
 		public const string	_Customers_ContactName = "Customers_ContactName";			
 		public const string	_Customers_ContactTitle = "Customers_ContactTitle";			
@@ -237,14 +189,12 @@ namespace Northwind.Data
 		public const string	_Shippers_CompanyName = "Shippers_CompanyName";			
 		public const string	_Shippers_Phone = "Shippers_Phone";			
 			
-		private const string Customers = "Customers";
-		private const string Employees = "Employees";
-		private const string Shippers = "Shippers";
-		
+		public const string Customers = "Customers";
+		public const string Employees = "Employees";
+		public const string Shippers = "Shippers";
 		#endregion
 		
-		#region Member Variables
-		
+		#region Member Variables		
 		private string customers_CompanyName;			
 		private string customers_ContactName;			
 		private string customers_ContactTitle;			
@@ -273,11 +223,9 @@ namespace Northwind.Data
 		private string employees_PhotoPath;			
 		private string shippers_CompanyName;			
 		private string shippers_Phone;			
-		
 		#endregion
 
 		#region Public Properties
-
 		[Column("CompanyName", Foreign = OrdersView.Customers, ColumnMode = ColumnMode.Read)]
 		public string Customers_CompanyName
 		{
