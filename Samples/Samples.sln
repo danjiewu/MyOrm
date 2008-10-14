@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Data", "Northwind
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample1", "Sample1\Sample1.csproj", "{C1AD6519-153A-4104-B8AE-3EA8265B9FCA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample2", "Sample2\Sample2.csproj", "{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -23,6 +25,10 @@ Global
 		{C1AD6519-153A-4104-B8AE-3EA8265B9FCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1AD6519-153A-4104-B8AE-3EA8265B9FCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C1AD6519-153A-4104-B8AE-3EA8265B9FCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

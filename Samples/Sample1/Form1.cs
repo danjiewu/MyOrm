@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using Northwind.Data;
 
 namespace Northwind
 {
@@ -18,7 +19,8 @@ namespace Northwind
         private void Form1_Load(object sender, EventArgs e)
         {
             MyOrm.Configuration.DefaultConnection.Open();
-            dataGridView1.DataSource = new Northwind.Data.OrderDetailsViewDAO().Search(null);
+            dataGridView1.DataSource = NorthwindFactory.DAOFactory.ProductsViewDAO.Search(null);
+            MyOrm.Configuration.DefaultConnection.Close();
         }
     }
 }
