@@ -73,8 +73,8 @@ namespace Northwind.Data
 	/// <summary>
 	/// OrderDetailsView.
 	/// </summary>	
-	[TableJoin(typeof(Orders), "OrderID", AliasName = OrderDetailsView.Order)]
-	[TableJoin(typeof(Products), "ProductID", AliasName = OrderDetailsView.Product)]
+	[TableJoin(typeof(Orders), OrderDetails._OrderID, AliasName = OrderDetailsView.Order)]
+	[TableJoin(typeof(Products), OrderDetails._ProductID, AliasName = OrderDetailsView.Product)]
 	public class OrderDetailsView : OrderDetails
 	{
 		#region Constant		

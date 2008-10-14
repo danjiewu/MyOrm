@@ -9,7 +9,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// Interface of DAO for object 'Categories'.
 	/// </summary>	
-	public interface ICategoriesDAO : IObjectDAO<Categories>, IObjectViewDAO<Categories>, IObjectDAO, IObjectViewDAO
+	public interface ICategoriesDAO : IObjectDAO<Categories>, IObjectViewDAO<Categories>
 	{
 		Categories GetCategoryOfProduct(Products products);
 	}
