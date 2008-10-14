@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using Northwind.Data;
+using System.Reflection;
 
 namespace Northwind
 {
@@ -13,8 +15,8 @@ namespace Northwind
         static void Main()
         {
             Application.EnableVisualStyles();
-            Application.SetCompatibleTextRenderingDefault(false);
+            Application.SetCompatibleTextRenderingDefault(false);            
             Application.Run(new Form1());
-        }
+        }        
     }
 }
