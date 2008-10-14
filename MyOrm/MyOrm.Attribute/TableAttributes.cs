@@ -13,8 +13,15 @@ namespace MyOrm.Attribute
     {
         private string tableName = string.Empty;
         private ColumnDefineMode columnDefineMode = ColumnDefineMode.AttributeAndProperty;
-
+        
+        /// <summary>
+        /// 默认构造函数
+        /// </summary>
         public TableAttribute() { }
+        /// <summary>
+        /// 指定表名的构造函数
+        /// </summary>
+        /// <param name="tableName">表名</param>
         public TableAttribute(string tableName) { TableName = tableName; }
 
         /// <summary>

@@ -6,6 +6,9 @@ using MyOrm.Metadata;
 
 namespace MyOrm
 {
+    /// <summary>
+    /// MyOrm配置项
+    /// </summary>
     public class MyOrmConfigurationSection : ConfigurationSection
     {
         /// <summary>
@@ -18,6 +21,9 @@ namespace MyOrm
             set { this["DefaultConnection"] = value; }
         }
 
+        /// <summary>
+        /// 表信息提供类型名
+        /// </summary>
         [ConfigurationProperty("Provider", DefaultValue = "MyOrm.Metadata.AttibuteTableInfoProvider, MyOrm.Attribute", IsRequired = true)]
         public string TableInfoProvider
         {
@@ -52,7 +58,7 @@ namespace MyOrm
         }
 
         /// <summary>
-        /// 表信息Provider
+        /// 表信息提供者
         /// </summary>
         public static TableInfoProvider TableInfoProvider
         {

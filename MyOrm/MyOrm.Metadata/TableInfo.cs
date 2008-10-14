@@ -72,13 +72,16 @@ namespace MyOrm.Metadata
             }
         }
 
+        /// <summary>
+        /// 关联表的信息
+        /// </summary>
         public List<TableJoinInfo> JoinTables
         {
             get { return joinTables; }
         }
 
         /// <summary>
-        /// 列名对应列缓存
+        /// 列名对应列的缓存
         /// </summary>
         protected Dictionary<string, ColumnInfo> ColumnCache
         {
@@ -94,7 +97,7 @@ namespace MyOrm.Metadata
         }
 
         /// <summary>
-        /// 属性名对应列缓存
+        /// 属性名对应列的缓存
         /// </summary>
         protected Dictionary<string, ColumnInfo> PropertyCache
         {
@@ -108,12 +111,7 @@ namespace MyOrm.Metadata
                 return propertyCache;
             }
         }
-
-        public override string ToString()
-        {
-            return TableName;
-        }
-
+        
         /// <summary>
         /// 根据列名获得列定义，忽略大小写
         /// </summary>
@@ -143,11 +141,16 @@ namespace MyOrm.Metadata
         /// <summary>
         /// 清空缓存
         /// </summary>
-        public void ResetCache()
+        public void ClearCache()
         {
             keys = null;
             columnCache.Clear();
             propertyCache.Clear();
+        }
+
+        public override string ToString()
+        {
+            return TableName;
         }
     }
 }

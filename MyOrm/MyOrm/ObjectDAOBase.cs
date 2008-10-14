@@ -15,12 +15,29 @@ namespace MyOrm
     public abstract class ObjectDAOBase
     {
         #region 预定义变量
+        /// <summary>
+        /// SQL语句中like条件中的转义符
+        /// </summary>
         protected const char LikeEscapeChar = '\\';
+        /// <summary>
+        /// 表示SQL查询中所有字段的标记
+        /// </summary>
         protected const string ParamAllFields = "@AllFields";
+        /// <summary>
+        /// 表示SQL查询中表名的标记
+        /// </summary>
         protected const string ParamTable = "@Table";
+        /// <summary>
+        /// 表示SQL查询中多表连接的标记
+        /// </summary>
         protected const string ParamFromTable = "@FromTable";
+        /// <summary>
+        /// 表示SQL查询中条件语句的标记
+        /// </summary>
         protected const string ParamCondition = "@Condition";
-
+        /// <summary>
+        /// 对like条件的字符串内容中的转义符进行替换的正则表达式
+        /// </summary>
         protected static Regex sqlLike = new Regex(@"([%_\^\[\]\*\\])");
         #endregion
 
@@ -267,7 +284,7 @@ namespace MyOrm
         /// <summary>
         /// 根据自定义条件生成SQL语句与SQL参数
         /// </summary>
-        /// <param name="conditon">自定义的查询条件</param>
+        /// <param name="customConditon">自定义的查询条件</param>
         /// <param name="outputParams">供输出的参数列表，在该列表中添加SQL参数</param>
         /// <returns>生成的SQL语句，null表示无条件</returns>
         protected virtual string BuildCustomConditionSql(Condition customConditon, IList outputParams)
@@ -306,7 +323,7 @@ namespace MyOrm
         /// <example>"select count(*) from @FromTable "表示从表中所有记录的数量，conditions参数需为空</example>
         /// <example>"delete from @Table where @Condition"表示从表中删除所有符合条件的记录</example>
         /// </param>        
-        /// <param name="conditions">条件，为null时表示无条件</param>
+        /// <param name="condition">条件，为null时表示无条件</param>
         /// <returns>IDbCommand</returns>
         protected IDbCommand MakeConditionCommand(string SQLWithParam, Condition condition)
         {
@@ -356,7 +373,7 @@ namespace MyOrm
         /// <summary>
         /// 将数据库取得的值转化为对象属性类型所对应的值
         /// </summary>
-        /// <param name="value">数据库取得的值</param>
+        /// <param name="dbValue">数据库取得的值</param>
         /// <param name="column">列属性</param>
         /// <returns>对象属性类型所对应的值</returns>
         protected object ConvertToObjectValue(object dbValue, ColumnInfo column)//TODO: 

@@ -7,8 +7,8 @@ namespace MyOrm.Common
 {
     /// <summary>
     /// 查询条件
-    /// <seealso cref="MyOrm.SimpleCondition"/>
-    /// <seealso cref="MyOrm.ConditionSet"/>    
+    /// <seealso cref="MyOrm.Common.SimpleCondition"/>
+    /// <seealso cref="MyOrm.Common.ConditionSet"/>    
     /// </summary>
     [Serializable]
     public abstract class Condition { }
@@ -30,7 +30,7 @@ namespace MyOrm.Common
         public SimpleCondition() { }
 
         /// <summary>
-        /// 以默认操作符ConditionOperator.Equals生成查询条件
+        /// 以默认操作符ConditionOperator.Equals生成简单查询条件
         /// </summary>
         /// <param name="expression">表达式，可以为属性名、函数表达式等</param>
         /// <param name="value">条件值</param>
@@ -42,7 +42,7 @@ namespace MyOrm.Common
         }
 
         /// <summary>
-        /// 生成查询条件
+        /// 生成简单查询条件
         /// </summary>
         /// <param name="expression">表达式，可以为属性名、函数表达式等</param>
         /// <param name="op">条件比较符</param>
@@ -55,7 +55,7 @@ namespace MyOrm.Common
         }
 
         /// <summary>
-        /// 生成查询条件
+        /// 生成简单查询条件
         /// </summary>
         /// <param name="expression">表达式，可以为属性名、函数表达式等</param>
         /// <param name="op">条件比较符</param>
@@ -146,7 +146,7 @@ namespace MyOrm.Common
     }
 
     /// <summary>
-    /// 查询条件组合
+    /// 查询条件集合
     /// </summary>
     [Serializable]
     public sealed class ConditionSet : Condition
@@ -157,9 +157,9 @@ namespace MyOrm.Common
         public ConditionSet() { }
 
         /// <summary>
-        /// 指定JoinType创建查询条件组合
+        /// 指定连接类型创建查查询条件集合
         /// </summary>
-        /// <param name="joinType"></param>
+        /// <param name="joinType">连接类型</param>
         public ConditionSet(ConditionJoinType joinType)
         {
             this.joinType = joinType;
@@ -167,7 +167,7 @@ namespace MyOrm.Common
 
         private ConditionJoinType joinType = ConditionJoinType.And;
         /// <summary>
-        /// 组合类型，默认为ConditionJoinType.And
+        /// 连接类型，默认为ConditionJoinType.And
         /// </summary>
         public ConditionJoinType JoinType
         {
@@ -186,7 +186,7 @@ namespace MyOrm.Common
 
         private List<Condition> subConditions = new List<Condition>();
         /// <summary>
-        /// 子查询条件
+        /// 子查询条件集合
         /// </summary>
         public List<Condition> SubConditions
         {
@@ -195,7 +195,7 @@ namespace MyOrm.Common
     }
 
     /// <summary>
-    /// 查询条件的组合关系枚举
+    /// 查询条件的连接关系枚举
     /// </summary>
     public enum ConditionJoinType
     {
