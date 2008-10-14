@@ -3,6 +3,7 @@
 <%@ Property Name="Namespace" Type="System.String" Default="MyNamespace.Data" Category="Object" Description="The class namespace that the mapping file should use" %>
 <%@ Property Name="Assembly" Type="System.String" Default="MyApp.MyAssembly" Category="Object" Description="The assembly that the class will be used in" %>
 <%@ Property Name="RemoveTablePrefix" Type="System.String" Default="tbl" Category="Object" Description="The prefix to remove from table names" %>
+<%@ Property Name="PropertyConstPrefix" Type="System.String" Default=null Category="Object" Description="The prefix to add to const property name. Leave it empty if don't need to generate const property name." %>
 <%@ Property Name="InterfaceNameFormat" Type="System.String" Default="I{0}DAO" Category="Object" Description="Name of interface of obejct DAO" %>
 <%@ Property Name="UseNullable" Type="System.Boolean" Default="true" Category="Object" Description="Allow to use the type System.Nullable<T>." %>
 <%@ Assembly Name="SchemaExplorer" %>
@@ -32,10 +33,10 @@ namespace <%= Namespace %>
 	/// <summary>
 	/// Interface of DAO for object '<%= ClassName(SourceTable) %>'.
 	/// </summary>	
-	public interface <%= InterfaceName %> : IObjectDAO<%="<"+ClassName(SourceTable)+">"%>, IObjectDAO
+	public interface <%= InterfaceName %> : IObjectDAO<%="<"+ClassName(SourceTable)+">"%>, IObjectViewDAO<%="<"+ClassName(SourceTable)+">"%>
 	{
 		<%foreach(TableKeySchema key in SourceTable.PrimaryKeys){%>
-		<%=ClassName(SourceTable)%> Get<%=ForeignTableAliasName(key)%>(<%=ClassName(key.ForeignKeyTable)%> <%=CamelCase(ClassName(key.ForeignKeyTable))%>);
+		<%=ClassName(SourceTable)%> Get<%=ForeignTableAliasName(key)%>Of<%=MakeSingle(ClassName(key.ForeignKeyTable))%>(<%=ClassName(key.ForeignKeyTable)%> <%=CamelCase(ClassName(key.ForeignKeyTable))%>);
 		<%}%>
 		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
 		<%="List<" + ClassName(SourceTable) + ">"%> GetAllWith<%=ForeignTableAliasName(key)%>(<%=ClassName(key.PrimaryKeyTable)%> <%=CamelCase(ForeignTableAliasName(key))%>);
@@ -48,10 +49,10 @@ namespace <%= Namespace %>
 	/// <summary>
 	/// Interface of DAO for object's view '<%= ViewClassName(SourceTable) %>'.
 	/// </summary>	
-	public interface <%= ViewInterfaceName %> : IObjectViewDAO<%="<"+ViewClassName(SourceTable)+">"%>, IObjectViewDAO
+	public interface <%= ViewInterfaceName %> : IObjectViewDAO<%="<"+ViewClassName(SourceTable)+">"%>
 	{
 		<%foreach(TableKeySchema key in SourceTable.PrimaryKeys){%>
-		<%=ViewClassName(SourceTable)%> Get<%=ForeignTableAliasName(key)%>(<%=ClassName(key.ForeignKeyTable)%> <%=CamelCase(ClassName(key.ForeignKeyTable))%>);
+		<%=ViewClassName(SourceTable)%> Get<%=ForeignTableAliasName(key)%>Of<%=MakeSingle(ClassName(key.ForeignKeyTable))%>(<%=ClassName(key.ForeignKeyTable)%> <%=CamelCase(ClassName(key.ForeignKeyTable))%>);
 		<%}%>
 		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
 		<%="List<" + ViewClassName(SourceTable) + ">"%> GetAllWith<%=ForeignTableAliasName(key)%>(<%=ClassName(key.PrimaryKeyTable)%> <%=CamelCase(ForeignTableAliasName(key))%>);

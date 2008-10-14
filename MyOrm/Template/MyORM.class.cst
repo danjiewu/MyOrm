@@ -14,6 +14,17 @@
 <!-- #include file="MyORM.inc" -->
 <script runat="template">
 
+public string ForeignKeysName(TableKeySchema foreignKey){
+	if(foreignKey.ForeignKeyMemberColumns.Count == 1)
+	return PropertyString(foreignKey.ForeignKeyMemberColumns[0], ClassName(SourceTable), PropertyName(foreignKey.ForeignKeyMemberColumns[0]));
+	List<string> foreignKeys = new List<string>();
+	foreach(ColumnSchema column in foreignKey.ForeignKeyMemberColumns){
+		foreignKeys.Add(PropertyName(column));
+	}
+	foreignKeys.Sort();
+	return String.Join(",",foreignKeys.ToArray());
+}
+
 </script>
 using System;
 using System.Data;
@@ -75,7 +86,7 @@ namespace <%= Namespace %>
 	<% } %>
 	/// </summary>	
 		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
-	[TableJoin(typeof(<%=ClassName(key.PrimaryKeyTable)%>), "<%=ForeignKeysName(key)%>", AliasName = <%=ViewClassName(SourceTable) + "." + ForeignTableAliasName(key)%>)]
+	[TableJoin(typeof(<%=ClassName(key.PrimaryKeyTable)%>), <%=ForeignKeysName(key)%>, AliasName = <%=ViewClassName(SourceTable) + "." + ForeignTableAliasName(key)%>)]
 		<%}%>
 	public class <%= ViewClassName(SourceTable) %> : <%= ClassName(SourceTable) %>
 	{

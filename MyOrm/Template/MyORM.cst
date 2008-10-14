@@ -23,6 +23,8 @@
 	private CodeTemplate _csharpTemplate;
 	private CodeTemplate _daoTemplate;
 	private CodeTemplate _interfaceTemplate;
+	private CodeTemplate _factoryTemplate;
+	private CodeTemplate _daoFactoryTemplate;
 
     [Category("Database")]
     [Description("Database that the mapping file should be based on.")]
@@ -73,6 +75,30 @@
 				_interfaceTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "MyORM.interface.cst");
 
 			return _interfaceTemplate;
+		}
+	}
+		
+	[Browsable(false)]
+	public CodeTemplate FactoryTemplate
+	{
+		get
+		{
+			if (_factoryTemplate == null)
+				_factoryTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "MyORM.factory.cst");
+
+			return _factoryTemplate;
+		}
+	}
+	
+	[Browsable(false)]
+	public CodeTemplate DAOFactoryTemplate
+	{
+		get
+		{
+			if (_daoFactoryTemplate == null)
+				_daoFactoryTemplate = CompileTemplate(CodeTemplateInfo.DirectoryName + "MyORM.DAO.factory.cst");
+
+			return _daoFactoryTemplate;
 		}
 	}
 
@@ -158,6 +184,45 @@
 			{
 				Response.WriteLine("Error: " + ex);
 			}
+		}
+		try
+		{			
+		string factoryFileName = String.Format(InterfaceNameFormat,String.Empty) + "Factory.cs";
+		factoryFileName = Path.Combine(Path.Combine(OutputDirectory, "Interface"), factoryFileName);
+		
+		this.FactoryTemplate.SetProperty("SourceDatabase", SourceDatabase);
+		this.FactoryTemplate.SetProperty("Namespace", Namespace);
+		this.FactoryTemplate.SetProperty("Assembly", Assembly);
+		this.FactoryTemplate.SetProperty("RemoveTablePrefix", RemoveTablePrefix);
+		this.FactoryTemplate.SetProperty("UseNullable", UseNullable);
+		this.FactoryTemplate.SetProperty("PropertyConstPrefix", PropertyConstPrefix);
+		this.FactoryTemplate.SetProperty("InterfaceNameFormat", InterfaceNameFormat);	
+		this.FactoryTemplate.SetProperty("DAONameFormat", DAONameFormat);	
+
+		this.FactoryTemplate.RenderToFile(factoryFileName, true);
+
+		Response.WriteLine(string.Format("{0} ", factoryFileName));
+		
+		string daoFactoryFileName = String.Format(DAONameFormat,String.Empty) + "Factory.cs";
+		daoFactoryFileName = Path.Combine(Path.Combine(OutputDirectory, "DAO"), daoFactoryFileName);
+		
+		this.DAOFactoryTemplate.SetProperty("SourceDatabase", SourceDatabase);
+		this.DAOFactoryTemplate.SetProperty("Namespace", Namespace);
+		this.DAOFactoryTemplate.SetProperty("Assembly", Assembly);
+		this.DAOFactoryTemplate.SetProperty("RemoveTablePrefix", RemoveTablePrefix);
+		this.DAOFactoryTemplate.SetProperty("UseNullable", UseNullable);
+		this.DAOFactoryTemplate.SetProperty("PropertyConstPrefix", PropertyConstPrefix);
+		this.DAOFactoryTemplate.SetProperty("InterfaceNameFormat", InterfaceNameFormat);	
+		this.DAOFactoryTemplate.SetProperty("DAONameFormat", DAONameFormat);	
+
+		this.DAOFactoryTemplate.RenderToFile(daoFactoryFileName, true);
+
+		Response.WriteLine(string.Format("{0} ", daoFactoryFileName));
+
+		}
+		catch (Exception ex)
+		{
+			Response.WriteLine("Error: " + ex);
 		}
 	}
 </script>

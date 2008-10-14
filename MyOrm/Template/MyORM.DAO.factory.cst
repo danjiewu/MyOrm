@@ -1,0 +1,83 @@
+<%@ CodeTemplate Language="C#" TargetLanguage="C#" Description="This Template Generates C# domain objects for NHibernate" Debug="true" %>
+<%@ Property Name="Namespace" Type="System.String" Default="MyNamespace.Data" Category="Object" Description="The class namespace that the mapping file should use" %>
+<%@ Property Name="Assembly" Type="System.String" Default="MyApp.MyAssembly" Category="Object" Description="The assembly that the class will be used in" %>
+<%@ Property Name="RemoveTablePrefix" Type="System.String" Default="tbl" Category="Object" Description="The prefix to remove from table names" %>
+<%@ Property Name="PropertyConstPrefix" Type="System.String" Default=null Category="Object" Description="The prefix to add to const property name. Leave it empty if don't need to generate const property name." %>
+<%@ Property Name="UseNullable" Type="System.Boolean" Default="true" Category="Object" Description="Allow to use the type System.Nullable<T>." %>
+<%@ Property Name="DAONameFormat" Type="System.String" Default="{0}DAO" Category="Object" Description="Name of obejct DAO" %>
+<%@ Property Name="InterfaceNameFormat" Type="System.String" Default="I{0}DAO" Category="Object" Description="Name of interface of obejct DAO" %>
+<%@ Assembly Name="System.Design" %>
+<%@ Assembly Name="SchemaExplorer" %>
+<%@ Import Namespace="SchemaExplorer" %>
+<%@ Import Namespace="System.IO" %>
+<%@ Import Namespace="System.Xml" %>
+<%@ Import Namespace="System.Text" %>
+<%@ Import Namespace="System.Collections.Generic" %>
+<%@ Import Namespace="System.Windows.Forms.Design" %>
+<%@ Import Namespace="System.Text.RegularExpressions" %>
+<!-- #include file="MyORM.inc" -->
+
+<script runat="template">
+	private DatabaseSchema _sourceDatabase;
+
+	[Category("Database")]
+    [Description("Database that the mapping file should be based on.")]
+    public DatabaseSchema SourceDatabase {
+        get { return _sourceDatabase; }
+        set { _sourceDatabase = value; }
+    }
+
+</script>
+<script runat="template">
+</script>
+using System;
+using System.Data;
+using MyOrm.Common;
+using MyOrm;
+
+namespace <%= Namespace %>
+{	
+	public class <%=String.Format(DAONameFormat,String.Empty)%>Factory : <%=String.Format(InterfaceNameFormat,String.Empty)%>Factory
+	{
+		<%foreach(TableSchema sourceTable in SourceDatabase.Tables){%>
+		private <%= String.Format(InterfaceNameFormat,ClassName(sourceTable))%> _<%=String.Format(DAONameFormat,ClassName(sourceTable))%> = new <%=String.Format(DAONameFormat,ClassName(sourceTable))%>();
+		<% } %>
+		
+		<%foreach(TableSchema sourceTable in SourceDatabase.Tables){%>
+			<%if(sourceTable.ForeignKeys.Count!=0){%>
+		private <%= String.Format(InterfaceNameFormat,ViewClassName(sourceTable))%> _<%=String.Format(DAONameFormat,ViewClassName(sourceTable))%> = new <%=String.Format(DAONameFormat,ViewClassName(sourceTable))%>();
+			<% } %>
+		<% } %>
+		
+		<%foreach(TableSchema sourceTable in SourceDatabase.Tables){%>
+		public <%= String.Format(InterfaceNameFormat,ClassName(sourceTable))%> <%=String.Format(DAONameFormat,ClassName(sourceTable))%> { get{ return _<%=String.Format(DAONameFormat,ClassName(sourceTable))%>; } }
+		<% } %>
+		
+		<%foreach(TableSchema sourceTable in SourceDatabase.Tables){%>
+			<%if(sourceTable.ForeignKeys.Count!=0){%>
+		public <%= String.Format(InterfaceNameFormat,ViewClassName(sourceTable))%> <%=String.Format(DAONameFormat,ViewClassName(sourceTable))%> { get { return _<%=String.Format(DAONameFormat,ViewClassName(sourceTable))%>; } }
+			<% } %>
+		<% } %>
+		
+		public IObjectDAO GetObjectDAO(Type objectType)
+		{
+			if(objectType == null) return null;
+			<%foreach(TableSchema sourceTable in SourceDatabase.Tables){%>
+			else if(objectType == typeof(<%= ClassName(sourceTable)%>)) return (IObjectDAO)<%=String.Format(DAONameFormat, ClassName(sourceTable))%>;
+			<% } %>
+			else return GetObjectDAO(objectType.BaseType);
+		}
+		
+		public IObjectViewDAO GetObjectViewDAO(Type objectType)
+		{
+			if(objectType == null) return null;
+			<%foreach(TableSchema sourceTable in SourceDatabase.Tables){%>
+			else if(objectType == typeof(<%= ClassName(sourceTable)%>)) return (IObjectViewDAO)<%=String.Format(DAONameFormat, ClassName(sourceTable))%>;
+				<%if(sourceTable.ForeignKeys.Count!=0){%>
+			else if(objectType == typeof(<%= ViewClassName(sourceTable)%>)) return (IObjectViewDAO)<%=String.Format(DAONameFormat, ViewClassName(sourceTable))%>;			
+				<% } %>
+			<% } %>
+			else return null;
+		}
+	}
+}
