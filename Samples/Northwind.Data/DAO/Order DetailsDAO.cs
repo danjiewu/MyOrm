@@ -12,14 +12,14 @@ namespace Northwind.Data
 	/// </summary>	
 	public class OrderDetailsDAO : ObjectDAO<OrderDetails>, IOrderDetailsDAO
 	{
-		public List<OrderDetails> GetAllWithOrders(Orders orders)
+		public List<OrderDetails> GetAllWithOrder(Orders order)
 		{
-			return Search(new SimpleCondition(OrderDetails._OrderID, orders.OrderID));
+			return Search(new SimpleCondition(OrderDetails._OrderID, order.OrderID));
 		}
 		
-		public List<OrderDetails> GetAllWithProducts(Products products)
+		public List<OrderDetails> GetAllWithProduct(Products product)
 		{
-			return Search(new SimpleCondition(OrderDetails._ProductID, products.ProductID));
+			return Search(new SimpleCondition(OrderDetails._ProductID, product.ProductID));
 		}
 		
 	}
@@ -31,14 +31,14 @@ namespace Northwind.Data
 	/// </summary>	
 	public class OrderDetailsViewDAO : ObjectViewDAO<OrderDetailsView>, IOrderDetailsViewDAO
 	{
-		public List<OrderDetailsView> GetAllWithOrders(Orders orders)
+		public List<OrderDetailsView> GetAllWithOrder(Orders order)
 		{
-			return Search(new SimpleCondition(OrderDetailsView._OrderID, orders.OrderID));
+			return Search(new SimpleCondition(OrderDetailsView._OrderID, order.OrderID));
 		}
 		
-		public List<OrderDetailsView> GetAllWithProducts(Products products)
+		public List<OrderDetailsView> GetAllWithProduct(Products product)
 		{
-			return Search(new SimpleCondition(OrderDetailsView._ProductID, products.ProductID));
+			return Search(new SimpleCondition(OrderDetailsView._ProductID, product.ProductID));
 		}
 		
 	}

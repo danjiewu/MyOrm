@@ -154,272 +154,272 @@ namespace Northwind.Data
 	/// <summary>
 	/// OrdersView.
 	/// </summary>	
-	[TableJoin(typeof(Customers), "CustomerID", AliasName = OrdersView.Customers)]
-	[TableJoin(typeof(Employees), "EmployeeID", AliasName = OrdersView.Employees)]
-	[TableJoin(typeof(Shippers), "ShipVia", AliasName = OrdersView.Shippers)]
+	[TableJoin(typeof(Customers), "CustomerID", AliasName = OrdersView.Customer)]
+	[TableJoin(typeof(Employees), "EmployeeID", AliasName = OrdersView.Employee)]
+	[TableJoin(typeof(Shippers), "ShipVia", AliasName = OrdersView.Shipper)]
 	public class OrdersView : Orders
 	{
 		#region Constant		
-		public const string	_Customers_CompanyName = "Customers_CompanyName";			
-		public const string	_Customers_ContactName = "Customers_ContactName";			
-		public const string	_Customers_ContactTitle = "Customers_ContactTitle";			
-		public const string	_Customers_Address = "Customers_Address";			
-		public const string	_Customers_City = "Customers_City";			
-		public const string	_Customers_Region = "Customers_Region";			
-		public const string	_Customers_PostalCode = "Customers_PostalCode";			
-		public const string	_Customers_Country = "Customers_Country";			
-		public const string	_Customers_Phone = "Customers_Phone";			
-		public const string	_Customers_Fax = "Customers_Fax";			
-		public const string	_Employees_LastName = "Employees_LastName";			
-		public const string	_Employees_FirstName = "Employees_FirstName";			
-		public const string	_Employees_Title = "Employees_Title";			
-		public const string	_Employees_TitleOfCourtesy = "Employees_TitleOfCourtesy";			
-		public const string	_Employees_BirthDate = "Employees_BirthDate";			
-		public const string	_Employees_HireDate = "Employees_HireDate";			
-		public const string	_Employees_Address = "Employees_Address";			
-		public const string	_Employees_City = "Employees_City";			
-		public const string	_Employees_Region = "Employees_Region";			
-		public const string	_Employees_PostalCode = "Employees_PostalCode";			
-		public const string	_Employees_Country = "Employees_Country";			
-		public const string	_Employees_HomePhone = "Employees_HomePhone";			
-		public const string	_Employees_Extension = "Employees_Extension";			
-		public const string	_Employees_Photo = "Employees_Photo";			
-		public const string	_Employees_Notes = "Employees_Notes";			
-		public const string	_Employees_PhotoPath = "Employees_PhotoPath";			
-		public const string	_Shippers_CompanyName = "Shippers_CompanyName";			
-		public const string	_Shippers_Phone = "Shippers_Phone";			
+		public const string	_Customer_CompanyName = "Customer_CompanyName";			
+		public const string	_Customer_ContactName = "Customer_ContactName";			
+		public const string	_Customer_ContactTitle = "Customer_ContactTitle";			
+		public const string	_Customer_Address = "Customer_Address";			
+		public const string	_Customer_City = "Customer_City";			
+		public const string	_Customer_Region = "Customer_Region";			
+		public const string	_Customer_PostalCode = "Customer_PostalCode";			
+		public const string	_Customer_Country = "Customer_Country";			
+		public const string	_Customer_Phone = "Customer_Phone";			
+		public const string	_Customer_Fax = "Customer_Fax";			
+		public const string	_Employee_LastName = "Employee_LastName";			
+		public const string	_Employee_FirstName = "Employee_FirstName";			
+		public const string	_Employee_Title = "Employee_Title";			
+		public const string	_Employee_TitleOfCourtesy = "Employee_TitleOfCourtesy";			
+		public const string	_Employee_BirthDate = "Employee_BirthDate";			
+		public const string	_Employee_HireDate = "Employee_HireDate";			
+		public const string	_Employee_Address = "Employee_Address";			
+		public const string	_Employee_City = "Employee_City";			
+		public const string	_Employee_Region = "Employee_Region";			
+		public const string	_Employee_PostalCode = "Employee_PostalCode";			
+		public const string	_Employee_Country = "Employee_Country";			
+		public const string	_Employee_HomePhone = "Employee_HomePhone";			
+		public const string	_Employee_Extension = "Employee_Extension";			
+		public const string	_Employee_Photo = "Employee_Photo";			
+		public const string	_Employee_Notes = "Employee_Notes";			
+		public const string	_Employee_PhotoPath = "Employee_PhotoPath";			
+		public const string	_Shipper_CompanyName = "Shipper_CompanyName";			
+		public const string	_Shipper_Phone = "Shipper_Phone";			
 			
-		public const string Customers = "Customers";
-		public const string Employees = "Employees";
-		public const string Shippers = "Shippers";
+		public const string Customer = "Customer";
+		public const string Employee = "Employee";
+		public const string Shipper = "Shipper";
 		#endregion
 		
 		#region Member Variables		
-		private string customers_CompanyName;			
-		private string customers_ContactName;			
-		private string customers_ContactTitle;			
-		private string customers_Address;			
-		private string customers_City;			
-		private string customers_Region;			
-		private string customers_PostalCode;			
-		private string customers_Country;			
-		private string customers_Phone;			
-		private string customers_Fax;			
-		private string employees_LastName;			
-		private string employees_FirstName;			
-		private string employees_Title;			
-		private string employees_TitleOfCourtesy;			
-		private DateTime? employees_BirthDate;			
-		private DateTime? employees_HireDate;			
-		private string employees_Address;			
-		private string employees_City;			
-		private string employees_Region;			
-		private string employees_PostalCode;			
-		private string employees_Country;			
-		private string employees_HomePhone;			
-		private string employees_Extension;			
-		private byte[] employees_Photo;			
-		private string employees_Notes;			
-		private string employees_PhotoPath;			
-		private string shippers_CompanyName;			
-		private string shippers_Phone;			
+		private string customer_CompanyName;			
+		private string customer_ContactName;			
+		private string customer_ContactTitle;			
+		private string customer_Address;			
+		private string customer_City;			
+		private string customer_Region;			
+		private string customer_PostalCode;			
+		private string customer_Country;			
+		private string customer_Phone;			
+		private string customer_Fax;			
+		private string employee_LastName;			
+		private string employee_FirstName;			
+		private string employee_Title;			
+		private string employee_TitleOfCourtesy;			
+		private DateTime? employee_BirthDate;			
+		private DateTime? employee_HireDate;			
+		private string employee_Address;			
+		private string employee_City;			
+		private string employee_Region;			
+		private string employee_PostalCode;			
+		private string employee_Country;			
+		private string employee_HomePhone;			
+		private string employee_Extension;			
+		private byte[] employee_Photo;			
+		private string employee_Notes;			
+		private string employee_PhotoPath;			
+		private string shipper_CompanyName;			
+		private string shipper_Phone;			
 		#endregion
 
 		#region Public Properties
-		[Column("CompanyName", Foreign = OrdersView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_CompanyName
+		[Column("CompanyName", Foreign = OrdersView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_CompanyName
 		{
-			get { return customers_CompanyName; }			
-			set { customers_CompanyName = value; }
+			get { return customer_CompanyName; }			
+			set { customer_CompanyName = value; }
 		}
 		
-		[Column("ContactName", Foreign = OrdersView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_ContactName
+		[Column("ContactName", Foreign = OrdersView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_ContactName
 		{
-			get { return customers_ContactName; }			
-			set { customers_ContactName = value; }
+			get { return customer_ContactName; }			
+			set { customer_ContactName = value; }
 		}
 		
-		[Column("ContactTitle", Foreign = OrdersView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_ContactTitle
+		[Column("ContactTitle", Foreign = OrdersView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_ContactTitle
 		{
-			get { return customers_ContactTitle; }			
-			set { customers_ContactTitle = value; }
+			get { return customer_ContactTitle; }			
+			set { customer_ContactTitle = value; }
 		}
 		
-		[Column("Address", Foreign = OrdersView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_Address
+		[Column("Address", Foreign = OrdersView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_Address
 		{
-			get { return customers_Address; }			
-			set { customers_Address = value; }
+			get { return customer_Address; }			
+			set { customer_Address = value; }
 		}
 		
-		[Column("City", Foreign = OrdersView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_City
+		[Column("City", Foreign = OrdersView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_City
 		{
-			get { return customers_City; }			
-			set { customers_City = value; }
+			get { return customer_City; }			
+			set { customer_City = value; }
 		}
 		
-		[Column("Region", Foreign = OrdersView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_Region
+		[Column("Region", Foreign = OrdersView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_Region
 		{
-			get { return customers_Region; }			
-			set { customers_Region = value; }
+			get { return customer_Region; }			
+			set { customer_Region = value; }
 		}
 		
-		[Column("PostalCode", Foreign = OrdersView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_PostalCode
+		[Column("PostalCode", Foreign = OrdersView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_PostalCode
 		{
-			get { return customers_PostalCode; }			
-			set { customers_PostalCode = value; }
+			get { return customer_PostalCode; }			
+			set { customer_PostalCode = value; }
 		}
 		
-		[Column("Country", Foreign = OrdersView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_Country
+		[Column("Country", Foreign = OrdersView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_Country
 		{
-			get { return customers_Country; }			
-			set { customers_Country = value; }
+			get { return customer_Country; }			
+			set { customer_Country = value; }
 		}
 		
-		[Column("Phone", Foreign = OrdersView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_Phone
+		[Column("Phone", Foreign = OrdersView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_Phone
 		{
-			get { return customers_Phone; }			
-			set { customers_Phone = value; }
+			get { return customer_Phone; }			
+			set { customer_Phone = value; }
 		}
 		
-		[Column("Fax", Foreign = OrdersView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_Fax
+		[Column("Fax", Foreign = OrdersView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_Fax
 		{
-			get { return customers_Fax; }			
-			set { customers_Fax = value; }
+			get { return customer_Fax; }			
+			set { customer_Fax = value; }
 		}
 		
-		[Column("LastName", Foreign = OrdersView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_LastName
+		[Column("LastName", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_LastName
 		{
-			get { return employees_LastName; }			
-			set { employees_LastName = value; }
+			get { return employee_LastName; }			
+			set { employee_LastName = value; }
 		}
 		
-		[Column("FirstName", Foreign = OrdersView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_FirstName
+		[Column("FirstName", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_FirstName
 		{
-			get { return employees_FirstName; }			
-			set { employees_FirstName = value; }
+			get { return employee_FirstName; }			
+			set { employee_FirstName = value; }
 		}
 		
-		[Column("Title", Foreign = OrdersView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_Title
+		[Column("Title", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_Title
 		{
-			get { return employees_Title; }			
-			set { employees_Title = value; }
+			get { return employee_Title; }			
+			set { employee_Title = value; }
 		}
 		
-		[Column("TitleOfCourtesy", Foreign = OrdersView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_TitleOfCourtesy
+		[Column("TitleOfCourtesy", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_TitleOfCourtesy
 		{
-			get { return employees_TitleOfCourtesy; }			
-			set { employees_TitleOfCourtesy = value; }
+			get { return employee_TitleOfCourtesy; }			
+			set { employee_TitleOfCourtesy = value; }
 		}
 		
-		[Column("BirthDate", Foreign = OrdersView.Employees, ColumnMode = ColumnMode.Read)]
-		public DateTime? Employees_BirthDate
+		[Column("BirthDate", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+		public DateTime? Employee_BirthDate
 		{
-			get { return employees_BirthDate; }			
-			set { employees_BirthDate = value; }
+			get { return employee_BirthDate; }			
+			set { employee_BirthDate = value; }
 		}
 		
-		[Column("HireDate", Foreign = OrdersView.Employees, ColumnMode = ColumnMode.Read)]
-		public DateTime? Employees_HireDate
+		[Column("HireDate", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+		public DateTime? Employee_HireDate
 		{
-			get { return employees_HireDate; }			
-			set { employees_HireDate = value; }
+			get { return employee_HireDate; }			
+			set { employee_HireDate = value; }
 		}
 		
-		[Column("Address", Foreign = OrdersView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_Address
+		[Column("Address", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_Address
 		{
-			get { return employees_Address; }			
-			set { employees_Address = value; }
+			get { return employee_Address; }			
+			set { employee_Address = value; }
 		}
 		
-		[Column("City", Foreign = OrdersView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_City
+		[Column("City", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_City
 		{
-			get { return employees_City; }			
-			set { employees_City = value; }
+			get { return employee_City; }			
+			set { employee_City = value; }
 		}
 		
-		[Column("Region", Foreign = OrdersView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_Region
+		[Column("Region", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_Region
 		{
-			get { return employees_Region; }			
-			set { employees_Region = value; }
+			get { return employee_Region; }			
+			set { employee_Region = value; }
 		}
 		
-		[Column("PostalCode", Foreign = OrdersView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_PostalCode
+		[Column("PostalCode", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_PostalCode
 		{
-			get { return employees_PostalCode; }			
-			set { employees_PostalCode = value; }
+			get { return employee_PostalCode; }			
+			set { employee_PostalCode = value; }
 		}
 		
-		[Column("Country", Foreign = OrdersView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_Country
+		[Column("Country", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_Country
 		{
-			get { return employees_Country; }			
-			set { employees_Country = value; }
+			get { return employee_Country; }			
+			set { employee_Country = value; }
 		}
 		
-		[Column("HomePhone", Foreign = OrdersView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_HomePhone
+		[Column("HomePhone", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_HomePhone
 		{
-			get { return employees_HomePhone; }			
-			set { employees_HomePhone = value; }
+			get { return employee_HomePhone; }			
+			set { employee_HomePhone = value; }
 		}
 		
-		[Column("Extension", Foreign = OrdersView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_Extension
+		[Column("Extension", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_Extension
 		{
-			get { return employees_Extension; }			
-			set { employees_Extension = value; }
+			get { return employee_Extension; }			
+			set { employee_Extension = value; }
 		}
 		
-		[Column("Photo", Foreign = OrdersView.Employees, ColumnMode = ColumnMode.Read)]
-		public byte[] Employees_Photo
+		[Column("Photo", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+		public byte[] Employee_Photo
 		{
-			get { return employees_Photo; }			
-			set { employees_Photo = value; }
+			get { return employee_Photo; }			
+			set { employee_Photo = value; }
 		}
 		
-		[Column("Notes", Foreign = OrdersView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_Notes
+		[Column("Notes", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_Notes
 		{
-			get { return employees_Notes; }			
-			set { employees_Notes = value; }
+			get { return employee_Notes; }			
+			set { employee_Notes = value; }
 		}
 		
-		[Column("PhotoPath", Foreign = OrdersView.Employees, ColumnMode = ColumnMode.Read)]
-		public string Employees_PhotoPath
+		[Column("PhotoPath", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+		public string Employee_PhotoPath
 		{
-			get { return employees_PhotoPath; }			
-			set { employees_PhotoPath = value; }
+			get { return employee_PhotoPath; }			
+			set { employee_PhotoPath = value; }
 		}
 		
-		[Column("CompanyName", Foreign = OrdersView.Shippers, ColumnMode = ColumnMode.Read)]
-		public string Shippers_CompanyName
+		[Column("CompanyName", Foreign = OrdersView.Shipper, ColumnMode = ColumnMode.Read)]
+		public string Shipper_CompanyName
 		{
-			get { return shippers_CompanyName; }			
-			set { shippers_CompanyName = value; }
+			get { return shipper_CompanyName; }			
+			set { shipper_CompanyName = value; }
 		}
 		
-		[Column("Phone", Foreign = OrdersView.Shippers, ColumnMode = ColumnMode.Read)]
-		public string Shippers_Phone
+		[Column("Phone", Foreign = OrdersView.Shipper, ColumnMode = ColumnMode.Read)]
+		public string Shipper_Phone
 		{
-			get { return shippers_Phone; }			
-			set { shippers_Phone = value; }
+			get { return shipper_Phone; }			
+			set { shipper_Phone = value; }
 		}
 		
 		#endregion

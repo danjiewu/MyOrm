@@ -12,19 +12,19 @@ namespace Northwind.Data
 	/// </summary>	
 	public class ProductsDAO : ObjectDAO<Products>, IProductsDAO
 	{
-		public Products GetProducts(OrderDetails orderDetails)
+		public Products GetProductOfOrderDetail(OrderDetails orderDetails)
 		{
 			return GetObject(orderDetails.ProductID);
 		}
 		
-		public List<Products> GetAllWithCategories(Categories categories)
+		public List<Products> GetAllWithCategory(Categories category)
 		{
-			return Search(new SimpleCondition(Products._CategoryID, categories.CategoryID));
+			return Search(new SimpleCondition(Products._CategoryID, category.CategoryID));
 		}
 		
-		public List<Products> GetAllWithSuppliers(Suppliers suppliers)
+		public List<Products> GetAllWithSupplier(Suppliers supplier)
 		{
-			return Search(new SimpleCondition(Products._SupplierID, suppliers.SupplierID));
+			return Search(new SimpleCondition(Products._SupplierID, supplier.SupplierID));
 		}
 		
 	}
@@ -36,19 +36,19 @@ namespace Northwind.Data
 	/// </summary>	
 	public class ProductsViewDAO : ObjectViewDAO<ProductsView>, IProductsViewDAO
 	{
-		public ProductsView GetProducts(OrderDetails orderDetails)
+		public ProductsView GetProductOfOrderDetail(OrderDetails orderDetails)
 		{
 			return GetObject(orderDetails.ProductID);
 		}
 		
-		public List<ProductsView> GetAllWithCategories(Categories categories)
+		public List<ProductsView> GetAllWithCategory(Categories category)
 		{
-			return Search(new SimpleCondition(ProductsView._CategoryID, categories.CategoryID));
+			return Search(new SimpleCondition(ProductsView._CategoryID, category.CategoryID));
 		}
 		
-		public List<ProductsView> GetAllWithSuppliers(Suppliers suppliers)
+		public List<ProductsView> GetAllWithSupplier(Suppliers supplier)
 		{
-			return Search(new SimpleCondition(ProductsView._SupplierID, suppliers.SupplierID));
+			return Search(new SimpleCondition(ProductsView._SupplierID, supplier.SupplierID));
 		}
 		
 	}

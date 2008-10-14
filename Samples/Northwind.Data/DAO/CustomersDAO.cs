@@ -12,12 +12,12 @@ namespace Northwind.Data
 	/// </summary>	
 	public class CustomersDAO : ObjectDAO<Customers>, ICustomersDAO
 	{
-		public Customers GetCustomers(Orders orders)
+		public Customers GetCustomerOfOrder(Orders orders)
 		{
 			return GetObject(orders.CustomerID);
 		}
 		
-		public Customers GetCustomers(CustomerCustomerDemo customerCustomerDemo)
+		public Customers GetCustomerOfCustomerCustomerDemo(CustomerCustomerDemo customerCustomerDemo)
 		{
 			return GetObject(customerCustomerDemo.CustomerID);
 		}

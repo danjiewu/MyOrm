@@ -12,7 +12,7 @@ namespace Northwind.Data
 	/// </summary>	
 	public class CategoriesDAO : ObjectDAO<Categories>, ICategoriesDAO
 	{
-		public Categories GetCategories(Products products)
+		public Categories GetCategoryOfProduct(Products products)
 		{
 			return GetObject(products.CategoryID);
 		}

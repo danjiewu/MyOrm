@@ -9,12 +9,12 @@ namespace Northwind.Data
 	/// <summary>
 	/// Interface of DAO for object 'Orders'.
 	/// </summary>	
-	public interface IOrdersDAO : IObjectDAO<Orders>, IObjectDAO
+	public interface IOrdersDAO : IObjectDAO<Orders>, IObjectViewDAO<Orders>, IObjectDAO, IObjectViewDAO
 	{
-		Orders GetOrders(OrderDetails orderDetails);
-		List<Orders> GetAllWithCustomers(Customers customers);
-		List<Orders> GetAllWithEmployees(Employees employees);
-		List<Orders> GetAllWithShippers(Shippers shippers);
+		Orders GetOrderOfOrderDetail(OrderDetails orderDetails);
+		List<Orders> GetAllWithCustomer(Customers customer);
+		List<Orders> GetAllWithEmployee(Employees employee);
+		List<Orders> GetAllWithShipper(Shippers shipper);
 	}
 	#endregion
 	
@@ -24,10 +24,10 @@ namespace Northwind.Data
 	/// </summary>	
 	public interface IOrdersViewDAO : IObjectViewDAO<OrdersView>, IObjectViewDAO
 	{
-		OrdersView GetOrders(OrderDetails orderDetails);
-		List<OrdersView> GetAllWithCustomers(Customers customers);
-		List<OrdersView> GetAllWithEmployees(Employees employees);
-		List<OrdersView> GetAllWithShippers(Shippers shippers);
+		OrdersView GetOrderOfOrderDetail(OrderDetails orderDetails);
+		List<OrdersView> GetAllWithCustomer(Customers customer);
+		List<OrdersView> GetAllWithEmployee(Employees employee);
+		List<OrdersView> GetAllWithShipper(Shippers shipper);
 	}
 	#endregion	
 }

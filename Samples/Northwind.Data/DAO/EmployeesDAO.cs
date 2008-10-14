@@ -12,24 +12,24 @@ namespace Northwind.Data
 	/// </summary>	
 	public class EmployeesDAO : ObjectDAO<Employees>, IEmployeesDAO
 	{
-		public Employees GetEmployees(Orders orders)
+		public Employees GetEmployeeOfOrder(Orders orders)
 		{
 			return GetObject(orders.EmployeeID);
 		}
 		
-		public Employees GetEmployees(EmployeeTerritories employeeTerritories)
+		public Employees GetEmployeeOfEmployeeTerritory(EmployeeTerritories employeeTerritories)
 		{
 			return GetObject(employeeTerritories.EmployeeID);
 		}
 		
-		public Employees GetReportsToEmployees(Employees employees)
+		public Employees GetReportsToEmployeeOfEmployee(Employees employees)
 		{
 			return GetObject(employees.ReportsTo);
 		}
 		
-		public List<Employees> GetAllWithReportsToEmployees(Employees reportsToEmployees)
+		public List<Employees> GetAllWithReportsToEmployee(Employees reportsToEmployee)
 		{
-			return Search(new SimpleCondition(Employees._ReportsTo, reportsToEmployees.EmployeeID));
+			return Search(new SimpleCondition(Employees._ReportsTo, reportsToEmployee.EmployeeID));
 		}
 		
 	}
@@ -41,24 +41,24 @@ namespace Northwind.Data
 	/// </summary>	
 	public class EmployeesViewDAO : ObjectViewDAO<EmployeesView>, IEmployeesViewDAO
 	{
-		public EmployeesView GetEmployees(Orders orders)
+		public EmployeesView GetEmployeeOfOrder(Orders orders)
 		{
 			return GetObject(orders.EmployeeID);
 		}
 		
-		public EmployeesView GetEmployees(EmployeeTerritories employeeTerritories)
+		public EmployeesView GetEmployeeOfEmployeeTerritory(EmployeeTerritories employeeTerritories)
 		{
 			return GetObject(employeeTerritories.EmployeeID);
 		}
 		
-		public EmployeesView GetReportsToEmployees(Employees employees)
+		public EmployeesView GetReportsToEmployeeOfEmployee(Employees employees)
 		{
 			return GetObject(employees.ReportsTo);
 		}
 		
-		public List<EmployeesView> GetAllWithReportsToEmployees(Employees reportsToEmployees)
+		public List<EmployeesView> GetAllWithReportsToEmployee(Employees reportsToEmployee)
 		{
-			return Search(new SimpleCondition(EmployeesView._ReportsTo, reportsToEmployees.EmployeeID));
+			return Search(new SimpleCondition(EmployeesView._ReportsTo, reportsToEmployee.EmployeeID));
 		}
 		
 	}

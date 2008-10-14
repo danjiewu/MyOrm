@@ -9,10 +9,10 @@ namespace Northwind.Data
 	/// <summary>
 	/// Interface of DAO for object 'CustomerCustomerDemo'.
 	/// </summary>	
-	public interface ICustomerCustomerDemoDAO : IObjectDAO<CustomerCustomerDemo>, IObjectDAO
+	public interface ICustomerCustomerDemoDAO : IObjectDAO<CustomerCustomerDemo>, IObjectViewDAO<CustomerCustomerDemo>, IObjectDAO, IObjectViewDAO
 	{
-		List<CustomerCustomerDemo> GetAllWithCustomerDemographics(CustomerDemographics customerDemographics);
-		List<CustomerCustomerDemo> GetAllWithCustomers(Customers customers);
+		List<CustomerCustomerDemo> GetAllWithCustomerDemographic(CustomerDemographics customerDemographic);
+		List<CustomerCustomerDemo> GetAllWithCustomer(Customers customer);
 	}
 	#endregion
 	
@@ -22,8 +22,8 @@ namespace Northwind.Data
 	/// </summary>	
 	public interface ICustomerCustomerDemoViewDAO : IObjectViewDAO<CustomerCustomerDemoView>, IObjectViewDAO
 	{
-		List<CustomerCustomerDemoView> GetAllWithCustomerDemographics(CustomerDemographics customerDemographics);
-		List<CustomerCustomerDemoView> GetAllWithCustomers(Customers customers);
+		List<CustomerCustomerDemoView> GetAllWithCustomerDemographic(CustomerDemographics customerDemographic);
+		List<CustomerCustomerDemoView> GetAllWithCustomer(Customers customer);
 	}
 	#endregion	
 }

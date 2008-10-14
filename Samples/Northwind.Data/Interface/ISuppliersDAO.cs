@@ -9,9 +9,9 @@ namespace Northwind.Data
 	/// <summary>
 	/// Interface of DAO for object 'Suppliers'.
 	/// </summary>	
-	public interface ISuppliersDAO : IObjectDAO<Suppliers>, IObjectDAO
+	public interface ISuppliersDAO : IObjectDAO<Suppliers>, IObjectViewDAO<Suppliers>, IObjectDAO, IObjectViewDAO
 	{
-		Suppliers GetSuppliers(Products products);
+		Suppliers GetSupplierOfProduct(Products products);
 	}
 	#endregion
 }

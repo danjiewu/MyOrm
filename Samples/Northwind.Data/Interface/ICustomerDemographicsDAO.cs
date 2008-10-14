@@ -9,9 +9,9 @@ namespace Northwind.Data
 	/// <summary>
 	/// Interface of DAO for object 'CustomerDemographics'.
 	/// </summary>	
-	public interface ICustomerDemographicsDAO : IObjectDAO<CustomerDemographics>, IObjectDAO
+	public interface ICustomerDemographicsDAO : IObjectDAO<CustomerDemographics>, IObjectViewDAO<CustomerDemographics>, IObjectDAO, IObjectViewDAO
 	{
-		CustomerDemographics GetCustomerDemographics(CustomerCustomerDemo customerCustomerDemo);
+		CustomerDemographics GetCustomerDemographicOfCustomerCustomerDemo(CustomerCustomerDemo customerCustomerDemo);
 	}
 	#endregion
 }

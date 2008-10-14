@@ -12,7 +12,7 @@ namespace Northwind.Data
 	/// </summary>	
 	public class TerritoriesDAO : ObjectDAO<Territories>, ITerritoriesDAO
 	{
-		public Territories GetTerritories(EmployeeTerritories employeeTerritories)
+		public Territories GetTerritoryOfEmployeeTerritory(EmployeeTerritories employeeTerritories)
 		{
 			return GetObject(employeeTerritories.TerritoryID);
 		}
@@ -31,7 +31,7 @@ namespace Northwind.Data
 	/// </summary>	
 	public class TerritoriesViewDAO : ObjectViewDAO<TerritoriesView>, ITerritoriesViewDAO
 	{
-		public TerritoriesView GetTerritories(EmployeeTerritories employeeTerritories)
+		public TerritoriesView GetTerritoryOfEmployeeTerritory(EmployeeTerritories employeeTerritories)
 		{
 			return GetObject(employeeTerritories.TerritoryID);
 		}

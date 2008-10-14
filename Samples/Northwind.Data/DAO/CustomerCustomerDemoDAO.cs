@@ -12,14 +12,14 @@ namespace Northwind.Data
 	/// </summary>	
 	public class CustomerCustomerDemoDAO : ObjectDAO<CustomerCustomerDemo>, ICustomerCustomerDemoDAO
 	{
-		public List<CustomerCustomerDemo> GetAllWithCustomerDemographics(CustomerDemographics customerDemographics)
+		public List<CustomerCustomerDemo> GetAllWithCustomerDemographic(CustomerDemographics customerDemographic)
 		{
-			return Search(new SimpleCondition(CustomerCustomerDemo._CustomerTypeID, customerDemographics.CustomerTypeID));
+			return Search(new SimpleCondition(CustomerCustomerDemo._CustomerTypeID, customerDemographic.CustomerTypeID));
 		}
 		
-		public List<CustomerCustomerDemo> GetAllWithCustomers(Customers customers)
+		public List<CustomerCustomerDemo> GetAllWithCustomer(Customers customer)
 		{
-			return Search(new SimpleCondition(CustomerCustomerDemo._CustomerID, customers.CustomerID));
+			return Search(new SimpleCondition(CustomerCustomerDemo._CustomerID, customer.CustomerID));
 		}
 		
 	}
@@ -31,14 +31,14 @@ namespace Northwind.Data
 	/// </summary>	
 	public class CustomerCustomerDemoViewDAO : ObjectViewDAO<CustomerCustomerDemoView>, ICustomerCustomerDemoViewDAO
 	{
-		public List<CustomerCustomerDemoView> GetAllWithCustomerDemographics(CustomerDemographics customerDemographics)
+		public List<CustomerCustomerDemoView> GetAllWithCustomerDemographic(CustomerDemographics customerDemographic)
 		{
-			return Search(new SimpleCondition(CustomerCustomerDemoView._CustomerTypeID, customerDemographics.CustomerTypeID));
+			return Search(new SimpleCondition(CustomerCustomerDemoView._CustomerTypeID, customerDemographic.CustomerTypeID));
 		}
 		
-		public List<CustomerCustomerDemoView> GetAllWithCustomers(Customers customers)
+		public List<CustomerCustomerDemoView> GetAllWithCustomer(Customers customer)
 		{
-			return Search(new SimpleCondition(CustomerCustomerDemoView._CustomerID, customers.CustomerID));
+			return Search(new SimpleCondition(CustomerCustomerDemoView._CustomerID, customer.CustomerID));
 		}
 		
 	}

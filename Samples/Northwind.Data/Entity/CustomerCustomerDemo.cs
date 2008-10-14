@@ -46,117 +46,117 @@ namespace Northwind.Data
 	/// <summary>
 	/// CustomerCustomerDemoView.
 	/// </summary>	
-	[TableJoin(typeof(CustomerDemographics), "CustomerTypeID", AliasName = CustomerCustomerDemoView.CustomerDemographics)]
-	[TableJoin(typeof(Customers), "CustomerID", AliasName = CustomerCustomerDemoView.Customers)]
+	[TableJoin(typeof(CustomerDemographics), "CustomerTypeID", AliasName = CustomerCustomerDemoView.CustomerDemographic)]
+	[TableJoin(typeof(Customers), "CustomerID", AliasName = CustomerCustomerDemoView.Customer)]
 	public class CustomerCustomerDemoView : CustomerCustomerDemo
 	{
 		#region Constant		
-		public const string	_CustomerDemographics_CustomerDesc = "CustomerDemographics_CustomerDesc";			
-		public const string	_Customers_CompanyName = "Customers_CompanyName";			
-		public const string	_Customers_ContactName = "Customers_ContactName";			
-		public const string	_Customers_ContactTitle = "Customers_ContactTitle";			
-		public const string	_Customers_Address = "Customers_Address";			
-		public const string	_Customers_City = "Customers_City";			
-		public const string	_Customers_Region = "Customers_Region";			
-		public const string	_Customers_PostalCode = "Customers_PostalCode";			
-		public const string	_Customers_Country = "Customers_Country";			
-		public const string	_Customers_Phone = "Customers_Phone";			
-		public const string	_Customers_Fax = "Customers_Fax";			
+		public const string	_CustomerDemographic_CustomerDesc = "CustomerDemographic_CustomerDesc";			
+		public const string	_Customer_CompanyName = "Customer_CompanyName";			
+		public const string	_Customer_ContactName = "Customer_ContactName";			
+		public const string	_Customer_ContactTitle = "Customer_ContactTitle";			
+		public const string	_Customer_Address = "Customer_Address";			
+		public const string	_Customer_City = "Customer_City";			
+		public const string	_Customer_Region = "Customer_Region";			
+		public const string	_Customer_PostalCode = "Customer_PostalCode";			
+		public const string	_Customer_Country = "Customer_Country";			
+		public const string	_Customer_Phone = "Customer_Phone";			
+		public const string	_Customer_Fax = "Customer_Fax";			
 			
-		public const string CustomerDemographics = "CustomerDemographics";
-		public const string Customers = "Customers";
+		public const string CustomerDemographic = "CustomerDemographic";
+		public const string Customer = "Customer";
 		#endregion
 		
 		#region Member Variables		
-		private string customerDemographics_CustomerDesc;			
-		private string customers_CompanyName;			
-		private string customers_ContactName;			
-		private string customers_ContactTitle;			
-		private string customers_Address;			
-		private string customers_City;			
-		private string customers_Region;			
-		private string customers_PostalCode;			
-		private string customers_Country;			
-		private string customers_Phone;			
-		private string customers_Fax;			
+		private string customerDemographic_CustomerDesc;			
+		private string customer_CompanyName;			
+		private string customer_ContactName;			
+		private string customer_ContactTitle;			
+		private string customer_Address;			
+		private string customer_City;			
+		private string customer_Region;			
+		private string customer_PostalCode;			
+		private string customer_Country;			
+		private string customer_Phone;			
+		private string customer_Fax;			
 		#endregion
 
 		#region Public Properties
-		[Column("CustomerDesc", Foreign = CustomerCustomerDemoView.CustomerDemographics, ColumnMode = ColumnMode.Read)]
-		public string CustomerDemographics_CustomerDesc
+		[Column("CustomerDesc", Foreign = CustomerCustomerDemoView.CustomerDemographic, ColumnMode = ColumnMode.Read)]
+		public string CustomerDemographic_CustomerDesc
 		{
-			get { return customerDemographics_CustomerDesc; }			
-			set { customerDemographics_CustomerDesc = value; }
+			get { return customerDemographic_CustomerDesc; }			
+			set { customerDemographic_CustomerDesc = value; }
 		}
 		
-		[Column("CompanyName", Foreign = CustomerCustomerDemoView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_CompanyName
+		[Column("CompanyName", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_CompanyName
 		{
-			get { return customers_CompanyName; }			
-			set { customers_CompanyName = value; }
+			get { return customer_CompanyName; }			
+			set { customer_CompanyName = value; }
 		}
 		
-		[Column("ContactName", Foreign = CustomerCustomerDemoView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_ContactName
+		[Column("ContactName", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_ContactName
 		{
-			get { return customers_ContactName; }			
-			set { customers_ContactName = value; }
+			get { return customer_ContactName; }			
+			set { customer_ContactName = value; }
 		}
 		
-		[Column("ContactTitle", Foreign = CustomerCustomerDemoView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_ContactTitle
+		[Column("ContactTitle", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_ContactTitle
 		{
-			get { return customers_ContactTitle; }			
-			set { customers_ContactTitle = value; }
+			get { return customer_ContactTitle; }			
+			set { customer_ContactTitle = value; }
 		}
 		
-		[Column("Address", Foreign = CustomerCustomerDemoView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_Address
+		[Column("Address", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_Address
 		{
-			get { return customers_Address; }			
-			set { customers_Address = value; }
+			get { return customer_Address; }			
+			set { customer_Address = value; }
 		}
 		
-		[Column("City", Foreign = CustomerCustomerDemoView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_City
+		[Column("City", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_City
 		{
-			get { return customers_City; }			
-			set { customers_City = value; }
+			get { return customer_City; }			
+			set { customer_City = value; }
 		}
 		
-		[Column("Region", Foreign = CustomerCustomerDemoView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_Region
+		[Column("Region", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_Region
 		{
-			get { return customers_Region; }			
-			set { customers_Region = value; }
+			get { return customer_Region; }			
+			set { customer_Region = value; }
 		}
 		
-		[Column("PostalCode", Foreign = CustomerCustomerDemoView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_PostalCode
+		[Column("PostalCode", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_PostalCode
 		{
-			get { return customers_PostalCode; }			
-			set { customers_PostalCode = value; }
+			get { return customer_PostalCode; }			
+			set { customer_PostalCode = value; }
 		}
 		
-		[Column("Country", Foreign = CustomerCustomerDemoView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_Country
+		[Column("Country", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_Country
 		{
-			get { return customers_Country; }			
-			set { customers_Country = value; }
+			get { return customer_Country; }			
+			set { customer_Country = value; }
 		}
 		
-		[Column("Phone", Foreign = CustomerCustomerDemoView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_Phone
+		[Column("Phone", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_Phone
 		{
-			get { return customers_Phone; }			
-			set { customers_Phone = value; }
+			get { return customer_Phone; }			
+			set { customer_Phone = value; }
 		}
 		
-		[Column("Fax", Foreign = CustomerCustomerDemoView.Customers, ColumnMode = ColumnMode.Read)]
-		public string Customers_Fax
+		[Column("Fax", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		public string Customer_Fax
 		{
-			get { return customers_Fax; }			
-			set { customers_Fax = value; }
+			get { return customer_Fax; }			
+			set { customer_Fax = value; }
 		}
 		
 		#endregion
