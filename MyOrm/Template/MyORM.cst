@@ -188,7 +188,7 @@
 		try
 		{			
 		string factoryFileName = String.Format(InterfaceNameFormat,String.Empty) + "Factory.cs";
-		factoryFileName = Path.Combine(Path.Combine(OutputDirectory, "Interface"), factoryFileName);
+		factoryFileName = Path.Combine(OutputDirectory, factoryFileName);
 		
 		this.FactoryTemplate.SetProperty("SourceDatabase", SourceDatabase);
 		this.FactoryTemplate.SetProperty("Namespace", Namespace);
@@ -204,7 +204,7 @@
 		Response.WriteLine(string.Format("{0} ", factoryFileName));
 		
 		string daoFactoryFileName = String.Format(DAONameFormat,String.Empty) + "Factory.cs";
-		daoFactoryFileName = Path.Combine(Path.Combine(OutputDirectory, "DAO"), daoFactoryFileName);
+		daoFactoryFileName = Path.Combine(OutputDirectory, daoFactoryFileName);
 		
 		this.DAOFactoryTemplate.SetProperty("SourceDatabase", SourceDatabase);
 		this.DAOFactoryTemplate.SetProperty("Namespace", Namespace);
