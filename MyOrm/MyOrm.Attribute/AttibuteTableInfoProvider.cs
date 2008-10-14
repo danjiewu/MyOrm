@@ -60,18 +60,15 @@ namespace MyOrm.Metadata
             if (atts.Length != 0 && (defineMode & ColumnDefineMode.Attribute) == ColumnDefineMode.Attribute)
             {
                 ColumnAttribute columnAttribute = atts[0];
-                if (columnAttribute.ColumnMode != ColumnMode.Ignore)
-                {
-                    ColumnInfo column = new ColumnInfo(property);
-                    column.ColumnName = String.IsNullOrEmpty(columnAttribute.ColumnName) ? property.Name : columnAttribute.ColumnName;
-                    column.IsPrimaryKey = columnAttribute.IsPrimaryKey;
-                    column.DbType = columnAttribute.DbType == DbType.Object ? Utility.ConvertToDbType(property.PropertyType) : columnAttribute.DbType;
-                    column.ForeignTable = columnAttribute.Foreign;
-                    column.Length = columnAttribute.Length;
-                    column.AllowNull = columnAttribute.AllowNull;
-                    column.Mode = columnAttribute.ColumnMode & ((property.CanRead ? ColumnMode.Write : ColumnMode.Ignore) | (property.CanWrite ? ColumnMode.Read : ColumnMode.Ignore));
-                    return column;
-                }
+                ColumnInfo column = new ColumnInfo(property);
+                column.ColumnName = String.IsNullOrEmpty(columnAttribute.ColumnName) ? property.Name : columnAttribute.ColumnName;
+                column.IsPrimaryKey = columnAttribute.IsPrimaryKey;
+                column.DbType = columnAttribute.DbType == DbType.Object ? Utility.ConvertToDbType(property.PropertyType) : columnAttribute.DbType;
+                column.ForeignTable = columnAttribute.Foreign;
+                column.Length = columnAttribute.Length;
+                column.AllowNull = columnAttribute.AllowNull;
+                column.Mode = columnAttribute.ColumnMode & ((property.CanRead ? ColumnMode.Write : ColumnMode.Ignore) | (property.CanWrite ? ColumnMode.Read : ColumnMode.Ignore));
+                return column;
             }
             else if ((defineMode & ColumnDefineMode.Property) == ColumnDefineMode.Property)
             {
