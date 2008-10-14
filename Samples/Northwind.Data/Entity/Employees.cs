@@ -190,7 +190,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// EmployeesView.
 	/// </summary>	
-	[TableJoin(typeof(Employees), "ReportsTo", AliasName = EmployeesView.ReportsToEmployee)]
+	[TableJoin(typeof(Employees), Employees._ReportsTo, AliasName = EmployeesView.ReportsToEmployee)]
 	public class EmployeesView : Employees
 	{
 		#region Constant		

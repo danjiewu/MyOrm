@@ -9,7 +9,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// Interface of DAO for object 'Employees'.
 	/// </summary>	
-	public interface IEmployeesDAO : IObjectDAO<Employees>, IObjectViewDAO<Employees>, IObjectDAO, IObjectViewDAO
+	public interface IEmployeesDAO : IObjectDAO<Employees>, IObjectViewDAO<Employees>
 	{
 		Employees GetEmployeeOfOrder(Orders orders);
 		Employees GetEmployeeOfEmployeeTerritory(EmployeeTerritories employeeTerritories);
@@ -22,7 +22,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// Interface of DAO for object's view 'EmployeesView'.
 	/// </summary>	
-	public interface IEmployeesViewDAO : IObjectViewDAO<EmployeesView>, IObjectViewDAO
+	public interface IEmployeesViewDAO : IObjectViewDAO<EmployeesView>
 	{
 		EmployeesView GetEmployeeOfOrder(Orders orders);
 		EmployeesView GetEmployeeOfEmployeeTerritory(EmployeeTerritories employeeTerritories);

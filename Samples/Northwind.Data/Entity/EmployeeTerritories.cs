@@ -46,8 +46,8 @@ namespace Northwind.Data
 	/// <summary>
 	/// EmployeeTerritoriesView.
 	/// </summary>	
-	[TableJoin(typeof(Employees), "EmployeeID", AliasName = EmployeeTerritoriesView.Employee)]
-	[TableJoin(typeof(Territories), "TerritoryID", AliasName = EmployeeTerritoriesView.Territory)]
+	[TableJoin(typeof(Employees), EmployeeTerritories._EmployeeID, AliasName = EmployeeTerritoriesView.Employee)]
+	[TableJoin(typeof(Territories), EmployeeTerritories._TerritoryID, AliasName = EmployeeTerritoriesView.Territory)]
 	public class EmployeeTerritoriesView : EmployeeTerritories
 	{
 		#region Constant		

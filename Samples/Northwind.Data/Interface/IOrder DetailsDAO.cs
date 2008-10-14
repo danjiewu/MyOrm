@@ -9,7 +9,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// Interface of DAO for object 'OrderDetails'.
 	/// </summary>	
-	public interface IOrderDetailsDAO : IObjectDAO<OrderDetails>, IObjectViewDAO<OrderDetails>, IObjectDAO, IObjectViewDAO
+	public interface IOrderDetailsDAO : IObjectDAO<OrderDetails>, IObjectViewDAO<OrderDetails>
 	{
 		List<OrderDetails> GetAllWithOrder(Orders order);
 		List<OrderDetails> GetAllWithProduct(Products product);
@@ -20,7 +20,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// Interface of DAO for object's view 'OrderDetailsView'.
 	/// </summary>	
-	public interface IOrderDetailsViewDAO : IObjectViewDAO<OrderDetailsView>, IObjectViewDAO
+	public interface IOrderDetailsViewDAO : IObjectViewDAO<OrderDetailsView>
 	{
 		List<OrderDetailsView> GetAllWithOrder(Orders order);
 		List<OrderDetailsView> GetAllWithProduct(Products product);

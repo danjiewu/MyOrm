@@ -154,9 +154,9 @@ namespace Northwind.Data
 	/// <summary>
 	/// OrdersView.
 	/// </summary>	
-	[TableJoin(typeof(Customers), "CustomerID", AliasName = OrdersView.Customer)]
-	[TableJoin(typeof(Employees), "EmployeeID", AliasName = OrdersView.Employee)]
-	[TableJoin(typeof(Shippers), "ShipVia", AliasName = OrdersView.Shipper)]
+	[TableJoin(typeof(Customers), Orders._CustomerID, AliasName = OrdersView.Customer)]
+	[TableJoin(typeof(Employees), Orders._EmployeeID, AliasName = OrdersView.Employee)]
+	[TableJoin(typeof(Shippers), Orders._ShipVia, AliasName = OrdersView.Shipper)]
 	public class OrdersView : Orders
 	{
 		#region Constant		
