@@ -7,37 +7,29 @@ namespace Northwind.Data
 {	
 	#region OrderDetails
 	/// <summary>
-	/// OrderDetails object for table 'Order Details'.
+	/// OrderDetails.
 	/// </summary>
 	[Table("Order Details")]
 	[Serializable]
 	public class OrderDetails 
 	{
-		#region Constant
-		
+		#region Constant		
 		public const string	_OrderID = "OrderID";
 		public const string	_ProductID = "ProductID";
 		public const string	_UnitPrice = "UnitPrice";
 		public const string	_Quantity = "Quantity";
 		public const string	_Discount = "Discount";
-		
 		#endregion
 		
-		#region Member Variables
-		
+		#region Member Variables		
 		private int orderID;
 		private int productID;
 		private decimal unitPrice;
 		private short quantity;
 		private float discount;
-
 		#endregion
 
 		#region Public Properties
-
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column(IsPrimaryKey = true)]
 		public int OrderID
 		{
@@ -45,9 +37,6 @@ namespace Northwind.Data
 			set { orderID = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column(IsPrimaryKey = true)]
 		public int ProductID
 		{
@@ -55,9 +44,6 @@ namespace Northwind.Data
 			set { productID = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public decimal UnitPrice
 		{
@@ -65,9 +51,6 @@ namespace Northwind.Data
 			set { unitPrice = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public short Quantity
 		{
@@ -75,9 +58,6 @@ namespace Northwind.Data
 			set { quantity = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public float Discount
 		{
@@ -97,8 +77,7 @@ namespace Northwind.Data
 	[TableJoin(typeof(Products), "ProductID", AliasName = OrderDetailsView.Products)]
 	public class OrderDetailsView : OrderDetails
 	{
-		#region Constant
-		
+		#region Constant		
 		public const string	_Orders_OrderDate = "Orders_OrderDate";			
 		public const string	_Orders_RequiredDate = "Orders_RequiredDate";			
 		public const string	_Orders_ShippedDate = "Orders_ShippedDate";			
@@ -117,13 +96,11 @@ namespace Northwind.Data
 		public const string	_Products_ReorderLevel = "Products_ReorderLevel";			
 		public const string	_Products_Discontinued = "Products_Discontinued";			
 			
-		private const string Orders = "Orders";
-		private const string Products = "Products";
-		
+		public const string Orders = "Orders";
+		public const string Products = "Products";
 		#endregion
 		
-		#region Member Variables
-		
+		#region Member Variables		
 		private DateTime? orders_OrderDate;			
 		private DateTime? orders_RequiredDate;			
 		private DateTime? orders_ShippedDate;			
@@ -141,11 +118,9 @@ namespace Northwind.Data
 		private short? products_UnitsOnOrder;			
 		private short? products_ReorderLevel;			
 		private bool products_Discontinued;			
-		
 		#endregion
 
 		#region Public Properties
-
 		[Column("OrderDate", Foreign = OrderDetailsView.Orders, ColumnMode = ColumnMode.Read)]
 		public DateTime? Orders_OrderDate
 		{

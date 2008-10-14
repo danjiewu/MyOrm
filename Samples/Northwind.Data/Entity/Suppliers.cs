@@ -7,14 +7,13 @@ namespace Northwind.Data
 {	
 	#region Suppliers
 	/// <summary>
-	/// Suppliers object for table 'Suppliers'.
+	/// Suppliers.
 	/// </summary>
 	[Table("Suppliers")]
 	[Serializable]
 	public class Suppliers 
 	{
-		#region Constant
-		
+		#region Constant		
 		public const string	_SupplierID = "SupplierID";
 		public const string	_CompanyName = "CompanyName";
 		public const string	_ContactName = "ContactName";
@@ -27,11 +26,9 @@ namespace Northwind.Data
 		public const string	_Phone = "Phone";
 		public const string	_Fax = "Fax";
 		public const string	_HomePage = "HomePage";
-		
 		#endregion
 		
-		#region Member Variables
-		
+		#region Member Variables		
 		private int supplierID;
 		private string companyName;
 		private string contactName;
@@ -44,14 +41,9 @@ namespace Northwind.Data
 		private string phone;
 		private string fax;
 		private string homePage;
-
 		#endregion
 
 		#region Public Properties
-
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column(IsPrimaryKey = true)]
 		public int SupplierID
 		{
@@ -59,9 +51,6 @@ namespace Northwind.Data
 			set { supplierID = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string CompanyName
 		{
@@ -69,9 +58,6 @@ namespace Northwind.Data
 			set { companyName = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string ContactName
 		{
@@ -79,9 +65,6 @@ namespace Northwind.Data
 			set { contactName = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string ContactTitle
 		{
@@ -89,9 +72,6 @@ namespace Northwind.Data
 			set { contactTitle = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string Address
 		{
@@ -99,9 +79,6 @@ namespace Northwind.Data
 			set { address = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string City
 		{
@@ -109,9 +86,6 @@ namespace Northwind.Data
 			set { city = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string Region
 		{
@@ -119,9 +93,6 @@ namespace Northwind.Data
 			set { region = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string PostalCode
 		{
@@ -129,9 +100,6 @@ namespace Northwind.Data
 			set { postalCode = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string Country
 		{
@@ -139,9 +107,6 @@ namespace Northwind.Data
 			set { country = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string Phone
 		{
@@ -149,9 +114,6 @@ namespace Northwind.Data
 			set { phone = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string Fax
 		{
@@ -159,9 +121,6 @@ namespace Northwind.Data
 			set { fax = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string HomePage
 		{

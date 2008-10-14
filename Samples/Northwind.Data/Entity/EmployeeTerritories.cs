@@ -7,31 +7,23 @@ namespace Northwind.Data
 {	
 	#region EmployeeTerritories
 	/// <summary>
-	/// EmployeeTerritories object for table 'EmployeeTerritories'.
+	/// EmployeeTerritories.
 	/// </summary>
 	[Table("EmployeeTerritories")]
 	[Serializable]
 	public class EmployeeTerritories 
 	{
-		#region Constant
-		
+		#region Constant		
 		public const string	_EmployeeID = "EmployeeID";
 		public const string	_TerritoryID = "TerritoryID";
-		
 		#endregion
 		
-		#region Member Variables
-		
+		#region Member Variables		
 		private int employeeID;
 		private string territoryID;
-
 		#endregion
 
 		#region Public Properties
-
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column(IsPrimaryKey = true)]
 		public int EmployeeID
 		{
@@ -39,9 +31,6 @@ namespace Northwind.Data
 			set { employeeID = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column(IsPrimaryKey = true)]
 		public string TerritoryID
 		{
@@ -61,8 +50,7 @@ namespace Northwind.Data
 	[TableJoin(typeof(Territories), "TerritoryID", AliasName = EmployeeTerritoriesView.Territories)]
 	public class EmployeeTerritoriesView : EmployeeTerritories
 	{
-		#region Constant
-		
+		#region Constant		
 		public const string	_Employees_LastName = "Employees_LastName";			
 		public const string	_Employees_FirstName = "Employees_FirstName";			
 		public const string	_Employees_Title = "Employees_Title";			
@@ -81,13 +69,11 @@ namespace Northwind.Data
 		public const string	_Employees_PhotoPath = "Employees_PhotoPath";			
 		public const string	_Territories_TerritoryDescription = "Territories_TerritoryDescription";			
 			
-		private const string Employees = "Employees";
-		private const string Territories = "Territories";
-		
+		public const string Employees = "Employees";
+		public const string Territories = "Territories";
 		#endregion
 		
-		#region Member Variables
-		
+		#region Member Variables		
 		private string employees_LastName;			
 		private string employees_FirstName;			
 		private string employees_Title;			
@@ -105,11 +91,9 @@ namespace Northwind.Data
 		private string employees_Notes;			
 		private string employees_PhotoPath;			
 		private string territories_TerritoryDescription;			
-		
 		#endregion
 
 		#region Public Properties
-
 		[Column("LastName", Foreign = EmployeeTerritoriesView.Employees, ColumnMode = ColumnMode.Read)]
 		public string Employees_LastName
 		{

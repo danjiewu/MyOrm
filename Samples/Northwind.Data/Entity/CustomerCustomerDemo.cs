@@ -7,31 +7,23 @@ namespace Northwind.Data
 {	
 	#region CustomerCustomerDemo
 	/// <summary>
-	/// CustomerCustomerDemo object for table 'CustomerCustomerDemo'.
+	/// CustomerCustomerDemo.
 	/// </summary>
 	[Table("CustomerCustomerDemo")]
 	[Serializable]
 	public class CustomerCustomerDemo 
 	{
-		#region Constant
-		
+		#region Constant		
 		public const string	_CustomerID = "CustomerID";
 		public const string	_CustomerTypeID = "CustomerTypeID";
-		
 		#endregion
 		
-		#region Member Variables
-		
+		#region Member Variables		
 		private string customerID;
 		private string customerTypeID;
-
 		#endregion
 
 		#region Public Properties
-
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column(IsPrimaryKey = true)]
 		public string CustomerID
 		{
@@ -39,9 +31,6 @@ namespace Northwind.Data
 			set { customerID = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column(IsPrimaryKey = true)]
 		public string CustomerTypeID
 		{
@@ -61,8 +50,7 @@ namespace Northwind.Data
 	[TableJoin(typeof(Customers), "CustomerID", AliasName = CustomerCustomerDemoView.Customers)]
 	public class CustomerCustomerDemoView : CustomerCustomerDemo
 	{
-		#region Constant
-		
+		#region Constant		
 		public const string	_CustomerDemographics_CustomerDesc = "CustomerDemographics_CustomerDesc";			
 		public const string	_Customers_CompanyName = "Customers_CompanyName";			
 		public const string	_Customers_ContactName = "Customers_ContactName";			
@@ -75,13 +63,11 @@ namespace Northwind.Data
 		public const string	_Customers_Phone = "Customers_Phone";			
 		public const string	_Customers_Fax = "Customers_Fax";			
 			
-		private const string CustomerDemographics = "CustomerDemographics";
-		private const string Customers = "Customers";
-		
+		public const string CustomerDemographics = "CustomerDemographics";
+		public const string Customers = "Customers";
 		#endregion
 		
-		#region Member Variables
-		
+		#region Member Variables		
 		private string customerDemographics_CustomerDesc;			
 		private string customers_CompanyName;			
 		private string customers_ContactName;			
@@ -93,11 +79,9 @@ namespace Northwind.Data
 		private string customers_Country;			
 		private string customers_Phone;			
 		private string customers_Fax;			
-		
 		#endregion
 
 		#region Public Properties
-
 		[Column("CustomerDesc", Foreign = CustomerCustomerDemoView.CustomerDemographics, ColumnMode = ColumnMode.Read)]
 		public string CustomerDemographics_CustomerDesc
 		{

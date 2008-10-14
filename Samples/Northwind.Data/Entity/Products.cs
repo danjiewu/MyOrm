@@ -7,14 +7,13 @@ namespace Northwind.Data
 {	
 	#region Products
 	/// <summary>
-	/// Products object for table 'Products'.
+	/// Products.
 	/// </summary>
 	[Table("Products")]
 	[Serializable]
 	public class Products 
 	{
-		#region Constant
-		
+		#region Constant		
 		public const string	_ProductID = "ProductID";
 		public const string	_ProductName = "ProductName";
 		public const string	_SupplierID = "SupplierID";
@@ -25,11 +24,9 @@ namespace Northwind.Data
 		public const string	_UnitsOnOrder = "UnitsOnOrder";
 		public const string	_ReorderLevel = "ReorderLevel";
 		public const string	_Discontinued = "Discontinued";
-		
 		#endregion
 		
-		#region Member Variables
-		
+		#region Member Variables		
 		private int productID;
 		private string productName;
 		private int? supplierID;
@@ -40,14 +37,9 @@ namespace Northwind.Data
 		private short? unitsOnOrder;
 		private short? reorderLevel;
 		private bool discontinued;
-
 		#endregion
 
 		#region Public Properties
-
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column(IsPrimaryKey = true)]
 		public int ProductID
 		{
@@ -55,9 +47,6 @@ namespace Northwind.Data
 			set { productID = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string ProductName
 		{
@@ -65,9 +54,6 @@ namespace Northwind.Data
 			set { productName = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public int? SupplierID
 		{
@@ -75,9 +61,6 @@ namespace Northwind.Data
 			set { supplierID = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public int? CategoryID
 		{
@@ -85,9 +68,6 @@ namespace Northwind.Data
 			set { categoryID = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string QuantityPerUnit
 		{
@@ -95,9 +75,6 @@ namespace Northwind.Data
 			set { quantityPerUnit = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public decimal? UnitPrice
 		{
@@ -105,9 +82,6 @@ namespace Northwind.Data
 			set { unitPrice = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public short? UnitsInStock
 		{
@@ -115,9 +89,6 @@ namespace Northwind.Data
 			set { unitsInStock = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public short? UnitsOnOrder
 		{
@@ -125,9 +96,6 @@ namespace Northwind.Data
 			set { unitsOnOrder = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public short? ReorderLevel
 		{
@@ -135,9 +103,6 @@ namespace Northwind.Data
 			set { reorderLevel = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public bool Discontinued
 		{
@@ -157,8 +122,7 @@ namespace Northwind.Data
 	[TableJoin(typeof(Suppliers), "SupplierID", AliasName = ProductsView.Suppliers)]
 	public class ProductsView : Products
 	{
-		#region Constant
-		
+		#region Constant		
 		public const string	_Categories_CategoryName = "Categories_CategoryName";			
 		public const string	_Categories_Description = "Categories_Description";			
 		public const string	_Categories_Picture = "Categories_Picture";			
@@ -174,13 +138,11 @@ namespace Northwind.Data
 		public const string	_Suppliers_Fax = "Suppliers_Fax";			
 		public const string	_Suppliers_HomePage = "Suppliers_HomePage";			
 			
-		private const string Categories = "Categories";
-		private const string Suppliers = "Suppliers";
-		
+		public const string Categories = "Categories";
+		public const string Suppliers = "Suppliers";
 		#endregion
 		
-		#region Member Variables
-		
+		#region Member Variables		
 		private string categories_CategoryName;			
 		private string categories_Description;			
 		private byte[] categories_Picture;			
@@ -195,11 +157,9 @@ namespace Northwind.Data
 		private string suppliers_Phone;			
 		private string suppliers_Fax;			
 		private string suppliers_HomePage;			
-		
 		#endregion
 
 		#region Public Properties
-
 		[Column("CategoryName", Foreign = ProductsView.Categories, ColumnMode = ColumnMode.Read)]
 		public string Categories_CategoryName
 		{

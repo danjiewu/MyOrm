@@ -7,14 +7,13 @@ namespace Northwind.Data
 {	
 	#region Employees
 	/// <summary>
-	/// Employees object for table 'Employees'.
+	/// Employees.
 	/// </summary>
 	[Table("Employees")]
 	[Serializable]
 	public class Employees 
 	{
-		#region Constant
-		
+		#region Constant		
 		public const string	_EmployeeID = "EmployeeID";
 		public const string	_LastName = "LastName";
 		public const string	_FirstName = "FirstName";
@@ -33,11 +32,9 @@ namespace Northwind.Data
 		public const string	_Notes = "Notes";
 		public const string	_ReportsTo = "ReportsTo";
 		public const string	_PhotoPath = "PhotoPath";
-		
 		#endregion
 		
-		#region Member Variables
-		
+		#region Member Variables		
 		private int employeeID;
 		private string lastName;
 		private string firstName;
@@ -56,14 +53,9 @@ namespace Northwind.Data
 		private string notes;
 		private int? reportsTo;
 		private string photoPath;
-
 		#endregion
 
 		#region Public Properties
-
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column(IsPrimaryKey = true)]
 		public int EmployeeID
 		{
@@ -71,9 +63,6 @@ namespace Northwind.Data
 			set { employeeID = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string LastName
 		{
@@ -81,9 +70,6 @@ namespace Northwind.Data
 			set { lastName = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string FirstName
 		{
@@ -91,9 +77,6 @@ namespace Northwind.Data
 			set { firstName = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string Title
 		{
@@ -101,9 +84,6 @@ namespace Northwind.Data
 			set { title = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string TitleOfCourtesy
 		{
@@ -111,9 +91,6 @@ namespace Northwind.Data
 			set { titleOfCourtesy = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public DateTime? BirthDate
 		{
@@ -121,9 +98,6 @@ namespace Northwind.Data
 			set { birthDate = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public DateTime? HireDate
 		{
@@ -131,9 +105,6 @@ namespace Northwind.Data
 			set { hireDate = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string Address
 		{
@@ -141,9 +112,6 @@ namespace Northwind.Data
 			set { address = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string City
 		{
@@ -151,9 +119,6 @@ namespace Northwind.Data
 			set { city = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string Region
 		{
@@ -161,9 +126,6 @@ namespace Northwind.Data
 			set { region = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string PostalCode
 		{
@@ -171,9 +133,6 @@ namespace Northwind.Data
 			set { postalCode = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string Country
 		{
@@ -181,9 +140,6 @@ namespace Northwind.Data
 			set { country = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string HomePhone
 		{
@@ -191,9 +147,6 @@ namespace Northwind.Data
 			set { homePhone = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string Extension
 		{
@@ -201,9 +154,6 @@ namespace Northwind.Data
 			set { extension = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public byte[] Photo
 		{
@@ -211,9 +161,6 @@ namespace Northwind.Data
 			set { photo = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string Notes
 		{
@@ -221,9 +168,6 @@ namespace Northwind.Data
 			set { notes = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public int? ReportsTo
 		{
@@ -231,9 +175,6 @@ namespace Northwind.Data
 			set { reportsTo = value; }
 		}
 		
-		/// <summary>
-		/// 
-		/// </summary>	
 		[Column]
 		public string PhotoPath
 		{
@@ -252,8 +193,7 @@ namespace Northwind.Data
 	[TableJoin(typeof(Employees), "ReportsTo", AliasName = EmployeesView.ReportsToEmployees)]
 	public class EmployeesView : Employees
 	{
-		#region Constant
-		
+		#region Constant		
 		public const string	_ReportsToEmployees_LastName = "ReportsToEmployees_LastName";			
 		public const string	_ReportsToEmployees_FirstName = "ReportsToEmployees_FirstName";			
 		public const string	_ReportsToEmployees_Title = "ReportsToEmployees_Title";			
@@ -271,12 +211,10 @@ namespace Northwind.Data
 		public const string	_ReportsToEmployees_Notes = "ReportsToEmployees_Notes";			
 		public const string	_ReportsToEmployees_PhotoPath = "ReportsToEmployees_PhotoPath";			
 			
-		private const string ReportsToEmployees = "ReportsToEmployees";
-		
+		public const string ReportsToEmployees = "ReportsToEmployees";
 		#endregion
 		
-		#region Member Variables
-		
+		#region Member Variables		
 		private string reportsToEmployees_LastName;			
 		private string reportsToEmployees_FirstName;			
 		private string reportsToEmployees_Title;			
@@ -293,11 +231,9 @@ namespace Northwind.Data
 		private byte[] reportsToEmployees_Photo;			
 		private string reportsToEmployees_Notes;			
 		private string reportsToEmployees_PhotoPath;			
-		
 		#endregion
 
 		#region Public Properties
-
 		[Column("LastName", Foreign = EmployeesView.ReportsToEmployees, ColumnMode = ColumnMode.Read)]
 		public string ReportsToEmployees_LastName
 		{
