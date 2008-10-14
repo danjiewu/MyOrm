@@ -89,7 +89,7 @@ namespace MyOrm
                         foreach (ColumnInfo key in tableJoin.TargetTable.Keys)
                         {
                             if (index != 0) strConditions.Append(" and ");
-                            strConditions.AppendFormat("{0}.{1} = {2}.{3}", ToSqlName(String.IsNullOrEmpty(tableJoin.SourceTable) ? TableName : tableJoin.SourceTable), ToSqlName(tableJoin.ForeignKeys[index]), ToSqlName(tableJoin.TargetTable.TableName), ToSqlName(key.ColumnName));
+                            strConditions.AppendFormat("{0}.{1} = {2}.{3}", ToSqlName(String.IsNullOrEmpty(tableJoin.SourceTable) ? TableName : tableJoin.SourceTable), ToSqlName(tableJoin.ForeignKeys[index]), ToSqlName(string.IsNullOrEmpty(tableJoin.AliasName) ? tableJoin.TargetTable.TableName : tableJoin.AliasName), ToSqlName(key.ColumnName));
                         }
                         strFromTable.AppendFormat(" {0} join {1} {2} on {3}", tableJoin.JoinType, ToSqlName(tableJoin.TargetTable.TableName), string.IsNullOrEmpty(tableJoin.AliasName) ? null : ToSqlName(tableJoin.AliasName), strConditions);
                     }
