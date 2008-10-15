@@ -43,7 +43,7 @@ namespace MyOrm.Metadata
         }
 
         /// <summary>
-        /// 关联的外键
+        /// 关联的外键，按关联表对应的主键的属性名称顺序排列
         /// </summary>
         public List<string> ForeignKeys
         {

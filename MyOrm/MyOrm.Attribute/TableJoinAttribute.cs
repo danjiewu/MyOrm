@@ -14,7 +14,7 @@ namespace MyOrm.Attribute
         private Type targetType;
         private string foreignKeys;
         private string aliasName;
-        private TableJoinType joinType;
+        private TableJoinType joinType = TableJoinType.Left;
         private string sourceTable;
 
         /// <summary>
@@ -67,7 +67,7 @@ namespace MyOrm.Attribute
         }
 
         /// <summary>
-        /// 关联类型，可能为外联、左联、右联、内联
+        /// 关联类型，默认为TableJoinType.Left
         /// </summary>
         public TableJoinType JoinType
         {
