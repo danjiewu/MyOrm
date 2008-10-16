@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 9.00
-# Visual Studio 2005
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyOrm", "MyOrm\MyOrm.csproj", "{BD1B3BA9-A527-4E9B-9AD8-3847AE5DACAA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyOrm.Common", "MyOrm.Common\MyOrm.Common.csproj", "{C43F1A98-E5AA-4D5B-A014-01CDA10092FA}"
