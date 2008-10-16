@@ -151,6 +151,7 @@ namespace MyOrm.Common
     [Serializable]
     public sealed class ConditionSet : Condition
     {
+        private ConditionJoinType joinType = ConditionJoinType.And;
         /// <summary>
         /// 默认构造函数
         /// </summary>
@@ -165,7 +166,26 @@ namespace MyOrm.Common
             this.joinType = joinType;
         }
 
-        private ConditionJoinType joinType = ConditionJoinType.And;
+        /// <summary>
+        /// 以子查询条件集合初始化
+        /// </summary>
+        /// <param name="subConditions">子查询条件集合</param>
+        public ConditionSet(IEnumerable<Condition> subConditions)
+        {
+            this.subConditions.AddRange(subConditions);
+        }
+
+        /// <summary>
+        /// 指定连接类型，以子查询条件集合初始化
+        /// </summary>
+        /// <param name="joinType">连接类型</param>
+        /// <param name="subConditions">子查询条件集合</param>
+        public ConditionSet(ConditionJoinType joinType, IEnumerable<Condition> subConditions)
+        {
+            this.joinType = joinType;
+            this.subConditions.AddRange(subConditions);
+        }
+
         /// <summary>
         /// 连接类型，默认为ConditionJoinType.And
         /// </summary>
