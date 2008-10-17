@@ -48,6 +48,7 @@ namespace Northwind.Data
 	/// </summary>	
 	[TableJoin(typeof(CustomerDemographics), CustomerCustomerDemo._CustomerTypeID, AliasName = CustomerCustomerDemoView.CustomerDemographic)]
 	[TableJoin(typeof(Customers), CustomerCustomerDemo._CustomerID, AliasName = CustomerCustomerDemoView.Customer)]
+    [Serializable]
 	public class CustomerCustomerDemoView : CustomerCustomerDemo
 	{
 		#region Constant		

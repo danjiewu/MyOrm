@@ -191,6 +191,7 @@ namespace Northwind.Data
 	/// EmployeesView.
 	/// </summary>	
 	[TableJoin(typeof(Employees), Employees._ReportsTo, AliasName = EmployeesView.ReportsToEmployee)]
+    [Serializable]
 	public class EmployeesView : Employees
 	{
 		#region Constant		

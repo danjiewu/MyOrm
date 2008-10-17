@@ -120,6 +120,7 @@ namespace Northwind.Data
 	/// </summary>	
 	[TableJoin(typeof(Categories), Products._CategoryID, AliasName = ProductsView.Category)]
 	[TableJoin(typeof(Suppliers), Products._SupplierID, AliasName = ProductsView.Supplier)]
+    [Serializable]
 	public class ProductsView : Products
 	{
 		#region Constant		

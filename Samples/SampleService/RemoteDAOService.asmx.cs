@@ -28,20 +28,14 @@ namespace SampleService
             using (MemoryStream ms = new MemoryStream(serializedArgs))
             {
                 BinaryFormatter serializer = new BinaryFormatter();
+                string daoName = (string)serializer.Deserialize(ms);
                 MethodInfo method = (MethodInfo)serializer.Deserialize(ms);
                 object[] args = (object[])serializer.Deserialize(ms);
-                foreach (PropertyInfo property in typeof(IDAOFactory).GetProperties())
+                using (MemoryStream valueStream = new MemoryStream())
                 {
-                    if (method.DeclaringType.IsAssignableFrom(property.PropertyType))
-                    {
-                        using (MemoryStream valueStream = new MemoryStream())
-                        {
-                            serializer.Serialize(valueStream, method.Invoke(property.GetValue(NorthwindFactory.DAOFactory, null), args));
-                            return valueStream.ToArray();
-                        }
-                    }
+                    serializer.Serialize(valueStream, method.Invoke(typeof(IDAOFactory).GetProperty(daoName).GetValue(NorthwindFactory.DAOFactory, null), args));
+                    return valueStream.ToArray();
                 }
-                return null;
             }
         }
     }
