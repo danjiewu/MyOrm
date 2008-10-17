@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample1", "Sample1\Sample1.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample2", "Sample2\Sample2.csproj", "{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample3", "Sample3\Sample3.csproj", "{1B9BB12E-5E90-4493-B6B1-08FFC89D9F77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleService", "SampleService\SampleService.csproj", "{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -29,6 +33,14 @@ Global
 		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B9BB12E-5E90-4493-B6B1-08FFC89D9F77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B9BB12E-5E90-4493-B6B1-08FFC89D9F77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B9BB12E-5E90-4493-B6B1-08FFC89D9F77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B9BB12E-5E90-4493-B6B1-08FFC89D9F77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
