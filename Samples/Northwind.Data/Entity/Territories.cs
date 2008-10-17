@@ -56,6 +56,7 @@ namespace Northwind.Data
 	/// TerritoriesView.
 	/// </summary>	
 	[TableJoin(typeof(Region), Territories._RegionID, AliasName = TerritoriesView.Region)]
+    [Serializable]
 	public class TerritoriesView : Territories
 	{
 		#region Constant		

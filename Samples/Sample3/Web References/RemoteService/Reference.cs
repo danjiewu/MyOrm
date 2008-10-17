@@ -13,7 +13,7 @@
 // 
 #pragma warning disable 1591
 
-namespace Northwind.Northwind {
+namespace Northwind.RemoteService {
     using System.Diagnostics;
     using System.Web.Services;
     using System.ComponentModel;

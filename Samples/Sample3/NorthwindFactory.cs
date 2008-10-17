@@ -7,9 +7,9 @@ using System.Reflection;
 using MyOrm;
 using System.Data;
 using System.IO;
-using System.Runtime.Serialization.Formatters;
 using System.Runtime.Serialization.Formatters.Binary;
-using Northwind.Northwind;
+using Castle.Core.Interceptor;
+using Northwind.RemoteService;
 
 namespace Northwind
 {
@@ -20,12 +20,11 @@ namespace Northwind
         private static IDAOFactory GenerateFactoryProxy()
         {
             ProxyGenerator generator = new ProxyGenerator();
-            DAOInterceptor interceptor = new DAOInterceptor();
             IDAOFactory factory = new DAOFactory();
             foreach (FieldInfo field in factory.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic))
             {
                 object dao = field.GetValue(factory);
-                field.SetValue(factory, generator.CreateProxy(dao.GetType().GetInterfaces(), interceptor, dao));
+                field.SetValue(factory, generator.CreateInterfaceProxyWithoutTarget(field.FieldType, dao.GetType().GetInterfaces(), new DAOInterceptor(field.FieldType.Name.Substring(1))));
             }
             return factory;
         }
@@ -35,18 +34,25 @@ namespace Northwind
     {
         private static readonly object syncLock = new object();
         private static RemoteDAOService remoteService = new RemoteDAOService();
+
+        private string daoName;
+        public DAOInterceptor(string daoName)
+        {
+            this.daoName = daoName;
+        }
         #region IInterceptor 成员
 
-        public object Intercept(IInvocation invocation, params object[] args)
+        public void Intercept(IInvocation invocation)
         {
             lock (syncLock)
             {
                 using (MemoryStream ms = new MemoryStream())
                 {
                     BinaryFormatter serializer = new BinaryFormatter();
+                    serializer.Serialize(ms, daoName);
                     serializer.Serialize(ms, invocation.Method);
-                    serializer.Serialize(ms, args);
-                    return serializer.Deserialize(new MemoryStream(remoteService.SerializedRemoteInvoke(ms.ToArray())));
+                    serializer.Serialize(ms, invocation.Arguments);
+                    invocation.ReturnValue = serializer.Deserialize(new MemoryStream(remoteService.SerializedRemoteInvoke(ms.ToArray())));
                 }
             }
         }

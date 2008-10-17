@@ -31,9 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.DynamicProxy, Version=1.1.5.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+    <Reference Include="Castle.Core, Version=1.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\TDDOWNLOAD\Work\Castle-net-2.0-release-2007-9-20\bin\Castle.DynamicProxy.dll</HintPath>
+      <HintPath>..\Sample2\bin\Debug\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.DynamicProxy2, Version=2.0.3.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Sample2\bin\Debug\Castle.DynamicProxy2.dll</HintPath>
     </Reference>
     <Reference Include="MyOrm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -88,13 +92,13 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
-    <None Include="Web References\Northwind\RemoteDAOService.wsdl" />
+    <None Include="Web References\RemoteService\RemoteDAOService.wsdl" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Web References\Northwind\Reference.cs">
+    <Compile Include="Web References\RemoteService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Reference.map</DependentUpon>
@@ -112,7 +116,7 @@
   <ItemGroup>
     <WebReferenceUrl Include="http://localhost:5735/RemoteDAOService.asmx">
       <UrlBehavior>Dynamic</UrlBehavior>
-      <RelPath>Web References\Northwind\</RelPath>
+      <RelPath>Web References\RemoteService\</RelPath>
       <UpdateFromURL>http://localhost:5735/RemoteDAOService.asmx</UpdateFromURL>
       <ServiceLocationURL>
       </ServiceLocationURL>
@@ -124,11 +128,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="Web References\Northwind\Reference.map">
+    <None Include="Web References\RemoteService\Reference.map">
       <Generator>MSDiscoCodeGenerator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
-    <None Include="Web References\Northwind\RemoteDAOService.disco" />
+    <None Include="Web References\RemoteService\RemoteDAOService.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

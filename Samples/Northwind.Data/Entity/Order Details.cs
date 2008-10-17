@@ -75,6 +75,7 @@ namespace Northwind.Data
 	/// </summary>	
 	[TableJoin(typeof(Orders), OrderDetails._OrderID, AliasName = OrderDetailsView.Order)]
 	[TableJoin(typeof(Products), OrderDetails._ProductID, AliasName = OrderDetailsView.Product)]
+    [Serializable]
 	public class OrderDetailsView : OrderDetails
 	{
 		#region Constant		
