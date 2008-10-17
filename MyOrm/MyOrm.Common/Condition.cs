@@ -259,9 +259,13 @@ namespace MyOrm.Common
         /// </summary>
         Contains = 5,
         /// <summary>
+        /// 逻辑是（非判断操作符）
+        /// </summary>
+        Positive = 0x7FFF,
+        /// <summary>
         /// 逻辑否（非判断操作符）
         /// </summary>
-        Not = 0xF000,
+        Not = ~Positive,        
         /// <summary>
         /// 不相等
         /// </summary>

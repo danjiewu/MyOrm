@@ -273,7 +273,7 @@ namespace MyOrm
             else
             {
                 object value = simpleCondition.Value;
-                ConditionOperator positiveOp = simpleCondition.Operator & ConditionOperator.Not;
+                ConditionOperator positiveOp = simpleCondition.Operator & ConditionOperator.Positive;
                 if (positiveOp == ConditionOperator.Contains || positiveOp == ConditionOperator.EndsWith || positiveOp == ConditionOperator.StartsWith)
                     value = sqlLike.Replace(Convert.ToString(value), LikeEscapeChar + "$1");
                 outputParams.Add(value);
