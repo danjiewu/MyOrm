@@ -29,7 +29,7 @@ namespace Northwind
 
     public class DAOInterceptor : IInterceptor
     {
-        private static object syncLock = new object();
+        private static readonly object syncLock = new object();
         #region IInterceptor 成员
 
         public object Intercept(IInvocation invocation, params object[] args)
