@@ -1,0 +1,257 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MyOrm.Metadata</name>
+    </assembly>
+    <members>
+        <member name="T:MyOrm.Metadata.TableJoinInfo">
+            <summary>
+            表关联信息
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.TableJoinInfo.SourceTable">
+            <summary>
+            源表
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.TableJoinInfo.TargetTable">
+            <summary>
+            关联的表信息
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.TableJoinInfo.AliasName">
+            <summary>
+            别名
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.TableJoinInfo.ForeignKeys">
+            <summary>
+            关联的外键，按关联表对应的主键的属性名称顺序排列
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.TableJoinInfo.JoinType">
+            <summary>
+            关联类型，默认为TableJoinType.Left
+            </summary>
+        </member>
+        <member name="T:MyOrm.Metadata.TableJoinType">
+            <summary>
+            表关联类型
+            </summary>
+        </member>
+        <member name="F:MyOrm.Metadata.TableJoinType.Inner">
+            <summary>
+            内连接
+            </summary>
+        </member>
+        <member name="F:MyOrm.Metadata.TableJoinType.Left">
+            <summary>
+            左连接
+            </summary>
+        </member>
+        <member name="F:MyOrm.Metadata.TableJoinType.Right">
+            <summary>
+            右连接
+            </summary>
+        </member>
+        <member name="F:MyOrm.Metadata.TableJoinType.Outer">
+            <summary>
+            全外连接
+            </summary>
+        </member>
+        <member name="F:MyOrm.Metadata.TableJoinType.Cross">
+            <summary>
+            交叉连接
+            </summary>
+        </member>
+        <member name="T:MyOrm.Metadata.ColumnInfo">
+            <summary>
+            数据库列信息
+            </summary>
+        </member>
+        <member name="M:MyOrm.Metadata.ColumnInfo.#ctor(System.Reflection.PropertyInfo)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="property">列对应的实体属性</param>
+        </member>
+        <member name="M:MyOrm.Metadata.ColumnInfo.SetValue(System.Object,System.Object)">
+            <summary>
+            赋值
+            </summary>
+            <param name="target">要赋值的对象</param>
+            <param name="value">值</param>
+        </member>
+        <member name="M:MyOrm.Metadata.ColumnInfo.GetValue(System.Object)">
+            <summary>
+            取值
+            </summary>
+            <param name="target">对象</param>
+            <returns>值</returns>
+        </member>
+        <member name="P:MyOrm.Metadata.ColumnInfo.ForeignTable">
+            <summary>
+            在查询时所在的表名，可以是别名
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.ColumnInfo.ColumnName">
+            <summary>
+            列名
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.ColumnInfo.PropertyName">
+            <summary>
+            列所对应的属性名称
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.ColumnInfo.PropertyType">
+            <summary>
+            列所对应的属性类型
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.ColumnInfo.IsPrimaryKey">
+            <summary>
+            是否是主键
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.ColumnInfo.Length">
+            <summary>
+            长度
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.ColumnInfo.DbType">
+            <summary>
+            数据库类型
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.ColumnInfo.AllowNull">
+            <summary>
+            是否允许为空
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.ColumnInfo.Mode">
+            <summary>
+            列操作模式
+            </summary>
+        </member>
+        <member name="T:MyOrm.Metadata.ColumnMode">
+            <summary>
+            列操作模式
+            </summary>
+        </member>
+        <member name="F:MyOrm.Metadata.ColumnMode.Full">
+            <summary>
+            所有操作
+            </summary>
+        </member>
+        <member name="F:MyOrm.Metadata.ColumnMode.Ignore">
+            <summary>
+            忽略
+            </summary>
+        </member>
+        <member name="F:MyOrm.Metadata.ColumnMode.Read">
+            <summary>
+            从数据库中读
+            </summary>
+        </member>
+        <member name="F:MyOrm.Metadata.ColumnMode.Update">
+            <summary>
+            往数据库更新
+            </summary>
+        </member>
+        <member name="F:MyOrm.Metadata.ColumnMode.Insert">
+            <summary>
+            往数据库添加
+            </summary>
+        </member>
+        <member name="F:MyOrm.Metadata.ColumnMode.Write">
+            <summary>
+            只写
+            </summary>
+        </member>
+        <member name="T:MyOrm.Metadata.TableInfo">
+            <summary>
+            实体、表定义
+            </summary>
+        </member>
+        <member name="M:MyOrm.Metadata.TableInfo.#ctor(System.String,System.Type)">
+            <summary>
+            构造函数
+            </summary>
+            <param name="tableName">表名</param>
+            <param name="objectType">实体类型</param>
+        </member>
+        <member name="M:MyOrm.Metadata.TableInfo.GetColumn(System.String)">
+            <summary>
+            根据列名获得列定义，忽略大小写
+            </summary>
+            <param name="name">列名</param>
+            <returns>列定义，列名不存在则返回null</returns>
+        </member>
+        <member name="M:MyOrm.Metadata.TableInfo.GetColumnByProperty(System.String)">
+            <summary>
+            根据属性名获得列定义，忽略大小写
+            </summary>
+            <param name="propertyName">属性名</param>
+            <returns>列定义，列名不存在则返回null</returns>
+        </member>
+        <member name="M:MyOrm.Metadata.TableInfo.ClearCache">
+            <summary>
+            清空缓存
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.TableInfo.TableName">
+            <summary>
+            表名
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.TableInfo.ObjectType">
+            <summary>
+            实体类型
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.TableInfo.Columns">
+            <summary>
+            数据库表的列信息
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.TableInfo.Keys">
+            <summary>
+            主键列，按属性名称的顺序排列
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.TableInfo.JoinTables">
+            <summary>
+            关联表的信息
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.TableInfo.ColumnCache">
+            <summary>
+            列名对应列的缓存
+            </summary>
+        </member>
+        <member name="P:MyOrm.Metadata.TableInfo.PropertyCache">
+            <summary>
+            属性名对应列的缓存
+            </summary>
+        </member>
+        <member name="T:MyOrm.Metadata.TableInfoProvider">
+            <summary>
+            表信息提供类
+            </summary>
+        </member>
+        <member name="M:MyOrm.Metadata.TableInfoProvider.GetTableInfo(System.Type)">
+            <summary>
+            获取对象类型所对应的表信息
+            </summary>
+            <param name="objectType">对象类型</param>
+            <returns>对应的表信息</returns>
+        </member>
+        <member name="T:FastMethodInvoker.FastInvoke">
+            <summary> 
+            引用自CodeProject的FastInvoke项目
+            http://www.codeproject.com/KB/cs/FastMethodInvoker.aspx
+            </summary>
+        </member>
+    </members>
+</doc>

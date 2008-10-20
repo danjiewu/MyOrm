@@ -1,0 +1,420 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MyOrm.Common</name>
+    </assembly>
+    <members>
+        <member name="T:MyOrm.Common.IObjectViewDAO`1">
+            <summary>
+            实体类的查询操作的泛型接口
+            </summary>
+            <typeparam name="T">实体类类型</typeparam>
+        </member>
+        <member name="M:MyOrm.Common.IObjectViewDAO`1.GetObject(System.Object[])">
+            <summary>
+            根据主键获取对象
+            </summary>
+            <param name="keys">主键，多个主键按照名称顺序排列</param>
+            <returns></returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectViewDAO`1.Exists(System.Object[])">
+            <summary>
+            根据主键检查对象是否存在
+            </summary>
+            <param name="keys">主键，多个主键按照名称顺序排列</param>
+            <returns>是否存在</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectViewDAO`1.Exists(MyOrm.Common.Condition)">
+            <summary>
+            根据条件检查对象是否存在
+            </summary>
+            <param name="condition">查询条件，若为null则表示没有条件</param>
+            <returns>是否存在</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectViewDAO`1.Count(MyOrm.Common.Condition)">
+            <summary>
+            得到满足条件的对象个数
+            </summary>
+            <param name="condtion">查询条件，若为null则表示没有条件</param>
+            <returns>满足条件的对象个数</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectViewDAO`1.SearchOne(MyOrm.Common.Condition)">
+            <summary>
+            根据条件获取单个对象
+            </summary>
+            <param name="condition">查询条件，若为null则表示没有条件</param>
+            <returns>第一个符合条件的对象，若不存在则返回null</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectViewDAO`1.Search(MyOrm.Common.Condition)">
+            <summary>
+            根据条件查询
+            </summary>
+            <param name="condition">查询条件，若为null则表示没有条件</param>
+            <returns>符合条件的对象列表</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectViewDAO`1.SearchSection(MyOrm.Common.Condition,System.Int32,System.Int32,System.String)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="condition">查询条件</param>
+            <param name="startIndex">起始位置</param>
+            <param name="sectionSize">最大记录数</param>
+            <param name="orderby">排序字段</param>
+            <returns>符合条件的分页对象列表</returns>
+        </member>
+        <member name="T:MyOrm.Common.IObjectViewDAO">
+            <summary>
+            实体类的查询操作的非范型接口
+            </summary>
+        </member>
+        <member name="M:MyOrm.Common.IObjectViewDAO.GetObject(System.Object[])">
+            <summary>
+            根据主键获取对象
+            </summary>
+            <param name="keys">主键，多个主键按照名称顺序排列</param>
+            <returns></returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectViewDAO.Exists(System.Object[])">
+            <summary>
+            根据主键检查对象是否存在
+            </summary>
+            <param name="keys">主键，多个主键按照名称顺序排列</param>
+            <returns>是否存在</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectViewDAO.Exists(MyOrm.Common.Condition)">
+            <summary>
+            根据条件检查对象是否存在
+            </summary>
+            <param name="condition">查询条件，若为null则表示没有条件</param>
+            <returns>是否存在</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectViewDAO.Count(MyOrm.Common.Condition)">
+            <summary>
+            得到满足条件的对象个数
+            </summary>
+            <param name="condtion">查询条件，若为null则表示没有条件</param>
+            <returns>满足条件的对象个数</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectViewDAO.SearchOne(MyOrm.Common.Condition)">
+            <summary>
+            根据条件获取单个对象
+            </summary>
+            <param name="condition">查询条件，若为null则表示没有条件</param>
+            <returns>第一个符合条件的对象，若不存在则返回null</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectViewDAO.Search(MyOrm.Common.Condition)">
+            <summary>
+            根据条件查询
+            </summary>
+            <param name="condition">查询条件，若为null则表示没有条件</param>
+            <returns>符合条件的对象列表</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectViewDAO.SearchSection(MyOrm.Common.Condition,System.Int32,System.Int32,System.String)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="condition">查询条件</param>
+            <param name="startIndex">起始位置</param>
+            <param name="sectionSize">最大记录数</param>
+            <param name="orderby">排序字段</param>
+            <returns>符合条件的分页对象列表</returns>
+        </member>
+        <member name="T:MyOrm.Common.IObjectDAO`1">
+            <summary>
+            实体类的增删改等基本操作的泛型接口
+            </summary>
+            <typeparam name="T">实体类类型</typeparam>
+        </member>
+        <member name="M:MyOrm.Common.IObjectDAO`1.Insert(`0)">
+            <summary>
+            添加对象
+            </summary>
+            <param name="o">待添加的对象</param>
+            <returns>是否成功添加</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectDAO`1.Update(`0)">
+            <summary>
+            更新对象
+            </summary>
+            <param name="o">待更新的对象</param>
+            <returns>是否成功更新</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectDAO`1.UpdateOrInsert(`0)">
+            <summary>
+            更新或添加对象，若存在则更新，若不存在则添加
+            </summary>
+            <param name="o">待更新或添加的对象</param>
+            <returns>是否成功更新或添加</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectDAO`1.Delete(`0)">
+            <summary>
+            删除对象
+            </summary>
+            <param name="o">待删除的对象</param>
+            <returns>是否成功删除</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectDAO`1.DeleteByKeys(System.Object[])">
+            <summary>
+            根据主键删除对象
+            </summary>
+            <param name="keys">主键，多个主键按照主键名顺序排列</param>
+            <returns>是否成功删除</returns>
+        </member>
+        <member name="T:MyOrm.Common.IObjectDAO">
+            <summary>
+            实体类的增删改等基本操作的非泛型接口
+            </summary>
+        </member>
+        <member name="M:MyOrm.Common.IObjectDAO.Insert(System.Object)">
+            <summary>
+            添加对象
+            </summary>
+            <param name="o">待添加的对象</param>
+            <returns>是否成功添加</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectDAO.Update(System.Object)">
+            <summary>
+            更新对象
+            </summary>
+            <param name="o">待更新的对象</param>
+            <returns>是否成功更新</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectDAO.UpdateOrInsert(System.Object)">
+            <summary>
+            更新或添加对象，若存在则更新，若不存在则添加
+            </summary>
+            <param name="o">待更新或添加的对象</param>
+            <returns>是否成功更新或添加</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectDAO.Delete(System.Object)">
+            <summary>
+            删除对象
+            </summary>
+            <param name="o">待删除的对象</param>
+            <returns>是否成功删除</returns>
+        </member>
+        <member name="M:MyOrm.Common.IObjectDAO.DeleteByKeys(System.Object[])">
+            <summary>
+            根据主键删除对象
+            </summary>
+            <param name="keys">主键，多个主键按照主键名顺序排列</param>
+            <returns>是否成功删除</returns>
+        </member>
+        <member name="T:MyOrm.Common.Condition">
+            <summary>
+            查询条件
+            <seealso cref="T:MyOrm.Common.SimpleCondition"/>
+            <seealso cref="T:MyOrm.Common.ConditionSet"/>    
+            </summary>
+        </member>
+        <member name="T:MyOrm.Common.SimpleCondition">
+            <summary>
+            简单查询条件
+            </summary>
+        </member>
+        <member name="M:MyOrm.Common.SimpleCondition.#ctor">
+            <summary>
+            默认构造函数
+            </summary>
+        </member>
+        <member name="M:MyOrm.Common.SimpleCondition.#ctor(System.String,System.Object)">
+            <summary>
+            以默认操作符ConditionOperator.Equals生成简单查询条件
+            </summary>
+            <param name="expression">表达式，可以为属性名、函数表达式等</param>
+            <param name="value">条件值</param>
+        </member>
+        <member name="M:MyOrm.Common.SimpleCondition.#ctor(System.String,MyOrm.Common.ConditionOperator,System.Object)">
+            <summary>
+            生成简单查询条件
+            </summary>
+            <param name="expression">表达式，可以为属性名、函数表达式等</param>
+            <param name="op">条件比较符</param>
+            <param name="value">条件值</param>
+        </member>
+        <member name="M:MyOrm.Common.SimpleCondition.#ctor(System.String,MyOrm.Common.ConditionOperator,System.Object,MyOrm.Common.ExpressionType)">
+            <summary>
+            生成简单查询条件
+            </summary>
+            <param name="expression">表达式，可以为属性名、函数表达式等</param>
+            <param name="op">条件比较符</param>
+            <param name="value">条件值</param>
+            <param name="expressionType">表达式类型</param>
+        </member>
+        <member name="P:MyOrm.Common.SimpleCondition.Expression">
+            <summary>
+            表达式
+            </summary>
+        </member>
+        <member name="P:MyOrm.Common.SimpleCondition.ExpressionType">
+            <summary>
+            表达式类型
+            </summary>
+        </member>
+        <member name="P:MyOrm.Common.SimpleCondition.Value">
+            <summary>
+            条件值
+            </summary>
+        </member>
+        <member name="P:MyOrm.Common.SimpleCondition.Operator">
+            <summary>
+            条件比较符
+            </summary>
+        </member>
+        <member name="T:MyOrm.Common.ExpressionType">
+            <summary>
+            表达式类型
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ExpressionType.Property">
+            <summary>
+            表达式内容为属性名
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ExpressionType.Function">
+            <summary>
+            表达式内容为函数
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ExpressionType.Unknown">
+            <summary>
+            表达式内容未知
+            </summary>
+        </member>
+        <member name="T:MyOrm.Common.ConditionSet">
+            <summary>
+            查询条件集合
+            </summary>
+        </member>
+        <member name="M:MyOrm.Common.ConditionSet.#ctor">
+            <summary>
+            默认构造函数
+            </summary>
+        </member>
+        <member name="M:MyOrm.Common.ConditionSet.#ctor(MyOrm.Common.ConditionJoinType)">
+            <summary>
+            指定连接类型创建查查询条件集合
+            </summary>
+            <param name="joinType">连接类型</param>
+        </member>
+        <member name="M:MyOrm.Common.ConditionSet.#ctor(System.Collections.Generic.IEnumerable{MyOrm.Common.Condition})">
+            <summary>
+            以子查询条件集合初始化
+            </summary>
+            <param name="subConditions">子查询条件集合</param>
+        </member>
+        <member name="M:MyOrm.Common.ConditionSet.#ctor(MyOrm.Common.ConditionJoinType,System.Collections.Generic.IEnumerable{MyOrm.Common.Condition})">
+            <summary>
+            指定连接类型，以子查询条件集合初始化
+            </summary>
+            <param name="joinType">连接类型</param>
+            <param name="subConditions">子查询条件集合</param>
+        </member>
+        <member name="M:MyOrm.Common.ConditionSet.Add(MyOrm.Common.Condition)">
+            <summary>
+            添加单个查询条件
+            </summary>
+            <param name="condition">子查询条件</param>
+        </member>
+        <member name="P:MyOrm.Common.ConditionSet.JoinType">
+            <summary>
+            连接类型，默认为ConditionJoinType.And
+            </summary>
+        </member>
+        <member name="P:MyOrm.Common.ConditionSet.SubConditions">
+            <summary>
+            子查询条件集合
+            </summary>
+        </member>
+        <member name="T:MyOrm.Common.ConditionJoinType">
+            <summary>
+            查询条件的连接关系枚举
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ConditionJoinType.And">
+            <summary>
+            通过逻辑与（And）连接
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ConditionJoinType.Or">
+            <summary>
+            通过逻辑与（Or）连接
+            </summary>
+        </member>
+        <member name="T:MyOrm.Common.ConditionOperator">
+            <summary>
+            条件判断操作符
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ConditionOperator.Equals">
+            <summary>
+            相等
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ConditionOperator.LargerThan">
+            <summary>
+            大于
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ConditionOperator.SmallerThan">
+            <summary>
+            小于
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ConditionOperator.StartsWith">
+            <summary>
+            以指定字符串为开始（作为字符串比较）
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ConditionOperator.EndsWith">
+            <summary>
+            以指定字符串为结尾（作为字符串比较）
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ConditionOperator.Contains">
+            <summary>
+            包含制定字符串（作为字符串比较）
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ConditionOperator.Positive">
+            <summary>
+            逻辑是（非判断操作符）
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ConditionOperator.Not">
+            <summary>
+            逻辑否（非判断操作符）
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ConditionOperator.NotEquals">
+            <summary>
+            不相等
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ConditionOperator.NotLargerThan">
+            <summary>
+            小于或等于
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ConditionOperator.NotSmallerThan">
+            <summary>
+            大于或等于
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ConditionOperator.NotStartsWith">
+            <summary>
+            以指定字符串为开始（作为字符串比较）
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ConditionOperator.NotEndsWith">
+            <summary>
+            以指定字符串为结尾（作为字符串比较）
+            </summary>
+        </member>
+        <member name="F:MyOrm.Common.ConditionOperator.NotContains">
+            <summary>
+            不包含制定字符串（作为字符串比较）
+            </summary>
+        </member>
+    </members>
+</doc>

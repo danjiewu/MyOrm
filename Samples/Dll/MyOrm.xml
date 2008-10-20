@@ -1,0 +1,406 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>MyOrm</name>
+    </assembly>
+    <members>
+        <member name="T:MyOrm.ObjectDAOBase">
+            <summary>
+            提供常用操作
+            </summary>
+        </member>
+        <member name="F:MyOrm.ObjectDAOBase.LikeEscapeChar">
+            <summary>
+            SQL语句中like条件中的转义符
+            </summary>
+        </member>
+        <member name="F:MyOrm.ObjectDAOBase.ParamAllFields">
+            <summary>
+            表示SQL查询中所有字段的标记
+            </summary>
+        </member>
+        <member name="F:MyOrm.ObjectDAOBase.ParamTable">
+            <summary>
+            表示SQL查询中表名的标记
+            </summary>
+        </member>
+        <member name="F:MyOrm.ObjectDAOBase.ParamFromTable">
+            <summary>
+            表示SQL查询中多表连接的标记
+            </summary>
+        </member>
+        <member name="F:MyOrm.ObjectDAOBase.ParamCondition">
+            <summary>
+            表示SQL查询中条件语句的标记
+            </summary>
+        </member>
+        <member name="F:MyOrm.ObjectDAOBase.sqlLike">
+            <summary>
+            对like条件的字符串内容中的转义符进行替换的正则表达式
+            </summary>
+        </member>
+        <member name="M:MyOrm.ObjectDAOBase.NewCommand">
+            <summary>
+            创建IDbCommand
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAOBase.ToSqlName(System.String)">
+            <summary>
+            名称转化为数据库合法名称
+            </summary>
+            <param name="name">字符串名称</param>
+            <returns>数据库合法名称</returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAOBase.ToSqlParam(System.String)">
+            <summary>
+            参数名称转化为数据库参数
+            </summary>
+            <param name="paramName">参数名称</param>
+            <returns>数据库参数</returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAOBase.BuildSql(System.String,MyOrm.Common.ConditionOperator,System.String)">
+            <summary>
+             根据表达式、条件比较符、值得到SQL字符串
+             </summary>
+             <param name="expression">表达式</param>
+             <param name="op">条件比较符</param>
+             <param name="value">值</param>
+             <returns></returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAOBase.BuildConditionSql(MyOrm.Common.Condition,System.Collections.IList)">
+            <summary>
+            根据查询条件生成SQL语句与SQL参数
+            </summary>
+            <param name="conditon">查询条件，可为查询条件集合或单个条件，为空表示无条件</param>
+            <param name="outputParams">供输出的参数列表，在该列表中添加SQL参数</param>
+            <returns>生成的SQL语句，null表示无条件</returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAOBase.BuildConditionSetSql(MyOrm.Common.ConditionSet,System.Collections.IList)">
+            <summary>
+            根据查询条件集合生成SQL语句与SQL参数
+            </summary>
+            <param name="conditionSet">查询条件的集合</param>
+            <param name="outputParams">供输出的参数列表，在该列表中添加SQL参数</param>
+            <returns>生成的SQL语句，null表示无条件</returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAOBase.BuildSimpleConditionSql(MyOrm.Common.SimpleCondition,System.Collections.IList)">
+            <summary>
+            根据简单查询条件生成SQL语句与SQL参数
+            </summary>
+            <param name="simpleCondition">简单查询条件</param>
+            <param name="outputParams">参数列表，在该列表中添加SQL参数</param>
+            <returns>生成的SQL语句</returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAOBase.BuildCustomConditionSql(MyOrm.Common.Condition,System.Collections.IList)">
+            <summary>
+            根据自定义条件生成SQL语句与SQL参数
+            </summary>
+            <param name="customConditon">自定义的查询条件</param>
+            <param name="outputParams">供输出的参数列表，在该列表中添加SQL参数</param>
+            <returns>生成的SQL语句，null表示无条件</returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAOBase.MakeParamCommand(System.String,System.Collections.IEnumerable)">
+            <summary>
+            根据SQL语句和参数建立IDbCommand
+            </summary>
+            <param name="SQL">SQL语句，SQL中可以包含参数信息，参数名为以0开始的递增整数，对应paramValues中值的下标</param>
+            <param name="paramValues">参数值，需要与SQL中的参数一一对应，为空时表示没有参数</param>
+            <returns>IDbCommand</returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAOBase.MakeConditionCommand(System.String,MyOrm.Common.Condition)">
+            <summary>
+            根据SQL语句和条件建立IDbCommand
+            </summary>
+            <param name="SQLWithParam">带参数的SQL语句，参数可以为"@AllFields","@Table","@FromTable","@Condition"之一
+            <example>"select @AllFields from @FromTable where @Condition"表示从表中查询所有符合条件的记录</example>
+            <example>"select count(*) from @FromTable "表示从表中所有记录的数量，conditions参数需为空</example>
+            <example>"delete from @Table where @Condition"表示从表中删除所有符合条件的记录</example>
+            </param>        
+            <param name="condition">条件，为null时表示无条件</param>
+            <returns>IDbCommand</returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAOBase.MakeIsKeyCondition(System.Data.IDbCommand)">
+            <summary>
+            为command创建根据主键查询的条件，在command中添加参数并返回where条件的语句
+            </summary>
+            <param name="command">要创建条件的数据库命令</param>
+            <returns>where条件的语句</returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAOBase.GetKeyValues(System.Object)">
+            <summary>
+            获取对象的主键值
+            </summary>
+            <param name="o">对象</param>
+            <returns>主键值，多个主键按照属性名称顺序排列</returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAOBase.ConvertToObjectValue(System.Object,MyOrm.Metadata.ColumnInfo)">
+            <summary>
+            将数据库取得的值转化为对象属性类型所对应的值
+            </summary>
+            <param name="dbValue">数据库取得的值</param>
+            <param name="column">列属性</param>
+            <returns>对象属性类型所对应的值</returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAOBase.ConvertToDBValue(System.Object,MyOrm.Metadata.ColumnInfo)">
+            <summary>
+            将对象的属性值转化为数据库中的值
+            </summary>
+            <param name="value">值</param>
+            <param name="column">列属性</param>
+            <returns>数据库中的值</returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAOBase.ThrowExceptionIfNoKeys">
+            <summary>
+            检查是否存在主键，若不存在则抛出异常
+            </summary>
+        </member>
+        <member name="M:MyOrm.ObjectDAOBase.ThrowExceptionIfWrongKeys(System.Object[])">
+            <summary>
+            检查主键数目是否正确，否则抛出异常
+            </summary>
+            <param name="keys">主键</param>
+        </member>
+        <member name="P:MyOrm.ObjectDAOBase.Connection">
+            <summary>
+            数据库连接
+            </summary>
+        </member>
+        <member name="P:MyOrm.ObjectDAOBase.DBNullValue">
+            <summary>
+            表示数据库null值
+            </summary>
+        </member>
+        <member name="P:MyOrm.ObjectDAOBase.Table">
+            <summary>
+            表信息
+            </summary>
+        </member>
+        <member name="P:MyOrm.ObjectDAOBase.TableName">
+            <summary>
+            表名
+            </summary>
+        </member>
+        <member name="P:MyOrm.ObjectDAOBase.FromTable">
+            <summary>
+            查询时使用的相关联的多个表
+            </summary>
+        </member>
+        <member name="P:MyOrm.ObjectDAOBase.SelectColumns">
+            <summary>
+            查询时需要获取的所有列
+            </summary>
+        </member>
+        <member name="P:MyOrm.ObjectDAOBase.AllFieldsSql">
+            <summary>
+            查询时需要获取的所有字段的Sql
+            </summary>
+        </member>
+        <member name="T:MyOrm.ObjectDAO`1">
+            <summary>
+            实体类的增删改操作
+            </summary>
+            <typeparam name="T">实体类型</typeparam>
+        </member>
+        <member name="T:MyOrm.ObjectViewDAO`1">
+            <summary>
+            实体类的查询操作
+            </summary>
+            <typeparam name="T">实体类型</typeparam>
+        </member>
+        <member name="M:MyOrm.ObjectViewDAO`1.GetObject(System.Object[])">
+            <summary>
+            根据主键获取对象
+            </summary>
+            <param name="keys">主键，多个主键按照主键名顺序排列</param>
+            <returns>对象，若不存在则返回null</returns>
+        </member>
+        <member name="M:MyOrm.ObjectViewDAO`1.Exists(System.Object[])">
+            <summary>
+            判断主键对应的对象是否存在
+            </summary>
+            <param name="keys">主键，多个主键按照名称顺序排列</param>
+            <returns>是否存在</returns>
+        </member>
+        <member name="M:MyOrm.ObjectViewDAO`1.Count(MyOrm.Common.Condition)">
+            <summary>
+            获取符合条件的对象个数
+            </summary>
+            <param name="condition">属性名与值的列表，若为null则表示没有条件</param>
+            <returns>符合条件的对象个数</returns>
+        </member>
+        <member name="M:MyOrm.ObjectViewDAO`1.Exists(MyOrm.Common.Condition)">
+            <summary>
+            判断符合条件的对象是否存在
+            </summary>
+            <param name="condition">属性名与值的列表，若为null则表示没有条件</param>
+            <returns>是否存在</returns>
+        </member>
+        <member name="M:MyOrm.ObjectViewDAO`1.Search(System.String,System.Object)">
+            <summary>
+            根据单个条件查询
+            </summary>
+            <param name="name">属性名</param>
+            <param name="value">值</param>
+            <returns>符合条件的对象列表</returns>
+        </member>
+        <member name="M:MyOrm.ObjectViewDAO`1.Search(System.String,MyOrm.Common.ConditionOperator,System.Object)">
+            <summary>
+            根据单个条件查询
+            </summary>
+            <param name="name">属性名</param>
+            <param name="op">条件判断操作符</param>
+            <param name="value">值</param>
+            <returns>符合条件的对象列表</returns>
+        </member>
+        <member name="M:MyOrm.ObjectViewDAO`1.Search(MyOrm.Common.Condition)">
+            <summary>
+            根据条件查询，多个条件以逻辑与连接
+            </summary>
+            <param name="condition">属性名与值的列表，若为null则表示没有条件</param>
+            <returns>符合条件的对象列表</returns>
+        </member>
+        <member name="M:MyOrm.ObjectViewDAO`1.SearchOne(MyOrm.Common.Condition)">
+            <summary>
+            获取单个符合条件的对象
+            </summary>
+            <param name="condition">属性名与值的列表，若为null则表示没有条件</param>
+            <returns>第一个符合条件的对象，若不存在则返回null</returns>
+        </member>
+        <member name="M:MyOrm.ObjectViewDAO`1.SearchSection(MyOrm.Common.Condition,System.Int32,System.Int32)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="condition">查询条件</param>
+            <param name="startIndex">起始位置</param>
+            <param name="sectionSize">最大记录数</param>
+            <returns>符合条件的分页对象列表</returns>
+        </member>
+        <member name="M:MyOrm.ObjectViewDAO`1.SearchSection(MyOrm.Common.Condition,System.Int32,System.Int32,System.String)">
+            <summary>
+            分页查询
+            </summary>
+            <param name="condition">查询条件</param>
+            <param name="startIndex">起始位置</param>
+            <param name="sectionSize">最大记录数</param>
+            <param name="orderby">排序字段</param>
+            <returns>符合条件的分页对象列表</returns>
+        </member>
+        <member name="M:MyOrm.ObjectViewDAO`1.ReadAll(System.Data.IDataReader)">
+            <summary>
+            读取所有记录并转化为对象集合，查询得到AllFieldsSQL时可用
+            </summary>
+            <param name="reader">只读结果集</param>
+            <returns>对象列表</returns>
+        </member>
+        <member name="M:MyOrm.ObjectViewDAO`1.ReadOne(System.Data.IDataReader)">
+            <summary>
+            从IDataReader中读取一条记录转化为对象，若无记录则返回null
+            </summary>
+            <param name="dataReader">IDataReader</param>
+            <returns>对象，若无记录则返回null</returns>
+        </member>
+        <member name="M:MyOrm.ObjectViewDAO`1.Read(System.Data.IDataRecord)">
+            <summary>
+            将一行记录转化为对象
+            </summary>
+            <param name="record">一行记录</param>
+            <returns>对象</returns>
+        </member>
+        <member name="P:MyOrm.ObjectViewDAO`1.Table">
+            <summary>
+            表信息
+            </summary>
+        </member>
+        <member name="P:MyOrm.ObjectViewDAO`1.ObjectExistsCommand">
+            <summary>
+            实现检查对象是否存在操作的IDbCommand
+            </summary>
+        </member>
+        <member name="P:MyOrm.ObjectViewDAO`1.GetObjectCommand">
+            <summary>
+            实现获取对象操作的IDbCommand
+            </summary>
+        </member>
+        <member name="M:MyOrm.ObjectDAO`1.Insert(`0)">
+            <summary>
+            将对象添加到数据库
+            </summary>
+            <param name="t">待添加的对象</param>
+            <returns>是否成功添加</returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAO`1.Update(`0)">
+            <summary>
+            将对象更新到数据库
+            </summary>
+            <param name="t">待更新的对象</param>
+            <returns>是否成功更新</returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAO`1.UpdateOrInsert(`0)">
+            <summary>
+            更新或添加对象，若存在则更新，若不存在则添加
+            </summary>
+            <param name="o">待更新或添加的对象</param>
+            <returns>是否成功更新或添加</returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAO`1.Delete(`0)">
+            <summary>
+            将对象从数据库删除
+            </summary>
+            <param name="t">待删除的对象</param>
+            <returns>是否成功删除</returns>
+        </member>
+        <member name="M:MyOrm.ObjectDAO`1.DeleteByKeys(System.Object[])">
+            <summary>
+            将指定主键的对象从数据库删除
+            </summary>
+            <param name="keys">待删除的对象的主键</param>
+            <returns>是否成功删除</returns>
+        </member>
+        <member name="P:MyOrm.ObjectDAO`1.InsertCommand">
+            <summary>
+            实现插入操作的IDbCommand
+            </summary>
+        </member>
+        <member name="P:MyOrm.ObjectDAO`1.UpdateCommand">
+            <summary>
+            实现更新操作的IDbCommand
+            </summary>
+        </member>
+        <member name="P:MyOrm.ObjectDAO`1.DeleteCommand">
+            <summary>
+            实现删除操作的IDbCommand
+            </summary>
+        </member>
+        <member name="T:MyOrm.MyOrmConfigurationSection">
+            <summary>
+            MyOrm配置项
+            </summary>
+        </member>
+        <member name="P:MyOrm.MyOrmConfigurationSection.DefaultConnection">
+            <summary>
+            默认数据库连接配置
+            </summary>
+        </member>
+        <member name="P:MyOrm.MyOrmConfigurationSection.TableInfoProvider">
+            <summary>
+            表信息提供类型名
+            </summary>
+        </member>
+        <member name="T:MyOrm.Configuration">
+            <summary>
+            配置
+            </summary>
+        </member>
+        <member name="P:MyOrm.Configuration.DefaultConnection">
+            <summary>
+            默认数据库连接
+            </summary>
+        </member>
+        <member name="P:MyOrm.Configuration.TableInfoProvider">
+            <summary>
+            表信息提供者
+            </summary>
+        </member>
+    </members>
+</doc>

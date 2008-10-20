@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{C1AD6519-153A-4104-B8AE-3EA8265B9FCA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -37,23 +37,19 @@
   <ItemGroup>
     <Reference Include="MyOrm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\MyOrm\MyOrm\bin\Debug\MyOrm.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\Dll\MyOrm.dll</HintPath>
     </Reference>
     <Reference Include="MyOrm.Attribute, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\MyOrm\MyOrm.Attribute\bin\Debug\MyOrm.Attribute.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\Dll\MyOrm.Attribute.dll</HintPath>
     </Reference>
     <Reference Include="MyOrm.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\MyOrm\MyOrm.Common\bin\Debug\MyOrm.Common.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\Dll\MyOrm.Common.dll</HintPath>
     </Reference>
     <Reference Include="MyOrm.Metadata, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\MyOrm\MyOrm.Metadata\bin\Debug\MyOrm.Metadata.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\Dll\MyOrm.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
