@@ -3,7 +3,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}</ProjectGuid>
     <OutputType>WinExe</OutputType>
@@ -37,23 +37,23 @@
   <ItemGroup>
     <Reference Include="Castle.DynamicProxy, Version=1.1.5.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\TDDOWNLOAD\Work\Castle-net-2.0-release-2007-9-20\bin\Castle.DynamicProxy.dll</HintPath>
+      <HintPath>..\Dll\Castle.DynamicProxy.dll</HintPath>
     </Reference>
     <Reference Include="MyOrm, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\MyOrm\MyOrm\bin\Debug\MyOrm.dll</HintPath>
+      <HintPath>..\Dll\MyOrm.dll</HintPath>
     </Reference>
     <Reference Include="MyOrm.Attribute, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\MyOrm\MyOrm.Attribute\bin\Debug\MyOrm.Attribute.dll</HintPath>
+      <HintPath>..\Dll\MyOrm.Attribute.dll</HintPath>
     </Reference>
     <Reference Include="MyOrm.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\MyOrm\MyOrm.Common\bin\Debug\MyOrm.Common.dll</HintPath>
+      <HintPath>..\Dll\MyOrm.Common.dll</HintPath>
     </Reference>
     <Reference Include="MyOrm.Metadata, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\MyOrm\MyOrm.Metadata\bin\Debug\MyOrm.Metadata.dll</HintPath>
+      <HintPath>..\Dll\MyOrm.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
