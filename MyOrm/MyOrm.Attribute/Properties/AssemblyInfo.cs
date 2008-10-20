@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("MyOrm.Attribute")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("eeParts")]
+[assembly: AssemblyCompany("Leo Wu")]
 [assembly: AssemblyProduct("MyOrm.Attribute")]
-[assembly: AssemblyCopyright("Copyright © eeParts 2008")]
+[assembly: AssemblyCopyright("Copyright © Leo Wu 2008")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
