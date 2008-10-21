@@ -174,13 +174,13 @@ namespace Northwind.Data
 			get { return category_Description; }			
 			set { category_Description = value; }
 		}
-		
-		[Column("Picture", Foreign = ProductsView.Category, ColumnMode = ColumnMode.Read)]
-		public byte[] Category_Picture
-		{
-			get { return category_Picture; }			
-			set { category_Picture = value; }
-		}
+
+        [Column("Picture", Foreign = ProductsView.Category, ColumnMode = ColumnMode.Read)]
+        public byte[] Category_Picture
+        {
+            get { return category_Picture; }
+            set { category_Picture = value; }
+        }
 		
 		[Column("CompanyName", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
 		public string Supplier_CompanyName
