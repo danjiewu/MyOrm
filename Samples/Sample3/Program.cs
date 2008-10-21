@@ -14,6 +14,7 @@ namespace Northwind
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+            NorthwindFactory.AsynInit();
             Application.Run(new Form1());
         }
     }

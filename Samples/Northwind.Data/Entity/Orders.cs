@@ -387,13 +387,13 @@ namespace Northwind.Data
 			get { return employee_Extension; }			
 			set { employee_Extension = value; }
 		}
-		
-		[Column("Photo", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
-		public byte[] Employee_Photo
-		{
-			get { return employee_Photo; }			
-			set { employee_Photo = value; }
-		}
+
+        [Column("Photo", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+        public byte[] Employee_Photo
+        {
+            get { return employee_Photo; }
+            set { employee_Photo = value; }
+        }
 		
 		[Column("Notes", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
 		public string Employee_Notes

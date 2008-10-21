@@ -30,6 +30,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample3", "Sample3\Sample3.
 		Debug.AspNetCompiler.Debug = "True"
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
+	ProjectSection(ProjectDependencies) = postProject
+		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0} = {4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution

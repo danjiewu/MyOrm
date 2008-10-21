@@ -153,13 +153,13 @@ namespace Northwind.Data
 			get { return extension; }			
 			set { extension = value; }
 		}
-		
-		[Column]
-		public byte[] Photo
-		{
-			get { return photo; }			
-			set { photo = value; }
-		}
+
+        [Column]
+        public byte[] Photo
+        {
+            get { return photo; }
+            set { photo = value; }
+        }
 		
 		[Column]
 		public string Notes
@@ -325,13 +325,13 @@ namespace Northwind.Data
 			get { return reportsToEmployee_Extension; }			
 			set { reportsToEmployee_Extension = value; }
 		}
-		
-		[Column("Photo", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
-		public byte[] ReportsToEmployee_Photo
-		{
-			get { return reportsToEmployee_Photo; }			
-			set { reportsToEmployee_Photo = value; }
-		}
+
+        [Column("Photo", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+        public byte[] ReportsToEmployee_Photo
+        {
+            get { return reportsToEmployee_Photo; }
+            set { reportsToEmployee_Photo = value; }
+        }
 		
 		[Column("Notes", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
 		public string ReportsToEmployee_Notes
