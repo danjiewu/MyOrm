@@ -36,7 +36,7 @@ namespace Northwind.Properties {
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:5735/remote.invoke")]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:5735/invoke.remote")]
         public string Sample3_Northwind_RemoteHttpHandleUrl {
             get {
                 return ((string)(this["Sample3_Northwind_RemoteHttpHandleUrl"]));
