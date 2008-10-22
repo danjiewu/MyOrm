@@ -45,25 +45,25 @@ namespace Northwind.RemoteAPI
                 {
                     ms.WriteTo(inputStream);
                 }
+            }
 
-                using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            using (HttpWebResponse response = (HttpWebResponse)request.GetResponse())
+            {
+                using (Stream outputStream = response.GetResponseStream())
                 {
-                    using (Stream outputStream = response.GetResponseStream())
+                    try
                     {
-                        try
-                        {
-                            bool success = (bool)serializer.Deserialize(outputStream);
-                            if (success)
-                                return serializer.Deserialize(outputStream);
-                            else
-                                throw (Exception)serializer.Deserialize(outputStream);
-                        }
-                        finally
-                        {
-                            logger.DebugFormat("[HttpDispatcher] DAO:{{{0}}} Method:{{{1}}} finished. {2} bytes recieved.", serviceName, method.Name, response.ContentLength);
-                        }
-
+                        bool success = (bool)serializer.Deserialize(outputStream);
+                        if (success)
+                            return serializer.Deserialize(outputStream);
+                        else
+                            throw (Exception)serializer.Deserialize(outputStream);
                     }
+                    finally
+                    {
+                        logger.DebugFormat("[HttpDispatcher] DAO:{{{0}}} Method:{{{1}}} finished. {2} bytes recieved.", serviceName, method.Name, response.ContentLength);
+                    }
+
                 }
             }
         }
