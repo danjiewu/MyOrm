@@ -203,25 +203,23 @@ namespace MyOrm
         /// <returns>符合条件的分页对象列表</returns>
         public virtual List<T> SearchSection(Condition condition, int startIndex, int sectionSize, string orderby)
         {
-            ColumnInfo column = Table.GetColumn(orderby);
-            if (column != null)
+            if (string.IsNullOrEmpty(orderby))
             {
-                orderby = ToSqlName(column.ColumnName);
-            }
-            else if (Table.Keys.Count != 0)
-            {
-                StringBuilder strKeys = new StringBuilder();
-                foreach (ColumnInfo key in Table.Keys)
+                if (Table.Keys.Count != 0)
                 {
-                    if (strKeys.Length != 0) strKeys.Append(",");
-                    strKeys.Append(ToSqlName(key.ColumnName));
+                    StringBuilder strKeys = new StringBuilder();
+                    foreach (ColumnInfo key in Table.Keys)
+                    {
+                        if (strKeys.Length != 0) strKeys.Append(",");
+                        strKeys.Append(ToSqlName(key.ColumnName));
+                    }
+                    orderby = strKeys.ToString();
                 }
-                orderby = strKeys.ToString();
-            }
-            else
-            {
-                //TODO: Add one column or all columns?
-                throw new Exception("No columns or keys to sort by.");
+                else
+                {
+                    //TODO: Add one column or all columns?
+                    throw new Exception("No columns or keys to sort by.");
+                }
             }
             using (IDbCommand command = MakeConditionCommand("select * from (select @AllFields, Row_Number() over (Order by " + orderby + ") as Row_Number from @FromTable where @Condition) as TempTable where Row_Number > " + startIndex + " and Row_Number <= " + (startIndex + sectionSize), condition))
             {
@@ -265,7 +263,7 @@ namespace MyOrm
         protected List<T> ReadAll(IDataReader reader)
         {
             List<T> results = new List<T>();
-            while(reader.Read())
+            while (reader.Read())
             {
                 results.Add(Read(reader));
             }
