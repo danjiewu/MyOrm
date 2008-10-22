@@ -141,7 +141,7 @@ namespace MyOrm
                     foreach (ColumnInfo column in SelectColumns)
                     {
                         if (strAllFields.Length != 0) strAllFields.Append(",");
-                        strAllFields.AppendFormat("{0}.{1} as {2}", ToSqlName(String.IsNullOrEmpty(column.ForeignTable) ? TableName : column.ForeignTable), ToSqlName(column.ColumnName), ToSqlName(column.PropertyName));
+                        strAllFields.AppendFormat("{0} as {1}", GetFullName(column), ToSqlName(column.PropertyName));
                     }
                     allFieldsSql = strAllFields.ToString();
                 }
@@ -158,6 +158,16 @@ namespace MyOrm
         protected virtual IDbCommand NewCommand()
         {
             return Connection.CreateCommand();
+        }
+
+        /// <summary>
+        /// 获取查询时的列全名
+        /// </summary>
+        /// <param name="column">列</param>
+        /// <returns></returns>
+        protected string GetFullName(ColumnInfo column)
+        {
+            return string.Format("{0}.{1}", ToSqlName(String.IsNullOrEmpty(column.ForeignTable) ? TableName : column.ForeignTable), ToSqlName(column.ColumnName));
         }
 
         /// <summary>
@@ -259,7 +269,7 @@ namespace MyOrm
                 if (column == null)
                     throw new Exception(String.Format("Property \"{0}\" does not exist in type \"{1}\".", simpleCondition.Expression, Table.ObjectType.FullName));
                 else
-                    expression = string.Format("{0}.{1}", ToSqlName(String.IsNullOrEmpty(column.ForeignTable) ? TableName : column.ForeignTable), ToSqlName(column.ColumnName));
+                    expression = GetFullName(column);
             }
             else
             {

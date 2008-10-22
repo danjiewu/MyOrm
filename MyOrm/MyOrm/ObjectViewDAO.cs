@@ -182,7 +182,7 @@ namespace MyOrm
         }
 
         /// <summary>
-        /// 分页查询
+        /// 按默认排序分页查询
         /// </summary>
         /// <param name="condition">查询条件</param>
         /// <param name="startIndex">起始位置</param>
@@ -194,7 +194,7 @@ namespace MyOrm
         }
 
         /// <summary>
-        /// 分页查询
+        /// 以升序进行分页查询
         /// </summary>
         /// <param name="condition">查询条件</param>
         /// <param name="startIndex">起始位置</param>
@@ -202,6 +202,20 @@ namespace MyOrm
         /// <param name="orderby">排序字段</param>
         /// <returns>符合条件的分页对象列表</returns>
         public virtual List<T> SearchSection(Condition condition, int startIndex, int sectionSize, string orderby)
+        {
+            return SearchSection(condition, startIndex, sectionSize, orderby, false);
+        }
+
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <param name="condition">查询条件</param>
+        /// <param name="startIndex">起始位置</param>
+        /// <param name="sectionSize">最大记录数</param>
+        /// <param name="orderby">排序字段</param>
+        /// <param name="desc">是否是倒序</param>
+        /// <returns>符合条件的分页对象列表</returns>
+        public virtual List<T> SearchSection(Condition condition, int startIndex, int sectionSize, string orderby, bool desc)
         {
             if (string.IsNullOrEmpty(orderby))
             {
@@ -221,7 +235,14 @@ namespace MyOrm
                     throw new Exception("No columns or keys to sort by.");
                 }
             }
-            using (IDbCommand command = MakeConditionCommand("select * from (select @AllFields, Row_Number() over (Order by " + orderby + ") as Row_Number from @FromTable where @Condition) as TempTable where Row_Number > " + startIndex + " and Row_Number <= " + (startIndex + sectionSize), condition))
+            else
+            {
+                ColumnInfo column = Table.GetColumnByProperty(orderby);
+                if (column != null)
+                    orderby = GetFullName(column);
+            }
+            string paramedSQL = String.Format("select * from (select @AllFields, Row_Number() over (Order by {0} {1}) as Row_Number from @FromTable where @Condition) as TempTable where Row_Number > {2} and Row_Number <= {3}", orderby, desc ? "desc" : null, startIndex, startIndex + sectionSize);
+            using (IDbCommand command = MakeConditionCommand(paramedSQL, condition))
             {
                 return ReadAll(command.ExecuteReader());
             }
@@ -246,9 +267,9 @@ namespace MyOrm
             return Search(condition);
         }
 
-        IList IObjectViewDAO.SearchSection(Condition condition, int startIndex, int sectionSize, string orderby)
+        IList IObjectViewDAO.SearchSection(Condition condition, int startIndex, int sectionSize, string orderby, bool desc)
         {
-            return SearchSection(condition, startIndex, sectionSize, orderby);
+            return SearchSection(condition, startIndex, sectionSize, orderby, desc);
         }
 
         #endregion

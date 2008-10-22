@@ -62,8 +62,9 @@ namespace MyOrm.Common
         /// <param name="startIndex">起始位置</param>
         /// <param name="sectionSize">最大记录数</param>
         /// <param name="orderby">排序字段</param>
+        /// <param name="desc">是否是倒序</param>
         /// <returns>符合条件的分页对象列表</returns>
-        List<T> SearchSection(Condition condition, int startIndex, int sectionSize, string orderby);
+        List<T> SearchSection(Condition condition, int startIndex, int sectionSize, string orderby, bool desc);
     }
     #endregion
 
@@ -122,8 +123,9 @@ namespace MyOrm.Common
         /// <param name="startIndex">起始位置</param>
         /// <param name="sectionSize">最大记录数</param>
         /// <param name="orderby">排序字段</param>
+        /// <param name="desc">是否是倒序</param>
         /// <returns>符合条件的分页对象列表</returns>
-        IList SearchSection(Condition condition, int startIndex, int sectionSize, string orderby);
+        IList SearchSection(Condition condition, int startIndex, int sectionSize, string orderby, bool desc);
     }
-    #endregion   
+    #endregion
 }
