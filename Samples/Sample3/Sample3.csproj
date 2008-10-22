@@ -105,12 +105,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Northwind.Data\Northwind.Data.csproj">
-      <Project>{F51FF5F7-4C99-49C1-95D6-88173B41C275}</Project>
-      <Name>Northwind.Data</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <WebReferences Include="Web References\" />
   </ItemGroup>
   <ItemGroup>
@@ -133,6 +127,12 @@
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
     <None Include="Web References\RemoteService\RemoteDAOService.disco" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Northwind.Data\Northwind.Data.csproj">
+      <Project>{F51FF5F7-4C99-49C1-95D6-88173B41C275}</Project>
+      <Name>Northwind.Data</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
