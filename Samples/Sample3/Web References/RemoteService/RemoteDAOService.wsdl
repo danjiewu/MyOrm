@@ -2,38 +2,38 @@
 <wsdl:definitions xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://northwind.com/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" targetNamespace="http://northwind.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
   <wsdl:types>
     <s:schema elementFormDefault="qualified" targetNamespace="http://northwind.com/">
-      <s:element name="SerializedRemoteInvoke">
+      <s:element name="SerializedInvoke">
         <s:complexType>
           <s:sequence>
             <s:element minOccurs="0" maxOccurs="1" name="serializedArgs" type="s:base64Binary" />
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="SerializedRemoteInvokeResponse">
+      <s:element name="SerializedInvokeResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="SerializedRemoteInvokeResult" type="s:base64Binary" />
+            <s:element minOccurs="0" maxOccurs="1" name="SerializedInvokeResult" type="s:base64Binary" />
           </s:sequence>
         </s:complexType>
       </s:element>
     </s:schema>
   </wsdl:types>
-  <wsdl:message name="SerializedRemoteInvokeSoapIn">
-    <wsdl:part name="parameters" element="tns:SerializedRemoteInvoke" />
+  <wsdl:message name="SerializedInvokeSoapIn">
+    <wsdl:part name="parameters" element="tns:SerializedInvoke" />
   </wsdl:message>
-  <wsdl:message name="SerializedRemoteInvokeSoapOut">
-    <wsdl:part name="parameters" element="tns:SerializedRemoteInvokeResponse" />
+  <wsdl:message name="SerializedInvokeSoapOut">
+    <wsdl:part name="parameters" element="tns:SerializedInvokeResponse" />
   </wsdl:message>
   <wsdl:portType name="RemoteDAOServiceSoap">
-    <wsdl:operation name="SerializedRemoteInvoke">
-      <wsdl:input message="tns:SerializedRemoteInvokeSoapIn" />
-      <wsdl:output message="tns:SerializedRemoteInvokeSoapOut" />
+    <wsdl:operation name="SerializedInvoke">
+      <wsdl:input message="tns:SerializedInvokeSoapIn" />
+      <wsdl:output message="tns:SerializedInvokeSoapOut" />
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="RemoteDAOServiceSoap" type="tns:RemoteDAOServiceSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="SerializedRemoteInvoke">
-      <soap:operation soapAction="http://northwind.com/SerializedRemoteInvoke" style="document" />
+    <wsdl:operation name="SerializedInvoke">
+      <soap:operation soapAction="http://northwind.com/SerializedInvoke" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
@@ -44,8 +44,8 @@
   </wsdl:binding>
   <wsdl:binding name="RemoteDAOServiceSoap12" type="tns:RemoteDAOServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
-    <wsdl:operation name="SerializedRemoteInvoke">
-      <soap12:operation soapAction="http://northwind.com/SerializedRemoteInvoke" style="document" />
+    <wsdl:operation name="SerializedInvoke">
+      <soap12:operation soapAction="http://northwind.com/SerializedInvoke" style="document" />
       <wsdl:input>
         <soap12:body use="literal" />
       </wsdl:input>
