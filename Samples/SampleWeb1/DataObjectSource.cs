@@ -20,6 +20,11 @@ namespace Northwind
             }
         }
 
+        public List<T> Select(Condition condition)
+        {
+            return ObjectViewDAO.Search(condition);
+        }
+
         public List<T> Select(Condition condition, int startRowIndex, int maximumRows, string orderBy)
         {
             bool desc = false;
