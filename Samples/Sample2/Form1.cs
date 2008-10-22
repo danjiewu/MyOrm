@@ -65,7 +65,7 @@ namespace Northwind
             //MyOrm.Configuration.DefaultConnection.Open();
             Condition condition = null;
             if (!String.IsNullOrEmpty(textBoxValue.Text)) condition = new SimpleCondition(SelectedProperty.Name, ConditionOperator.Contains, textBoxValue.Text);
-            dataGridView1.DataSource = NorthwindFactory.DAOFactory.GetObjectViewDAO(SelectedType).Search(condition);
+            dataGridView1.DataSource = NorthwindFactory.GetObjectViewDAO(SelectedType).Search(condition);
             //MyOrm.Configuration.DefaultConnection.Close();
         }
     }

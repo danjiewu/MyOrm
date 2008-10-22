@@ -6,6 +6,7 @@ using Castle.DynamicProxy;
 using System.Reflection;
 using MyOrm;
 using System.Data;
+using MyOrm.Common;
 
 namespace Northwind
 {
@@ -24,6 +25,16 @@ namespace Northwind
                 field.SetValue(factory, generator.CreateProxy(dao.GetType().GetInterfaces(), interceptor, dao));
             }
             return factory;
+        }
+
+        public static IObjectDAO GetObjectDAO(Type objectType)
+        {
+            return DAOFactoryUtil.GetObjectDAO(DAOFactory, objectType);
+        }
+
+        public static IObjectViewDAO GetObjectViewDAO(Type objectType)
+        {
+            return DAOFactoryUtil.GetObjectViewDAO(DAOFactory, objectType);
         }
     }
 

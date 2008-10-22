@@ -23,7 +23,7 @@ namespace SampleService
     {
 
         [WebMethod]
-        public byte[] SerializedRemoteInvoke(byte[] serializedArgs)
+        public byte[] SerializedInvoke(byte[] serializedArgs)
         {
             using (MemoryStream ms = new MemoryStream(serializedArgs))
             {
