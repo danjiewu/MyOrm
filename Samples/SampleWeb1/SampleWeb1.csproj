@@ -81,7 +81,7 @@
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
     <Compile Include="NorthwindFactory.cs" />
-    <Compile Include="ProductsViewSource.cs" />
+    <Compile Include="DataObjectSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
