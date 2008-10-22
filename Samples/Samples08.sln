@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample3", "Sample3\Sample3.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleService", "SampleService\SampleService.csproj", "{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWeb1", "SampleWeb1\SampleWeb1.csproj", "{990E657F-5C0C-44DC-9AF8-609413521141}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -41,6 +43,10 @@ Global
 		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{990E657F-5C0C-44DC-9AF8-609413521141}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{990E657F-5C0C-44DC-9AF8-609413521141}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{990E657F-5C0C-44DC-9AF8-609413521141}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{990E657F-5C0C-44DC-9AF8-609413521141}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -34,6 +34,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample2", "Sample2\Sample2.
 		Release.AspNetCompiler.Debug = "False"
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWeb1", "SampleWeb1\SampleWeb1.csproj", "{990E657F-5C0C-44DC-9AF8-609413521141}"
+	ProjectSection(WebsiteProperties) = preProject
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.Debug = "False"
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -64,6 +70,10 @@ Global
 		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{990E657F-5C0C-44DC-9AF8-609413521141}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{990E657F-5C0C-44DC-9AF8-609413521141}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{990E657F-5C0C-44DC-9AF8-609413521141}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{990E657F-5C0C-44DC-9AF8-609413521141}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
