@@ -98,6 +98,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="RemoteAPI\RemoteDAOFactory.cs" />
+    <Compile Include="RemoteAPI\RemoteDispatcher.cs" />
+    <Compile Include="RemoteAPI\RemoteInteceptor.cs" />
     <Compile Include="Web References\RemoteService\Reference.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

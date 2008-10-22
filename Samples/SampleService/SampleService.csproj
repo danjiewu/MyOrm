@@ -71,6 +71,7 @@
       <DependentUpon>RemoteDAOService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="RemoteHttpHandler.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Northwind.Data\Northwind.Data.csproj">
