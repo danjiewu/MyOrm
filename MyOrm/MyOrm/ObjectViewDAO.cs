@@ -240,6 +240,10 @@ namespace MyOrm
                 ColumnInfo column = Table.GetColumnByProperty(orderby);
                 if (column != null)
                     orderby = GetFullName(column);
+                else
+                {
+                    //TODO: The orderby is not a safe sql string. Throw exception or not?
+                }
             }
             string paramedSQL = String.Format("select * from (select @AllFields, Row_Number() over (Order by {0} {1}) as Row_Number from @FromTable where @Condition) as TempTable where Row_Number > {2} and Row_Number <= {3}", orderby, desc ? "desc" : null, startIndex, startIndex + sectionSize);
             using (IDbCommand command = MakeConditionCommand(paramedSQL, condition))
