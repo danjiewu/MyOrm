@@ -9,7 +9,6 @@
 <body>
     <form id="form1" runat="server">
     <div>
-        &nbsp;
         <asp:GridView ID="GridView1" runat="server" AllowPaging="True" AllowSorting="True"
             AutoGenerateColumns="False" DataSourceID="ObjectDataSource1">
             <Columns>
@@ -44,8 +43,8 @@
                 <asp:CheckBoxField DataField="Discontinued" HeaderText="Discontinued" SortExpression="Discontinued" />
             </Columns>
         </asp:GridView>
-        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" EnablePaging="True" OldValuesParameterFormatString="original_{0}" SelectCountMethod="Count" SelectMethod="Select"
-            SortParameterName="orderBy" TypeName="Northwind.ProductsViewSource">
+        <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" EnablePaging="True" OldValuesParameterFormatString="original_{0}"
+            SelectCountMethod="Count" SelectMethod="Select" SortParameterName="orderBy" TypeName="Northwind.ProductsViewSource">
             <SelectParameters>
                 <asp:Parameter Name="condition" Type="Object" />
             </SelectParameters>
