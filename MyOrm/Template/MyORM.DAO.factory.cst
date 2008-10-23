@@ -58,26 +58,5 @@ namespace <%= Namespace %>
 		public <%= String.Format(InterfaceNameFormat,ViewClassName(sourceTable))%> <%=String.Format(DAONameFormat,ViewClassName(sourceTable))%> { get { return _<%=String.Format(DAONameFormat,ViewClassName(sourceTable))%>; } }
 			<% } %>
 		<% } %>
-		
-		public IObjectDAO GetObjectDAO(Type objectType)
-		{
-			if(objectType == null) return null;
-			<%foreach(TableSchema sourceTable in SourceDatabase.Tables){%>
-			else if(objectType == typeof(<%= ClassName(sourceTable)%>)) return (IObjectDAO)<%=String.Format(DAONameFormat, ClassName(sourceTable))%>;
-			<% } %>
-			else return GetObjectDAO(objectType.BaseType);
-		}
-		
-		public IObjectViewDAO GetObjectViewDAO(Type objectType)
-		{
-			if(objectType == null) return null;
-			<%foreach(TableSchema sourceTable in SourceDatabase.Tables){%>
-			else if(objectType == typeof(<%= ClassName(sourceTable)%>)) return (IObjectViewDAO)<%=String.Format(DAONameFormat, ClassName(sourceTable))%>;
-				<%if(sourceTable.ForeignKeys.Count!=0){%>
-			else if(objectType == typeof(<%= ViewClassName(sourceTable)%>)) return (IObjectViewDAO)<%=String.Format(DAONameFormat, ViewClassName(sourceTable))%>;			
-				<% } %>
-			<% } %>
-			else return null;
-		}
 	}
 }
