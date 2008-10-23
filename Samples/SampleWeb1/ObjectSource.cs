@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace Northwind
 {
     [DataObject]
-    public class DataObjectSource<T>
+    public class ObjectSource<T>
     {
         private IObjectViewDAO<T> objectViewDAO;
         public IObjectViewDAO<T> ObjectViewDAO
@@ -51,24 +51,24 @@ namespace Northwind
         }
     }
 
-    public class CategoriesSource : DataObjectSource<Categories> { }
-    public class CustomerCustomerDemoSource : DataObjectSource<CustomerCustomerDemo> { }
-    public class CustomerDemographicsSource : DataObjectSource<CustomerDemographics> { }
-    public class CustomersSource : DataObjectSource<Customers> { }
-    public class EmployeesSource : DataObjectSource<Employees> { }
-    public class EmployeeTerritoriesSource : DataObjectSource<EmployeeTerritories> { }
-    public class OrderDetailsSource : DataObjectSource<OrderDetails> { }
-    public class OrdersSource : DataObjectSource<Orders> { }
-    public class ProductsSource : DataObjectSource<Products> { }
-    public class RegionSource : DataObjectSource<Region> { }
-    public class ShippersSource : DataObjectSource<Shippers> { }
-    public class SuppliersSource : DataObjectSource<Suppliers> { }
-    public class TerritoriesSource : DataObjectSource<Territories> { }
-    public class CustomerCustomerDemoViewSource : DataObjectSource<CustomerCustomerDemoView> { }
-    public class EmployeesViewSource : DataObjectSource<EmployeesView> { }
-    public class EmployeeTerritoriesViewSource : DataObjectSource<EmployeeTerritoriesView> { }
-    public class OrderDetailsViewSource : DataObjectSource<OrderDetailsView> { }
-    public class OrdersViewSource : DataObjectSource<OrdersView> { }
-    public class ProductsViewSource : DataObjectSource<ProductsView> { }
-    public class TerritoriesViewSource : DataObjectSource<TerritoriesView> { }
+    public class CategoriesSource : ObjectSource<Categories> { }
+    public class CustomerCustomerDemoSource : ObjectSource<CustomerCustomerDemo> { }
+    public class CustomerDemographicsSource : ObjectSource<CustomerDemographics> { }
+    public class CustomersSource : ObjectSource<Customers> { }
+    public class EmployeesSource : ObjectSource<Employees> { }
+    public class EmployeeTerritoriesSource : ObjectSource<EmployeeTerritories> { }
+    public class OrderDetailsSource : ObjectSource<OrderDetails> { }
+    public class OrdersSource : ObjectSource<Orders> { }
+    public class ProductsSource : ObjectSource<Products> { }
+    public class RegionSource : ObjectSource<Region> { }
+    public class ShippersSource : ObjectSource<Shippers> { }
+    public class SuppliersSource : ObjectSource<Suppliers> { }
+    public class TerritoriesSource : ObjectSource<Territories> { }
+    public class CustomerCustomerDemoViewSource : ObjectSource<CustomerCustomerDemoView> { }
+    public class EmployeesViewSource : ObjectSource<EmployeesView> { }
+    public class EmployeeTerritoriesViewSource : ObjectSource<EmployeeTerritoriesView> { }
+    public class OrderDetailsViewSource : ObjectSource<OrderDetailsView> { }
+    public class OrdersViewSource : ObjectSource<OrdersView> { }
+    public class ProductsViewSource : ObjectSource<ProductsView> { }
+    public class TerritoriesViewSource : ObjectSource<TerritoriesView> { }
 }
