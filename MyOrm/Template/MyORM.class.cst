@@ -107,7 +107,7 @@ namespace <%= Namespace %>
 		#region Member Variables		
 		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
 			<%foreach(ColumnSchema column in key.PrimaryKeyTable.NonKeyColumns){%>
-		private <%= MemberType(column) %> <%= ForeignMemberName(key, column) %>;			
+		private <%= NullableType(column) %> <%= ForeignMemberName(key, column) %>;			
 			<%}%>			
 		<%}%>		
 		#endregion
@@ -121,7 +121,7 @@ namespace <%= Namespace %>
 		/// </summary>
 				<%}%>
 		[Column("<%=column.Name%>", Foreign = <%=ViewClassName(SourceTable)%>.<%=ForeignTableAliasName(key)%>, ColumnMode = ColumnMode.Read)]
-		public <%= MemberType(column) %> <%= ForeignPropertyName(key, column) %>
+		public <%= NullableType(column) %> <%= ForeignPropertyName(key, column) %>
 		{
 			get { return <%= ForeignMemberName(key, column) %>; }			
 			set { <%= ForeignMemberName(key, column) %> = value; }

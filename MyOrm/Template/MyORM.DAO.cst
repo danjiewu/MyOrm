@@ -32,18 +32,22 @@ private string ViewInterfaceName{
  	get{return string.Format(InterfaceNameFormat,ViewClassName(SourceTable));}
 }
 
-private string RecordValue(string property, ColumnSchema column){	
+private string ReadValue(string property, ColumnSchema column){	
 	if(column.AllowDBNull)
 	{
-		string typeCast = column.DataType == DbType.Object ? null : "(" + MemberType(column) + ")";
-		string nullValue = IsValueType(column) ? "default(" + MemberType(column) + ")" : "null";		
-		return "record.IsDBNull(record.GetOrdinal(" + property + "))? " + nullValue + " : " + typeCast + "record[" + property + "]";	
+		return ReadNullableValue(property, column);
 	}
 	else
 	{
 		string typeCast = column.DataType == DbType.Object ? null : "(" + NativeType(column) + ")";
 		return typeCast + "record[" + property + "]";
 	}
+}
+
+private string ReadNullableValue(string property, ColumnSchema column){	
+	string typeCast = column.DataType == DbType.Object ? null : "(" + NativeType(column) + ")";
+	string nullValue = IsValueType(column) ? "default(" + NativeType(column) + ")" : "null";		
+	return "record.IsDBNull(record.GetOrdinal(" + property + "))? " + nullValue + " : " + typeCast + "record[" + property + "]";	
 }
 
 </script>
@@ -69,7 +73,7 @@ namespace <%= Namespace %>
 			<%=ClassName(SourceTable)%> o = new <%=ClassName(SourceTable)%>();
 			<% foreach(ColumnSchema column in SourceTable.Columns) { %>
 			<% string property = PropertyString(column, ClassName(SourceTable), PropertyName(column)); %>
-			o.<%=PropertyName(column)%> = <%=RecordValue(property, column)%>;
+			o.<%=PropertyName(column)%> = <%=ReadValue(property, column)%>;
 			<% } %>	
 			return o;
 		}
@@ -127,12 +131,12 @@ namespace <%= Namespace %>
 			<%=ViewClassName(SourceTable)%> o = new <%=ViewClassName(SourceTable)%>();
 			<% foreach(ColumnSchema column in SourceTable.Columns) { %>
 			<% string property = PropertyString(column, ClassName(SourceTable), PropertyName(column)); %>
-			o.<%=PropertyName(column)%> = <%=RecordValue(property, column)%>;
+			o.<%=PropertyName(column)%> = <%=ReadValue(property, column)%>;
 			<% } %>
 			<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
 				<%foreach(ColumnSchema column in key.PrimaryKeyTable.NonKeyColumns){%>
 				<% string property = PropertyString(column, ViewClassName(SourceTable), ForeignPropertyName(key, column)); %>
-			o.<%=ForeignPropertyName(key, column)%> = <%=RecordValue(property, column)%>;
+			o.<%=ForeignPropertyName(key, column)%> = <%=ReadNullableValue(property, column)%>;
 				<%}%>			
 			<%}%>
 			return o;

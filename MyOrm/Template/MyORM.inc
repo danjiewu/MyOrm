@@ -156,14 +156,19 @@ public bool IsValueType(ColumnSchema column)
 		case DbType.String:
 		case DbType.StringFixedLength:
 		case DbType.Binary:
-		case DbType.Object: return false;		
+		case DbType.Object:
+			return false;		
 		default:
 			return true;
 	}
 }
 
+public string NullableType(ColumnSchema column){
+	return NativeType(column) + (IsValueType(column) && UseNullable ? "?" : null);
+}
+
 public string MemberType(ColumnSchema column)
 {
-	return NativeType(column) + ((IsValueType(column) && column.AllowDBNull && UseNullable) ? "?" : null);
+	return column.AllowDBNull ? NullableType(column) : NativeType(column);
 }
 </Script>
