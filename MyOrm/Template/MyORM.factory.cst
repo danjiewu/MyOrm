@@ -47,28 +47,28 @@ namespace <%= Namespace %>
 		<%= String.Format(InterfaceNameFormat,ViewClassName(sourceTable))%> <%=String.Format(DAONameFormat,ViewClassName(sourceTable))%> { get; }
 			<% } %>
 		<% } %>
+	}
+	
+	public static class DAOFactoryUtil{				
+		public static IObjectDAO GetObjectDAO(<%=String.Format(InterfaceNameFormat,String.Empty)%>Factory factory, Type objectType)
+		{
+			if(objectType == null) return null;
+			<%foreach(TableSchema sourceTable in SourceDatabase.Tables){%>
+			else if(objectType == typeof(<%= ClassName(sourceTable)%>)) return (IObjectDAO)factory.<%=String.Format(DAONameFormat, ClassName(sourceTable))%>;
+			<% } %>
+			else return GetObjectDAO(factory, objectType.BaseType);
+		}
 		
-		public static class DAOFactoryUtil{				
-			public static IObjectDAO GetObjectDAO(<%=String.Format(InterfaceNameFormat,String.Empty)%>Factory factory, Type objectType)
-			{
-				if(objectType == null) return null;
-				<%foreach(TableSchema sourceTable in SourceDatabase.Tables){%>
-				else if(objectType == typeof(<%= ClassName(sourceTable)%>)) return (IObjectDAO)factory.<%=String.Format(DAONameFormat, ClassName(sourceTable))%>;
+		public static IObjectViewDAO GetObjectViewDAO(<%=String.Format(InterfaceNameFormat,String.Empty)%>Factory factory, Type objectType)
+		{
+			if(objectType == null) return null;
+			<%foreach(TableSchema sourceTable in SourceDatabase.Tables){%>
+			else if(objectType == typeof(<%= ClassName(sourceTable)%>)) return (IObjectViewDAO)factory.<%=String.Format(DAONameFormat, ClassName(sourceTable))%>;
+				<%if(sourceTable.ForeignKeys.Count!=0){%>
+			else if(objectType == typeof(<%= ViewClassName(sourceTable)%>)) return (IObjectViewDAO)factory.<%=String.Format(DAONameFormat, ViewClassName(sourceTable))%>;			
 				<% } %>
-				else return GetObjectDAO(factory, objectType.BaseType);
-			}
-			
-			public static IObjectViewDAO GetObjectViewDAO(<%=String.Format(InterfaceNameFormat,String.Empty)%>Factory factory, Type objectType)
-			{
-				if(objectType == null) return null;
-				<%foreach(TableSchema sourceTable in SourceDatabase.Tables){%>
-				else if(objectType == typeof(<%= ClassName(sourceTable)%>)) return (IObjectViewDAO)factory.<%=String.Format(DAONameFormat, ClassName(sourceTable))%>;
-					<%if(sourceTable.ForeignKeys.Count!=0){%>
-				else if(objectType == typeof(<%= ViewClassName(sourceTable)%>)) return (IObjectViewDAO)factory.<%=String.Format(DAONameFormat, ViewClassName(sourceTable))%>;			
-					<% } %>
-				<% } %>
-				else return null;
-			}
+			<% } %>
+			else return null;
 		}
 	}
 }

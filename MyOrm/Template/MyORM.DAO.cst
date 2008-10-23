@@ -45,8 +45,8 @@ private string ReadValue(string property, ColumnSchema column){
 }
 
 private string ReadNullableValue(string property, ColumnSchema column){	
-	string typeCast = column.DataType == DbType.Object ? null : "(" + NativeType(column) + ")";
-	string nullValue = IsValueType(column) ? "default(" + NativeType(column) + ")" : "null";		
+	string typeCast = column.DataType == DbType.Object ? null : "(" + MemberType(column) + ")";
+	string nullValue = IsValueType(column) ? "default(" + MemberType(column) + ")" : "null";		
 	return "record.IsDBNull(record.GetOrdinal(" + property + "))? " + nullValue + " : " + typeCast + "record[" + property + "]";	
 }
 
