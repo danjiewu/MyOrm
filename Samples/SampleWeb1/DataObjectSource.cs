@@ -20,11 +20,19 @@ namespace Northwind
             }
         }
 
+        [DataObjectMethod(DataObjectMethodType.Select, true)]
         public List<T> Select(Condition condition)
         {
             return ObjectViewDAO.Search(condition);
         }
 
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
+        public List<T> Select(Condition condition, int startRowIndex, int maximumRows)
+        {
+            return ObjectViewDAO.SearchSection(condition, startRowIndex, maximumRows, null, false);
+        }
+
+        [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<T> Select(Condition condition, int startRowIndex, int maximumRows, string orderBy)
         {
             bool desc = false;
