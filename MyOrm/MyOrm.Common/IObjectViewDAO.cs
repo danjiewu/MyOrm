@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Collections;
+using System.ComponentModel;
 
 namespace MyOrm.Common
 {
@@ -62,9 +63,9 @@ namespace MyOrm.Common
         /// <param name="startIndex">起始位置</param>
         /// <param name="sectionSize">最大记录数</param>
         /// <param name="orderby">排序字段</param>
-        /// <param name="desc">是否是倒序</param>
+        /// <param name="direction">排列顺序</param>
         /// <returns>符合条件的分页对象列表</returns>
-        List<T> SearchSection(Condition condition, int startIndex, int sectionSize, string orderby, bool desc);
+        List<T> SearchSection(Condition condition, int startIndex, int sectionSize, string orderby, ListSortDirection direction);
     }
     #endregion
 
@@ -123,9 +124,9 @@ namespace MyOrm.Common
         /// <param name="startIndex">起始位置</param>
         /// <param name="sectionSize">最大记录数</param>
         /// <param name="orderby">排序字段</param>
-        /// <param name="desc">是否是倒序</param>
+        /// <param name="direction">排列顺序</param>
         /// <returns>符合条件的分页对象列表</returns>
-        IList SearchSection(Condition condition, int startIndex, int sectionSize, string orderby, bool desc);
+        IList SearchSection(Condition condition, int startIndex, int sectionSize, string orderby, ListSortDirection direction);
     }
     #endregion
 }
