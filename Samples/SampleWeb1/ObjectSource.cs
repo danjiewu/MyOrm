@@ -29,20 +29,20 @@ namespace Northwind
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<T> Select(Condition condition, int startRowIndex, int maximumRows)
         {
-            return ObjectViewDAO.SearchSection(condition, startRowIndex, maximumRows, null, false);
+            return ObjectViewDAO.SearchSection(condition, startRowIndex, maximumRows, null, ListSortDirection.Ascending);
         }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<T> Select(Condition condition, int startRowIndex, int maximumRows, string orderBy)
         {
-            bool desc = false;
+            ListSortDirection direction = ListSortDirection.Ascending;
             if (!String.IsNullOrEmpty(orderBy))
             {
                 string[] args = orderBy.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 orderBy = args[0];
-                desc = args.Length > 1 && String.Compare(args[1], "desc", true) == 0;
+                direction = args.Length > 1 && String.Compare(args[1], "desc", true) == 0 ? ListSortDirection.Descending : ListSortDirection.Ascending;
             }
-            return ObjectViewDAO.SearchSection(condition, startRowIndex, maximumRows, orderBy, desc);
+            return ObjectViewDAO.SearchSection(condition, startRowIndex, maximumRows, orderBy, direction);
         }
 
         public int Count(Condition condition)
