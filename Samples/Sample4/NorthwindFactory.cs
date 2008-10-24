@@ -1,30 +1,45 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
+using Northwind.RemoteAPI;
 using Northwind.Data;
-using Castle.DynamicProxy;
-using System.Reflection;
-using MyOrm;
-using System.Data;
 using MyOrm.Common;
 
 namespace Northwind
 {
     public class NorthwindFactory
     {
-        public static IDAOFactory DAOFactory = GenerateFactoryProxy();
+        private static readonly object syncLock = new object();
+        private static IDAOFactory _daoFactory;
 
-        private static IDAOFactory GenerateFactoryProxy()
+        public static IDAOFactory DAOFactory
         {
-            ProxyGenerator generator = new ProxyGenerator();
-            DAOInterceptor interceptor = new DAOInterceptor();
-            IDAOFactory factory = new DAOFactory();
-            foreach (FieldInfo field in factory.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic))
+            get
             {
-                object dao = field.GetValue(factory);
-                field.SetValue(factory, generator.CreateProxy(dao.GetType().GetInterfaces(), interceptor, dao));
+                if (_daoFactory == null)
+                {
+                    GenerateFactoryProxy();
+                }
+                return NorthwindFactory._daoFactory;
             }
-            return factory;
+        }
+
+        public static void GenerateFactoryProxy()
+        {
+            lock (syncLock)
+            {
+                if (_daoFactory == null)
+                {
+                    //_daoFactory = RemoteDAOFactory.GenerateRemoteHttpHandleFactory();
+                    _daoFactory = RemoteDAOFactory.GenerateRemoteWebServiceFactory();
+                }
+            }
+        }
+
+        public static void AsynInit()
+        {
+            new Thread(GenerateFactoryProxy).Start();
         }
 
         public static IObjectDAO GetObjectDAO(Type objectType)
@@ -36,25 +51,5 @@ namespace Northwind
         {
             return DAOFactoryUtil.GetObjectViewDAO(DAOFactory, objectType);
         }
-    }
-
-    public class DAOInterceptor : IInterceptor
-    {
-        private static readonly object syncLock = new object();
-        #region IInterceptor 成员
-
-        public object Intercept(IInvocation invocation, params object[] args)
-        {
-            lock (syncLock)
-            {
-                ObjectDAOBase dao = (ObjectDAOBase)invocation.InvocationTarget;
-                if (dao.Connection.State == ConnectionState.Closed) dao.Connection.Open();
-                object ret = invocation.Proceed(args);
-                if (dao.Connection.State == ConnectionState.Open) dao.Connection.Close();
-                return ret;
-            }
-        }
-
-        #endregion
     }
 }

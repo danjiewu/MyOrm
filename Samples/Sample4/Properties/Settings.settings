@@ -1,7 +1,12 @@
 ﻿<?xml version='1.0' encoding='utf-8'?>
-<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)">
-  <Profiles>
-    <Profile Name="(Default)" />
-  </Profiles>
-  <Settings />
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Northwind.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="Sample4_Northwind_RemoteHttpHandleUrl" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">http://localhost:5735/invoke.remote</Value>
+    </Setting>
+    <Setting Name="Sample4_RemoteService_RemoteDAOService" Type="(Web Service URL)" Scope="Application">
+      <Value Profile="(Default)">http://localhost:5735/RemoteDAOService.asmx</Value>
+    </Setting>
+  </Settings>
 </SettingsFile>

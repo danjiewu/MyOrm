@@ -22,5 +22,24 @@ namespace Northwind.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:5735/invoke.remote")]
+        public string Sample4_Northwind_RemoteHttpHandleUrl {
+            get {
+                return ((string)(this["Sample4_Northwind_RemoteHttpHandleUrl"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
+        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:5735/RemoteDAOService.asmx")]
+        public string Sample4_RemoteService_RemoteDAOService {
+            get {
+                return ((string)(this["Sample4_RemoteService_RemoteDAOService"]));
+            }
+        }
     }
 }

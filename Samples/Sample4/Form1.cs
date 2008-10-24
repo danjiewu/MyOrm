@@ -59,7 +59,7 @@ namespace Northwind
         {
             comboBoxProperty.DataSource = SelectedType.GetProperties();
             conditionPagedSource1.ObjectType = SelectedType;
-            conditionPagedSource1.Clear();
+            conditionPagedSource1.Condition = null;
         }
 
         private void buttonSearch_Click(object sender, EventArgs e)
