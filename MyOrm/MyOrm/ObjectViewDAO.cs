@@ -5,6 +5,7 @@ using System.Data;
 using System.Collections;
 using MyOrm.Metadata;
 using MyOrm.Common;
+using System.ComponentModel;
 
 namespace MyOrm
 {
@@ -203,7 +204,7 @@ namespace MyOrm
         /// <returns>符合条件的分页对象列表</returns>
         public virtual List<T> SearchSection(Condition condition, int startIndex, int sectionSize, string orderby)
         {
-            return SearchSection(condition, startIndex, sectionSize, orderby, false);
+            return SearchSection(condition, startIndex, sectionSize, orderby, ListSortDirection.Ascending);
         }
 
         /// <summary>
@@ -213,9 +214,9 @@ namespace MyOrm
         /// <param name="startIndex">起始位置</param>
         /// <param name="sectionSize">最大记录数</param>
         /// <param name="orderby">排序字段</param>
-        /// <param name="desc">是否是倒序</param>
+        /// <param name="direction">排列顺序</param>
         /// <returns>符合条件的分页对象列表</returns>
-        public virtual List<T> SearchSection(Condition condition, int startIndex, int sectionSize, string orderby, bool desc)
+        public virtual List<T> SearchSection(Condition condition, int startIndex, int sectionSize, string orderby, ListSortDirection direction)
         {
             if (string.IsNullOrEmpty(orderby))
             {
@@ -245,7 +246,7 @@ namespace MyOrm
                     //TODO: The orderby is not a safe sql string. Throw exception or not?
                 }
             }
-            string paramedSQL = String.Format("select * from (select @AllFields, Row_Number() over (Order by {0} {1}) as Row_Number from @FromTable where @Condition) as TempTable where Row_Number > {2} and Row_Number <= {3}", orderby, desc ? "desc" : null, startIndex, startIndex + sectionSize);
+            string paramedSQL = String.Format("select * from (select @AllFields, Row_Number() over (Order by {0} {1}) as Row_Number from @FromTable where @Condition) as TempTable where Row_Number > {2} and Row_Number <= {3}", orderby, direction == ListSortDirection.Ascending ? "asc" : "desc", startIndex, startIndex + sectionSize);
             using (IDbCommand command = MakeConditionCommand(paramedSQL, condition))
             {
                 return ReadAll(command.ExecuteReader());
@@ -271,9 +272,9 @@ namespace MyOrm
             return Search(condition);
         }
 
-        IList IObjectViewDAO.SearchSection(Condition condition, int startIndex, int sectionSize, string orderby, bool desc)
+        IList IObjectViewDAO.SearchSection(Condition condition, int startIndex, int sectionSize, string orderby, ListSortDirection direction)
         {
-            return SearchSection(condition, startIndex, sectionSize, orderby, desc);
+            return SearchSection(condition, startIndex, sectionSize, orderby, direction);
         }
 
         #endregion
