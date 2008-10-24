@@ -226,7 +226,7 @@ namespace MyOrm
                     foreach (ColumnInfo key in Table.Keys)
                     {
                         if (strKeys.Length != 0) strKeys.Append(",");
-                        strKeys.Append(ToSqlName(key.ColumnName));
+                        strKeys.Append(GetFullName(key));
                     }
                     orderby = strKeys.ToString();
                 }
