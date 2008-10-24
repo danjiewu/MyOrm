@@ -100,10 +100,9 @@ namespace EE_Veloce
         public override void Clear()
         {
             _totalCount = 0;
-            _startIndex = 0;
-            RemoveSort();            
-            base.Clear();
+            _startIndex = 0;           
             OnPropertyChanged(null);
+            DataSource = null;
         }
 
         public virtual void RefreshSource()

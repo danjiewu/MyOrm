@@ -33,7 +33,7 @@ namespace EE_Veloce
             set
             {
                 _condition = value;
-                RefreshSource();
+                if (AutoRefresh) RefreshSource();
             }
         }
 
