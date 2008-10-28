@@ -40,8 +40,12 @@ namespace EE_Veloce
             MovePreviousPageItem.Text = "PageNavigatorMovePreviousPageItemText";
             MoveNextPageItem.Text = "PageNavigatorMoveNextPageItemText";
             MoveLastPageItem.Text = "PageNavigatorMoveLastPageItemText";
-            PageCountItem.ToolTipText = "PageNavigatorPageCountItemTip";
-            CurrentPageItem.ToolTipText = "PageNavigatorCurrentPageItemTip";
+            MoveFirstPageItem.ToolTipText = "Move to first page.";
+            MovePreviousPageItem.ToolTipText = "Move to previous page.";
+            MoveNextPageItem.ToolTipText = "Move to next page.";
+            MoveLastPageItem.ToolTipText = "Move to last page.";
+            PageCountItem.ToolTipText = "Total page count.";
+            CurrentPageItem.ToolTipText = "Current page.";
             PageCountItem.AutoToolTip = false;
             PageCountItem.Text = "/0";
             CurrentPageItem.AutoToolTip = false;
@@ -99,22 +103,24 @@ namespace EE_Veloce
             RefreshPageProperty();
         }
 
+        private void OnPreviewKeyDown(object sender, PreviewKeyDownEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter) e.IsInputKey = true;
+        }
+
         private void OnCurrentPageKey(object sender, KeyEventArgs e)
         {
             Keys keyCode = e.KeyCode;
-            if (keyCode != Keys.Return)
-            {
-                if (keyCode != Keys.Escape)
-                {
-                    return;
-                }
-            }
-            else
+            if (keyCode == Keys.Return)
             {
                 AcceptNewPage();
-                return;
+                e.Handled = true;
             }
-            CancelNewPage();
+            else if (keyCode == Keys.Escape)
+            {
+                CancelNewPage();
+                e.Handled = true;
+            }
         }
 
         private void OnCurrentPageLostFocus(object sender, EventArgs e)
@@ -217,7 +223,7 @@ namespace EE_Veloce
             }
         }
 
-        private void WireUpTextBox(ref ToolStripItem oldTextBox, ToolStripItem newTextBox, KeyEventHandler keyUpHandler, EventHandler lostFocusHandler)
+        private void WireUpTextBox(ref ToolStripItem oldTextBox, ToolStripItem newTextBox, PreviewKeyDownEventHandler previewKeyDownHandle, KeyEventHandler keyUpHandler, EventHandler lostFocusHandler)
         {
             if (oldTextBox != newTextBox)
             {
@@ -225,11 +231,13 @@ namespace EE_Veloce
                 ToolStripControlHost host2 = newTextBox as ToolStripControlHost;
                 if (host != null)
                 {
+                    host.Control.PreviewKeyDown -= previewKeyDownHandle;
                     host.KeyUp -= keyUpHandler;
                     host.LostFocus -= lostFocusHandler;
                 }
                 if (host2 != null)
                 {
+                    host2.Control.PreviewKeyDown += previewKeyDownHandle;
                     host2.KeyUp += keyUpHandler;
                     host2.LostFocus += lostFocusHandler;
                 }
@@ -245,7 +253,7 @@ namespace EE_Veloce
             }
             set
             {
-                WireUpTextBox(ref _currentPageItem, value, new KeyEventHandler(OnCurrentPageKey), new EventHandler(OnCurrentPageLostFocus));
+                WireUpTextBox(ref _currentPageItem, value, new PreviewKeyDownEventHandler(OnPreviewKeyDown), new KeyEventHandler(OnCurrentPageKey), new EventHandler(OnCurrentPageLostFocus));
             }
         }
 
