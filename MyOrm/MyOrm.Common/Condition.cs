@@ -212,6 +212,20 @@ namespace MyOrm.Common
         {
             get { return subConditions; }
         }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            string join = " " + joinType.ToString() + " ";
+            foreach (Condition condition in subConditions)
+            {
+                if (sb.Length != 0) sb.Append(join);
+                sb.Append("{");
+                if (condition != null) sb.Append(condition.ToString());
+                sb.Append("}");
+            }
+            return sb.ToString();
+        }
     }
 
     /// <summary>
@@ -265,7 +279,7 @@ namespace MyOrm.Common
         /// <summary>
         /// 逻辑否（非判断操作符）
         /// </summary>
-        Not = ~Positive,        
+        Not = ~Positive,
         /// <summary>
         /// 不相等
         /// </summary>
