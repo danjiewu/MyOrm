@@ -220,9 +220,9 @@ namespace MyOrm.Common
             foreach (Condition condition in subConditions)
             {
                 if (sb.Length != 0) sb.Append(join);
-                sb.Append("{");
+                sb.Append("(");
                 if (condition != null) sb.Append(condition.ToString());
-                sb.Append("}");
+                sb.Append(")");
             }
             return sb.ToString();
         }
