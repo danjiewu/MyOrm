@@ -9,7 +9,7 @@ namespace EE_Veloce
 {
     public abstract class PagedBindingSource : BindingSource, INotifyPropertyChanged
     {
-        protected const int DefaultPageSize = 50;
+        protected const int DefaultPageSize = 20;
         private bool _autoRefresh = true;
         private int _totalCount;
         private int _startIndex;
