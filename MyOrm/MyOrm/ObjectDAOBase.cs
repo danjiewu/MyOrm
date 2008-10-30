@@ -157,7 +157,7 @@ namespace MyOrm
         /// <returns></returns>
         protected virtual IDbCommand NewCommand()
         {
-            return Configuration.UseAutoCommand ? new ProxyCommand(Connection.CreateCommand()) : Connection.CreateCommand();
+            return Configuration.UseAutoCommand ? new AutoCommand(Connection.CreateCommand()) : Connection.CreateCommand();
         }
 
         /// <summary>

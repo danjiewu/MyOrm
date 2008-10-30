@@ -6,9 +6,9 @@ using System.Data.Common;
 
 namespace MyOrm
 {
-    public class ProxyCommand : IDbCommand
+    public class AutoCommand : IDbCommand
     {
-        public ProxyCommand(IDbCommand target)
+        public AutoCommand(IDbCommand target)
         {
             this.target = target;
         }
@@ -23,11 +23,12 @@ namespace MyOrm
         {
             Transaction = TransactionManager.CurrentTransaction(Connection);
             if (Connection.State == ConnectionState.Closed) Connection.Open();
+            //Console.WriteLine(CommandText);//TODO: Add log here.
         }
 
         protected virtual void PostExcuteCommand(ExcuteType excuteType)
         {
-            if (Connection.State == ConnectionState.Open) Connection.Close();
+            if (Connection.State == ConnectionState.Open && excuteType != ExcuteType.ExecuteReader) Connection.Close();
         }
 
         #region IDbCommand Members
