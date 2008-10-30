@@ -46,14 +46,12 @@ namespace Northwind
             this.pageNavigatorSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.pageNavigatorMoveNextPageItem = new System.Windows.Forms.ToolStripButton();
             this.pageNavigatorMoveLastPageItem = new System.Windows.Forms.ToolStripButton();
-            this.conditionPagedSource1 = new Northwind.ConditionPagedSource();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pagedBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pageNavigator1)).BeginInit();
             this.pageNavigator1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.conditionPagedSource1)).BeginInit();
             this.SuspendLayout();
             // 
             // textBoxValue
@@ -265,7 +263,6 @@ namespace Northwind
             ((System.ComponentModel.ISupportInitialize)(this.pageNavigator1)).EndInit();
             this.pageNavigator1.ResumeLayout(false);
             this.pageNavigator1.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.conditionPagedSource1)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -289,7 +286,6 @@ namespace Northwind
         private System.Windows.Forms.ToolStripButton pageNavigatorMoveNextPageItem;
         private System.Windows.Forms.ToolStripButton pageNavigatorMoveLastPageItem;
         private Northwind.PagedBindingSource pagedBindingSource1;
-        private ConditionPagedSource conditionPagedSource1;
     }
 }
 
