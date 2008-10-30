@@ -30,6 +30,16 @@ namespace MyOrm
             get { return (string)this["Provider"]; }
             set { this["Provider"] = value; }
         }
+
+        /// <summary>
+        /// 是否使用自动管理的Command，包括打开关闭数据库、设置事务
+        /// </summary>
+        [ConfigurationProperty("Provider", DefaultValue = true)]
+        public bool UseAutoCommand
+        {
+            get { return (bool)this["Provider"]; }
+            set { this["Provider"] = value; }
+        }
     }
     /// <summary>
     /// 配置
@@ -38,6 +48,19 @@ namespace MyOrm
     {
         private static IDbConnection defaultConnection;
         private static TableInfoProvider tableInfoProvider;
+        private static MyOrmConfigurationSection configSection;
+
+        /// <summary>
+        /// 配置项
+        /// </summary>
+        public static MyOrmConfigurationSection ConfigSection
+        {
+            get
+            {
+                if (configSection == null) configSection = ConfigurationManager.GetSection("MyOrm") as MyOrmConfigurationSection;
+                return configSection;
+            }
+        }
 
         /// <summary>
         /// 默认数据库连接
@@ -49,9 +72,9 @@ namespace MyOrm
 
                 if (defaultConnection == null)
                 {
-                    MyOrmConfigurationSection config = ConfigurationManager.GetSection("MyOrm") as MyOrmConfigurationSection;
-                    defaultConnection = DbProviderFactories.GetFactory(config.DefaultConnection.ProviderName).CreateConnection();
-                    defaultConnection.ConnectionString = config.DefaultConnection.ConnectionString;
+                    ConnectionStringSettings connectionSetting = ConfigSection.DefaultConnection;
+                    defaultConnection = DbProviderFactories.GetFactory(connectionSetting.ProviderName).CreateConnection();
+                    defaultConnection.ConnectionString = connectionSetting.ConnectionString;
                 }
                 return defaultConnection;
             }
@@ -66,10 +89,20 @@ namespace MyOrm
             {
                 if (tableInfoProvider == null)
                 {
-                    MyOrmConfigurationSection config = ConfigurationManager.GetSection("MyOrm") as MyOrmConfigurationSection;
-                    tableInfoProvider = Activator.CreateInstance(Type.GetType(config.TableInfoProvider, true)) as TableInfoProvider;
+                    tableInfoProvider = Activator.CreateInstance(Type.GetType(ConfigSection.TableInfoProvider, true)) as TableInfoProvider;
                 }
                 return tableInfoProvider;
+            }
+        }
+
+        /// <summary>
+        /// 是否使用自动管理的Command，包括打开关闭数据库、设置事务
+        /// </summary>
+        public static bool UseAutoCommand
+        {
+            get
+            {
+                return ConfigSection.UseAutoCommand;
             }
         }
     }
