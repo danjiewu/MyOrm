@@ -5,9 +5,9 @@ using System.Windows.Forms;
 using System.Collections;
 using System.ComponentModel;
 
-namespace EE_Veloce
+namespace Northwind
 {
-    public abstract class PagedBindingSource : BindingSource, INotifyPropertyChanged
+    public class PagedBindingSource : BindingSource, INotifyPropertyChanged
     {
         protected const int DefaultPageSize = 20;
         private bool _autoRefresh = true;
@@ -51,8 +51,27 @@ namespace EE_Veloce
         //    get { return _sortDirection; }
         //}
 
-        protected abstract object GetDataSource(int startIndex, int pageSize, PropertyDescriptor orderby, ListSortDirection direction);
-        protected abstract int GetTotalCount();
+        protected virtual object GetDataSource(int startIndex, int pageSize, PropertyDescriptor orderby, ListSortDirection direction)
+        {
+            if (PageChanged != null)
+            {
+                PageChangedEventArgs arg = new PageChangedEventArgs(startIndex, pageSize, orderby, direction);
+                PageChanged(this, arg);
+                return arg.ReturnSource;
+            }
+            return null;
+        }
+
+        protected virtual int GetTotalCount()
+        {
+            if (CountNeeded != null)
+            {
+                CountEventArgs arg = new CountEventArgs();
+                CountNeeded(this, arg);
+                return arg.TotalCount;
+            }
+            return 0;
+        }
 
         [DefaultValue(true)]
         public bool AutoRefresh
@@ -100,7 +119,7 @@ namespace EE_Veloce
         public override void Clear()
         {
             _totalCount = 0;
-            _startIndex = 0;           
+            _startIndex = 0;
             OnPropertyChanged(null);
             DataSource = null;
         }
@@ -126,7 +145,63 @@ namespace EE_Veloce
         #region INotifyPropertyChanged Members
 
         public event PropertyChangedEventHandler PropertyChanged;
+        public event PageChangedEventHandler PageChanged;
+        public event GetCountEventHandler CountNeeded;
 
         #endregion
+    }
+
+    public delegate void PageChangedEventHandler(object sender, PageChangedEventArgs e);
+    public delegate void GetCountEventHandler(object sender, CountEventArgs e);
+
+    public class CountEventArgs : EventArgs
+    {
+        private int totalCount;
+        public int TotalCount
+        {
+            get { return totalCount; }
+            set { totalCount = value; }
+        }
+    }
+
+    public class PageChangedEventArgs : EventArgs
+    {
+        internal PageChangedEventArgs(int startIndex, int pageSize, PropertyDescriptor orderby, ListSortDirection direction)
+        {
+            this.startIndex = startIndex;
+            this.pageSize = pageSize;
+            this.orderby = orderby;
+            this.direction = direction;
+        }
+        private int startIndex;
+        public int StartIndex
+        {
+            get { return startIndex; }
+        }
+
+        private int pageSize;
+        public int PageSize
+        {
+            get { return pageSize; }
+        }
+
+        private PropertyDescriptor orderby;
+        public PropertyDescriptor Orderby
+        {
+            get { return orderby; }
+        }
+
+        private ListSortDirection direction;
+        public ListSortDirection Direction
+        {
+            get { return direction; }
+        }
+
+        private object returnSource;
+        public object ReturnSource
+        {
+            get { return returnSource; }
+            set { returnSource = value; }
+        }
     }
 }

@@ -62,11 +62,28 @@ namespace Northwind
             conditionPagedSource1.Condition = null;
         }
 
+        private Condition searchCondition;
+        public Condition SearchCondition
+        {
+            get { return searchCondition; }
+            set { searchCondition = value; }
+        }
+
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-            Condition condition = null;
-            if (!String.IsNullOrEmpty(textBoxValue.Text)) condition = new SimpleCondition(SelectedProperty.Name, ConditionOperator.Contains, textBoxValue.Text);
-            conditionPagedSource1.Condition = condition;
+            if (!String.IsNullOrEmpty(textBoxValue.Text)) SearchCondition = new SimpleCondition(SelectedProperty.Name, ConditionOperator.Contains, textBoxValue.Text);
+            else SearchCondition = null;
+            pagedBindingSource1.RefreshSource();
+        }
+
+        private void pagedBindingSource1_CountNeeded(object sender, CountEventArgs e)
+        {
+            e.TotalCount = NorthwindFactory.GetObjectViewDAO(SelectedType).Count(SearchCondition);
+        }
+
+        private void pagedBindingSource1_PageChanged(object sender, PageChangedEventArgs e)
+        {
+            e.ReturnSource = NorthwindFactory.GetObjectViewDAO(SelectedType).SearchSection(SearchCondition, e.StartIndex, e.PageSize, e.Orderby.Name, e.Direction);
         }
     }
 }

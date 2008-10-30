@@ -36,12 +36,12 @@ namespace Northwind
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.conditionPagedSource1 = new EE_Veloce.ConditionPagedSource();
+            this.pagedBindingSource1 = new EE_Veloce.PagedBindingSource();
             this.pageNavigator1 = new EE_Veloce.PageNavigator();
+            this.pageNavigatorCurrentPageItem = new System.Windows.Forms.ToolStripTextBox();
             this.pageNavigatorMoveFirstPageItem = new System.Windows.Forms.ToolStripButton();
             this.pageNavigatorMovePreviousPageItem = new System.Windows.Forms.ToolStripButton();
             this.pageNavigatorSeparator = new System.Windows.Forms.ToolStripSeparator();
-            this.pageNavigatorCurrentPageItem = new System.Windows.Forms.ToolStripTextBox();
             this.pageNavigatorPageCountItem = new System.Windows.Forms.ToolStripLabel();
             this.pageNavigatorSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.pageNavigatorMoveNextPageItem = new System.Windows.Forms.ToolStripButton();
@@ -49,7 +49,7 @@ namespace Northwind
             this.tableLayoutPanel1.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.conditionPagedSource1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pagedBindingSource1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pageNavigator1)).BeginInit();
             this.pageNavigator1.SuspendLayout();
             this.SuspendLayout();
@@ -123,15 +123,23 @@ namespace Northwind
             // 
             // dataGridView1
             // 
-            this.dataGridView1.AutoGenerateColumns = true;
+            this.dataGridView1.AllowUserToAddRows = false;
+            this.dataGridView1.AllowUserToDeleteRows = false;
+            this.dataGridView1.AutoGenerateColumns = false;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.DataSource = this.conditionPagedSource1;
+            this.dataGridView1.DataSource = this.pagedBindingSource1;
             this.dataGridView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dataGridView1.Location = new System.Drawing.Point(3, 58);
             this.dataGridView1.Name = "dataGridView1";
+            this.dataGridView1.ReadOnly = true;
             this.dataGridView1.RowTemplate.Height = 23;
             this.dataGridView1.Size = new System.Drawing.Size(586, 395);
             this.dataGridView1.TabIndex = 2;
+            // 
+            // pagedBindingSource1
+            // 
+            this.pagedBindingSource1.PageChanged += new EE_Veloce.PageChangedEventHandler(this.pagedBindingSource1_PageChanged);
+            this.pagedBindingSource1.CountNeeded += new EE_Veloce.GetCountEventHandler(this.pagedBindingSource1_CountNeeded);
             // 
             // pageNavigator1
             // 
@@ -160,11 +168,20 @@ namespace Northwind
             this.pageNavigator1.Name = "pageNavigator1";
             this.pageNavigator1.PageCountFormat = "/{0}";
             this.pageNavigator1.PageCountItem = this.pageNavigatorPageCountItem;
-            this.pageNavigator1.PageSource = this.conditionPagedSource1;
+            this.pageNavigator1.PageSource = this.pagedBindingSource1;
             this.pageNavigator1.PositionItem = null;
             this.pageNavigator1.Size = new System.Drawing.Size(592, 20);
             this.pageNavigator1.TabIndex = 3;
             this.pageNavigator1.Text = "pageNavigator1";
+            // 
+            // pageNavigatorCurrentPageItem
+            // 
+            this.pageNavigatorCurrentPageItem.AccessibleName = "PageNavigatorPositionAccessibleName";
+            this.pageNavigatorCurrentPageItem.AutoSize = false;
+            this.pageNavigatorCurrentPageItem.Name = "pageNavigatorCurrentPageItem";
+            this.pageNavigatorCurrentPageItem.Size = new System.Drawing.Size(50, 21);
+            this.pageNavigatorCurrentPageItem.Text = "0";
+            this.pageNavigatorCurrentPageItem.ToolTipText = "Current page.";
             // 
             // pageNavigatorMoveFirstPageItem
             // 
@@ -193,15 +210,6 @@ namespace Northwind
             this.pageNavigatorSeparator.Name = "pageNavigatorSeparator";
             this.pageNavigatorSeparator.Size = new System.Drawing.Size(6, 20);
             // 
-            // pageNavigatorCurrentPageItem
-            // 
-            this.pageNavigatorCurrentPageItem.AccessibleName = "PageNavigatorPositionAccessibleName";
-            this.pageNavigatorCurrentPageItem.AutoSize = false;
-            this.pageNavigatorCurrentPageItem.Name = "pageNavigatorCurrentPageItem";
-            this.pageNavigatorCurrentPageItem.Size = new System.Drawing.Size(50, 21);
-            this.pageNavigatorCurrentPageItem.Text = "0";
-            this.pageNavigatorCurrentPageItem.ToolTipText = "Current page.";
-            // 
             // pageNavigatorPageCountItem
             // 
             this.pageNavigatorPageCountItem.Name = "pageNavigatorPageCountItem";
@@ -211,7 +219,7 @@ namespace Northwind
             // 
             // pageNavigatorSeparator1
             // 
-            this.pageNavigatorSeparator1.Name = "pageNavigatorSeparator";
+            this.pageNavigatorSeparator1.Name = "pageNavigatorSeparator1";
             this.pageNavigatorSeparator1.Size = new System.Drawing.Size(6, 20);
             // 
             // pageNavigatorMoveNextPageItem
@@ -251,7 +259,7 @@ namespace Northwind
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.conditionPagedSource1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pagedBindingSource1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pageNavigator1)).EndInit();
             this.pageNavigator1.ResumeLayout(false);
             this.pageNavigator1.PerformLayout();
@@ -265,7 +273,6 @@ namespace Northwind
         private System.Windows.Forms.ComboBox comboBoxObjectType;
         private System.Windows.Forms.Button buttonSearch;
         private System.Windows.Forms.TextBox textBoxValue;
-        private EE_Veloce.ConditionPagedSource conditionPagedSource1;
         private System.Windows.Forms.TableLayoutPanel tableLayoutPanel1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.DataGridView dataGridView1;
@@ -278,6 +285,7 @@ namespace Northwind
         private System.Windows.Forms.ToolStripSeparator pageNavigatorSeparator1;
         private System.Windows.Forms.ToolStripButton pageNavigatorMoveNextPageItem;
         private System.Windows.Forms.ToolStripButton pageNavigatorMoveLastPageItem;
+        private EE_Veloce.PagedBindingSource pagedBindingSource1;
     }
 }
 

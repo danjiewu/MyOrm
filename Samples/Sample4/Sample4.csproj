@@ -71,9 +71,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\ConditionPagedSource.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Controls\PagedBindingSource.cs">
       <SubType>Component</SubType>
     </Compile>
