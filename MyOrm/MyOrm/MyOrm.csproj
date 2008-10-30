@@ -2,7 +2,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>9.0.21022</ProductVersion>
+    <ProductVersion>8.0.50727</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>{BD1B3BA9-A527-4E9B-9AD8-3847AE5DACAA}</ProjectGuid>
     <OutputType>Library</OutputType>
@@ -41,6 +41,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
+    <Compile Include="Extension.cs">
+    </Compile>
     <Compile Include="ObjectDAO.cs" />
     <Compile Include="ObjectDAOBase.cs" />
     <Compile Include="ObjectViewDAO.cs" />
