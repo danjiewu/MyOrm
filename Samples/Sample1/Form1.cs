@@ -62,11 +62,9 @@ namespace Northwind
 
         private void buttonSearch_Click(object sender, EventArgs e)
         {
-            MyOrm.Configuration.DefaultConnection.Open();
             Condition condition = null;
             if (!String.IsNullOrEmpty(textBoxValue.Text)) condition = new SimpleCondition(SelectedProperty.Name, ConditionOperator.Contains, textBoxValue.Text);
             dataGridView1.DataSource = NorthwindFactory.GetObjectViewDAO(SelectedType).Search(condition);
-            MyOrm.Configuration.DefaultConnection.Close();
         }
     }
 }
