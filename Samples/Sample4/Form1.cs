@@ -79,12 +79,12 @@ namespace Northwind
             pagedBindingSource1.RefreshSource();
         }
 
-        private void pagedBindingSource1_CountNeeded(object sender, CountEventArgs e)
+        private void pagedBindingSource1_CountNeeded(object sender, CountEventArgs e)//When use PagedBindingSource.
         {
             e.TotalCount = NorthwindFactory.GetObjectViewDAO(SelectedType).Count(SearchCondition);
         }
 
-        private void pagedBindingSource1_PageChanged(object sender, PageChangedEventArgs e)
+        private void pagedBindingSource1_PageChanged(object sender, PageChangedEventArgs e)//When use PagedBindingSource.
         {
             e.ReturnSource = NorthwindFactory.GetObjectViewDAO(SelectedType).SearchSection(SearchCondition, e.StartIndex, e.PageSize, e.Orderby == null ? null : e.Orderby.Name, e.Direction);
         }
