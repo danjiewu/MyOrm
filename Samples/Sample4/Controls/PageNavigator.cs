@@ -4,7 +4,7 @@ using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace EE_Veloce
+namespace Northwind
 {
     public class PageNavigator : BindingNavigator
     {
