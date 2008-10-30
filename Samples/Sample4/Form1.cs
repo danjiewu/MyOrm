@@ -58,15 +58,18 @@ namespace Northwind
         private void comboBoxObjectType_SelectedIndexChanged(object sender, EventArgs e)
         {
             comboBoxProperty.DataSource = SelectedType.GetProperties();
-            conditionPagedSource1.ObjectType = SelectedType;
-            conditionPagedSource1.Condition = null;
+            //conditionPagedSource1.ObjectType = SelectedType;//When use ConditionPagedSource.
         }
 
         private Condition searchCondition;
         public Condition SearchCondition
         {
             get { return searchCondition; }
-            set { searchCondition = value; }
+            set
+            {
+                searchCondition = value;
+                //conditionPagedSource1.Condition = value;//When use ConditionPagedSource.
+            }
         }
 
         private void buttonSearch_Click(object sender, EventArgs e)
@@ -83,7 +86,7 @@ namespace Northwind
 
         private void pagedBindingSource1_PageChanged(object sender, PageChangedEventArgs e)
         {
-            e.ReturnSource = NorthwindFactory.GetObjectViewDAO(SelectedType).SearchSection(SearchCondition, e.StartIndex, e.PageSize, e.Orderby.Name, e.Direction);
+            e.ReturnSource = NorthwindFactory.GetObjectViewDAO(SelectedType).SearchSection(SearchCondition, e.StartIndex, e.PageSize, e.Orderby == null ? null : e.Orderby.Name, e.Direction);
         }
     }
 }
