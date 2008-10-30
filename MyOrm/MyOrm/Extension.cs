@@ -27,6 +27,7 @@ namespace MyOrm
 
         protected virtual void PostExcuteCommand(ExcuteType excuteType)
         {
+            if (Connection.State == ConnectionState.Open) Connection.Close();
         }
 
         #region IDbCommand Members
