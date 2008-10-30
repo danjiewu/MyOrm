@@ -24,7 +24,7 @@ namespace MyOrm
         /// <summary>
         /// 表信息提供类型名
         /// </summary>
-        [ConfigurationProperty("Provider", DefaultValue = "MyOrm.Metadata.AttibuteTableInfoProvider, MyOrm.Attribute", IsRequired = true)]
+        [ConfigurationProperty("Provider", DefaultValue = "MyOrm.Metadata.AttibuteTableInfoProvider, MyOrm.Attribute")]
         public string TableInfoProvider
         {
             get { return (string)this["Provider"]; }
@@ -34,11 +34,11 @@ namespace MyOrm
         /// <summary>
         /// 是否使用自动管理的Command，包括打开关闭数据库、设置事务
         /// </summary>
-        [ConfigurationProperty("Provider", DefaultValue = true)]
+        [ConfigurationProperty("UseAutoCommand", DefaultValue = false)]
         public bool UseAutoCommand
         {
-            get { return (bool)this["Provider"]; }
-            set { this["Provider"] = value; }
+            get { return (bool)this["UseAutoCommand"]; }
+            set { this["UseAutoCommand"] = value; }
         }
     }
     /// <summary>
