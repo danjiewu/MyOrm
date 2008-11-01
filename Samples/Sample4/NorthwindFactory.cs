@@ -31,8 +31,8 @@ namespace Northwind
             {
                 if (_daoFactory == null)
                 {
-                    //_daoFactory = RemoteDAOFactory.GenerateRemoteHttpHandleFactory();
-                    _daoFactory = RemoteDAOFactory.GenerateRemoteWebServiceFactory();
+                    _daoFactory = RemoteDAOFactory.GenerateRemoteHttpHandleFactory();
+                    //_daoFactory = RemoteDAOFactory.GenerateRemoteWebServiceFactory();
                 }
             }
         }
