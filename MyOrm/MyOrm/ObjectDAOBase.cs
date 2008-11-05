@@ -120,7 +120,7 @@ namespace MyOrm
                     Dictionary<string, object> usedTable = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
                     foreach (ColumnInfo column in SelectColumns)
                     {
-                        usedTable[column.ForeignTable] = null;
+                        if (!String.IsNullOrEmpty(column.ForeignTable)) usedTable[column.ForeignTable] = null;
                     }
 
                     StringBuilder strFromTable = new StringBuilder(ToSqlName(TableName));
@@ -137,7 +137,7 @@ namespace MyOrm
                                 if (index != 0) strConditions.Append(" and ");
                                 strConditions.AppendFormat("{0}.{1} = {2}.{3}", ToSqlName(String.IsNullOrEmpty(tableJoin.SourceTable) ? TableName : tableJoin.SourceTable), ToSqlName(tableJoin.ForeignKeys[index]), ToSqlName(string.IsNullOrEmpty(tableJoin.AliasName) ? tableJoin.TargetTable.TableName : tableJoin.AliasName), ToSqlName(key.ColumnName));
                             }
-                            strFromTable.AppendFormat(" {0} join {1} {2} on {3}", tableJoin.JoinType, ToSqlName(tableJoin.TargetTable.TableName), aliasName, strConditions);
+                            strFromTable.AppendFormat(" {0} join {1} {2} on {3}", tableJoin.JoinType, ToSqlName(tableJoin.TargetTable.TableName), ToSqlName(aliasName), strConditions);
                         }
                     }
                     fromTable = strFromTable.ToString();
@@ -351,7 +351,8 @@ namespace MyOrm
                     param.Value = paramValue;
                     command.Parameters.Add(param);
                 }
-            command.CommandText = ReplaceSqlName(SQL);
+            command.CommandText = SQL;
+            //command.CommandText = ReplaceSqlName(SQL);
             return command;
         }
 

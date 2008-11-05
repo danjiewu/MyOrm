@@ -10,7 +10,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// DAO for object 'CustomerCustomerDemo'.
 	/// </summary>	
-	public class CustomerCustomerDemoDAO : ObjectDAO<CustomerCustomerDemo>, ICustomerCustomerDemoDAO
+	public partial class CustomerCustomerDemoDAO : ObjectDAO<CustomerCustomerDemo>, ICustomerCustomerDemoDAO
 	{
 		public List<CustomerCustomerDemo> GetAllWithCustomerDemographic(CustomerDemographics customerDemographic)
 		{
@@ -29,7 +29,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// DAO for object's view 'CustomerCustomerDemoView'.
 	/// </summary>	
-	public class CustomerCustomerDemoViewDAO : ObjectViewDAO<CustomerCustomerDemoView>, ICustomerCustomerDemoViewDAO
+	public partial class CustomerCustomerDemoViewDAO : ObjectViewDAO<CustomerCustomerDemoView>, ICustomerCustomerDemoViewDAO
 	{
 		public List<CustomerCustomerDemoView> GetAllWithCustomerDemographic(CustomerDemographics customerDemographic)
 		{

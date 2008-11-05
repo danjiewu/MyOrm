@@ -10,9 +10,13 @@ namespace Northwind.Data
 	/// OrderDetails.
 	/// </summary>
 	[Table("Order Details")]
+	[TableJoin(typeof(Orders), OrderDetails._OrderID, AliasName = OrderDetails.Order)]
+	[TableJoin(typeof(Products), OrderDetails._ProductID, AliasName = OrderDetails.Product)]
 	[Serializable]
-	public class OrderDetails 
+	public partial class OrderDetails 
 	{
+		public const string Order = "Order";
+		public const string Product = "Product";
 		#region Constant		
 		public const string	_OrderID = "OrderID";
 		public const string	_ProductID = "ProductID";
@@ -72,13 +76,11 @@ namespace Northwind.Data
 	#region OrderDetailsView
 	/// <summary>
 	/// OrderDetailsView.
-	/// </summary>	
-	[TableJoin(typeof(Orders), OrderDetails._OrderID, AliasName = OrderDetailsView.Order)]
-	[TableJoin(typeof(Products), OrderDetails._ProductID, AliasName = OrderDetailsView.Product)]
-    [Serializable]
-	public class OrderDetailsView : OrderDetails
+	/// </summary>		
+	[Serializable]
+	public partial class OrderDetailsView : OrderDetails
 	{
-		#region Constant		
+		#region Constant
 		public const string	_Order_OrderDate = "Order_OrderDate";			
 		public const string	_Order_RequiredDate = "Order_RequiredDate";			
 		public const string	_Order_ShippedDate = "Order_ShippedDate";			
@@ -96,9 +98,6 @@ namespace Northwind.Data
 		public const string	_Product_UnitsOnOrder = "Product_UnitsOnOrder";			
 		public const string	_Product_ReorderLevel = "Product_ReorderLevel";			
 		public const string	_Product_Discontinued = "Product_Discontinued";			
-			
-		public const string Order = "Order";
-		public const string Product = "Product";
 		#endregion
 		
 		#region Member Variables		
@@ -118,7 +117,7 @@ namespace Northwind.Data
 		private short? product_UnitsInStock;			
 		private short? product_UnitsOnOrder;			
 		private short? product_ReorderLevel;			
-		private bool product_Discontinued;			
+		private bool? product_Discontinued;			
 		#endregion
 
 		#region Public Properties
@@ -235,7 +234,7 @@ namespace Northwind.Data
 		}
 		
 		[Column("Discontinued", Foreign = OrderDetailsView.Product, ColumnMode = ColumnMode.Read)]
-		public bool Product_Discontinued
+		public bool? Product_Discontinued
 		{
 			get { return product_Discontinued; }			
 			set { product_Discontinued = value; }

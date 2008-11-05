@@ -10,7 +10,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// DAO for object 'EmployeeTerritories'.
 	/// </summary>	
-	public class EmployeeTerritoriesDAO : ObjectDAO<EmployeeTerritories>, IEmployeeTerritoriesDAO
+	public partial class EmployeeTerritoriesDAO : ObjectDAO<EmployeeTerritories>, IEmployeeTerritoriesDAO
 	{
 		public List<EmployeeTerritories> GetAllWithEmployee(Employees employee)
 		{
@@ -29,7 +29,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// DAO for object's view 'EmployeeTerritoriesView'.
 	/// </summary>	
-	public class EmployeeTerritoriesViewDAO : ObjectViewDAO<EmployeeTerritoriesView>, IEmployeeTerritoriesViewDAO
+	public partial class EmployeeTerritoriesViewDAO : ObjectViewDAO<EmployeeTerritoriesView>, IEmployeeTerritoriesViewDAO
 	{
 		public List<EmployeeTerritoriesView> GetAllWithEmployee(Employees employee)
 		{

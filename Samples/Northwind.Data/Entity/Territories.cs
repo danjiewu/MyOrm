@@ -10,9 +10,11 @@ namespace Northwind.Data
 	/// Territories.
 	/// </summary>
 	[Table("Territories")]
+	[TableJoin(typeof(Region), Territories._RegionID, AliasName = Territories.Region)]
 	[Serializable]
-	public class Territories 
+	public partial class Territories 
 	{
+		public const string Region = "Region";
 		#region Constant		
 		public const string	_TerritoryID = "TerritoryID";
 		public const string	_TerritoryDescription = "TerritoryDescription";
@@ -54,15 +56,12 @@ namespace Northwind.Data
 	#region TerritoriesView
 	/// <summary>
 	/// TerritoriesView.
-	/// </summary>	
-	[TableJoin(typeof(Region), Territories._RegionID, AliasName = TerritoriesView.Region)]
-    [Serializable]
-	public class TerritoriesView : Territories
+	/// </summary>		
+	[Serializable]
+	public partial class TerritoriesView : Territories
 	{
-		#region Constant		
+		#region Constant
 		public const string	_Region_RegionDescription = "Region_RegionDescription";			
-			
-		public const string Region = "Region";
 		#endregion
 		
 		#region Member Variables		

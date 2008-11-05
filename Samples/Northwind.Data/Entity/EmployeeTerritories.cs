@@ -10,9 +10,13 @@ namespace Northwind.Data
 	/// EmployeeTerritories.
 	/// </summary>
 	[Table("EmployeeTerritories")]
+	[TableJoin(typeof(Employees), EmployeeTerritories._EmployeeID, AliasName = EmployeeTerritories.Employee)]
+	[TableJoin(typeof(Territories), EmployeeTerritories._TerritoryID, AliasName = EmployeeTerritories.Territory)]
 	[Serializable]
-	public class EmployeeTerritories 
+	public partial class EmployeeTerritories 
 	{
+		public const string Employee = "Employee";
+		public const string Territory = "Territory";
 		#region Constant		
 		public const string	_EmployeeID = "EmployeeID";
 		public const string	_TerritoryID = "TerritoryID";
@@ -45,13 +49,11 @@ namespace Northwind.Data
 	#region EmployeeTerritoriesView
 	/// <summary>
 	/// EmployeeTerritoriesView.
-	/// </summary>	
-	[TableJoin(typeof(Employees), EmployeeTerritories._EmployeeID, AliasName = EmployeeTerritoriesView.Employee)]
-	[TableJoin(typeof(Territories), EmployeeTerritories._TerritoryID, AliasName = EmployeeTerritoriesView.Territory)]
-    [Serializable]
-	public class EmployeeTerritoriesView : EmployeeTerritories
+	/// </summary>		
+	[Serializable]
+	public partial class EmployeeTerritoriesView : EmployeeTerritories
 	{
-		#region Constant		
+		#region Constant
 		public const string	_Employee_LastName = "Employee_LastName";			
 		public const string	_Employee_FirstName = "Employee_FirstName";			
 		public const string	_Employee_Title = "Employee_Title";			
@@ -69,9 +71,6 @@ namespace Northwind.Data
 		public const string	_Employee_Notes = "Employee_Notes";			
 		public const string	_Employee_PhotoPath = "Employee_PhotoPath";			
 		public const string	_Territory_TerritoryDescription = "Territory_TerritoryDescription";			
-			
-		public const string Employee = "Employee";
-		public const string Territory = "Territory";
 		#endregion
 		
 		#region Member Variables		
@@ -185,13 +184,13 @@ namespace Northwind.Data
 			get { return employee_Extension; }			
 			set { employee_Extension = value; }
 		}
-
-        [Column("Photo", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
-        public byte[] Employee_Photo
-        {
-            get { return employee_Photo; }
-            set { employee_Photo = value; }
-        }
+		
+		[Column("Photo", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		public byte[] Employee_Photo
+		{
+			get { return employee_Photo; }			
+			set { employee_Photo = value; }
+		}
 		
 		[Column("Notes", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
 		public string Employee_Notes

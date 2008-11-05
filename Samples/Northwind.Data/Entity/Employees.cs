@@ -10,9 +10,11 @@ namespace Northwind.Data
 	/// Employees.
 	/// </summary>
 	[Table("Employees")]
+	[TableJoin(typeof(Employees), Employees._ReportsTo, AliasName = Employees.ReportsToEmployee)]
 	[Serializable]
-	public class Employees 
+	public partial class Employees 
 	{
+		public const string ReportsToEmployee = "ReportsToEmployee";
 		#region Constant		
 		public const string	_EmployeeID = "EmployeeID";
 		public const string	_LastName = "LastName";
@@ -153,13 +155,13 @@ namespace Northwind.Data
 			get { return extension; }			
 			set { extension = value; }
 		}
-
-        [Column]
-        public byte[] Photo
-        {
-            get { return photo; }
-            set { photo = value; }
-        }
+		
+		[Column]
+		public byte[] Photo
+		{
+			get { return photo; }			
+			set { photo = value; }
+		}
 		
 		[Column]
 		public string Notes
@@ -189,12 +191,11 @@ namespace Northwind.Data
 	#region EmployeesView
 	/// <summary>
 	/// EmployeesView.
-	/// </summary>	
-	[TableJoin(typeof(Employees), Employees._ReportsTo, AliasName = EmployeesView.ReportsToEmployee)]
-    [Serializable]
-	public class EmployeesView : Employees
+	/// </summary>		
+	[Serializable]
+	public partial class EmployeesView : Employees
 	{
-		#region Constant		
+		#region Constant
 		public const string	_ReportsToEmployee_LastName = "ReportsToEmployee_LastName";			
 		public const string	_ReportsToEmployee_FirstName = "ReportsToEmployee_FirstName";			
 		public const string	_ReportsToEmployee_Title = "ReportsToEmployee_Title";			
@@ -211,8 +212,6 @@ namespace Northwind.Data
 		public const string	_ReportsToEmployee_Photo = "ReportsToEmployee_Photo";			
 		public const string	_ReportsToEmployee_Notes = "ReportsToEmployee_Notes";			
 		public const string	_ReportsToEmployee_PhotoPath = "ReportsToEmployee_PhotoPath";			
-			
-		public const string ReportsToEmployee = "ReportsToEmployee";
 		#endregion
 		
 		#region Member Variables		
@@ -325,13 +324,13 @@ namespace Northwind.Data
 			get { return reportsToEmployee_Extension; }			
 			set { reportsToEmployee_Extension = value; }
 		}
-
-        [Column("Photo", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
-        public byte[] ReportsToEmployee_Photo
-        {
-            get { return reportsToEmployee_Photo; }
-            set { reportsToEmployee_Photo = value; }
-        }
+		
+		[Column("Photo", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+		public byte[] ReportsToEmployee_Photo
+		{
+			get { return reportsToEmployee_Photo; }			
+			set { reportsToEmployee_Photo = value; }
+		}
 		
 		[Column("Notes", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
 		public string ReportsToEmployee_Notes

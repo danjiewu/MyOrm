@@ -11,7 +11,7 @@ namespace Northwind.Data
 	/// </summary>
 	[Table("Shippers")]
 	[Serializable]
-	public class Shippers 
+	public partial class Shippers 
 	{
 		#region Constant		
 		public const string	_ShipperID = "ShipperID";

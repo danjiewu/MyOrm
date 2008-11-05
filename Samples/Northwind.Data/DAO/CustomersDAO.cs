@@ -10,7 +10,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// DAO for object 'Customers'.
 	/// </summary>	
-	public class CustomersDAO : ObjectDAO<Customers>, ICustomersDAO
+	public partial class CustomersDAO : ObjectDAO<Customers>, ICustomersDAO
 	{
 		public Customers GetCustomerOfOrder(Orders orders)
 		{
