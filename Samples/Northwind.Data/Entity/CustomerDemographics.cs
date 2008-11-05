@@ -11,7 +11,7 @@ namespace Northwind.Data
 	/// </summary>
 	[Table("CustomerDemographics")]
 	[Serializable]
-	public class CustomerDemographics 
+	public partial class CustomerDemographics 
 	{
 		#region Constant		
 		public const string	_CustomerTypeID = "CustomerTypeID";

@@ -50,6 +50,5 @@ namespace Northwind.Data
 		public IOrdersViewDAO OrdersViewDAO { get { return _OrdersViewDAO; } }
 		public IProductsViewDAO ProductsViewDAO { get { return _ProductsViewDAO; } }
 		public ITerritoriesViewDAO TerritoriesViewDAO { get { return _TerritoriesViewDAO; } }
-
 	}
 }

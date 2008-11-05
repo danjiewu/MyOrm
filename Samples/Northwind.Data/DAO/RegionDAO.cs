@@ -10,7 +10,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// DAO for object 'Region'.
 	/// </summary>	
-	public class RegionDAO : ObjectDAO<Region>, IRegionDAO
+	public partial class RegionDAO : ObjectDAO<Region>, IRegionDAO
 	{
 		public Region GetRegionOfTerritory(Territories territories)
 		{

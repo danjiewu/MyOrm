@@ -43,6 +43,7 @@ namespace Northwind
                 typeof(ProductsView),
                 typeof(TerritoriesView)
             };
+            dataGridView1.AutoGenerateColumns = true;
         }
 
         private Type SelectedType

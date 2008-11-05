@@ -11,7 +11,7 @@ namespace Northwind.Data
 	/// </summary>
 	[Table("Categories")]
 	[Serializable]
-	public class Categories 
+	public partial class Categories 
 	{
 		#region Constant		
 		public const string	_CategoryID = "CategoryID";
@@ -48,13 +48,13 @@ namespace Northwind.Data
 			get { return description; }			
 			set { description = value; }
 		}
-
-        [Column]
-        public byte[] Picture
-        {
-            get { return picture; }
-            set { picture = value; }
-        }
+		
+		[Column]
+		public byte[] Picture
+		{
+			get { return picture; }			
+			set { picture = value; }
+		}
 		
 		#endregion
 	}

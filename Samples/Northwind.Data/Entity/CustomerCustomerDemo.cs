@@ -10,9 +10,13 @@ namespace Northwind.Data
 	/// CustomerCustomerDemo.
 	/// </summary>
 	[Table("CustomerCustomerDemo")]
+	[TableJoin(typeof(CustomerDemographics), CustomerCustomerDemo._CustomerTypeID, AliasName = CustomerCustomerDemo.CustomerDemographic)]
+	[TableJoin(typeof(Customers), CustomerCustomerDemo._CustomerID, AliasName = CustomerCustomerDemo.Customer)]
 	[Serializable]
-	public class CustomerCustomerDemo 
+	public partial class CustomerCustomerDemo 
 	{
+		public const string CustomerDemographic = "CustomerDemographic";
+		public const string Customer = "Customer";
 		#region Constant		
 		public const string	_CustomerID = "CustomerID";
 		public const string	_CustomerTypeID = "CustomerTypeID";
@@ -45,13 +49,11 @@ namespace Northwind.Data
 	#region CustomerCustomerDemoView
 	/// <summary>
 	/// CustomerCustomerDemoView.
-	/// </summary>	
-	[TableJoin(typeof(CustomerDemographics), CustomerCustomerDemo._CustomerTypeID, AliasName = CustomerCustomerDemoView.CustomerDemographic)]
-	[TableJoin(typeof(Customers), CustomerCustomerDemo._CustomerID, AliasName = CustomerCustomerDemoView.Customer)]
-    [Serializable]
-	public class CustomerCustomerDemoView : CustomerCustomerDemo
+	/// </summary>		
+	[Serializable]
+	public partial class CustomerCustomerDemoView : CustomerCustomerDemo
 	{
-		#region Constant		
+		#region Constant
 		public const string	_CustomerDemographic_CustomerDesc = "CustomerDemographic_CustomerDesc";			
 		public const string	_Customer_CompanyName = "Customer_CompanyName";			
 		public const string	_Customer_ContactName = "Customer_ContactName";			
@@ -63,9 +65,6 @@ namespace Northwind.Data
 		public const string	_Customer_Country = "Customer_Country";			
 		public const string	_Customer_Phone = "Customer_Phone";			
 		public const string	_Customer_Fax = "Customer_Fax";			
-			
-		public const string CustomerDemographic = "CustomerDemographic";
-		public const string Customer = "Customer";
 		#endregion
 		
 		#region Member Variables		

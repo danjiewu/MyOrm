@@ -10,7 +10,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// DAO for object 'OrderDetails'.
 	/// </summary>	
-	public class OrderDetailsDAO : ObjectDAO<OrderDetails>, IOrderDetailsDAO
+	public partial class OrderDetailsDAO : ObjectDAO<OrderDetails>, IOrderDetailsDAO
 	{
 		public List<OrderDetails> GetAllWithOrder(Orders order)
 		{
@@ -29,7 +29,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// DAO for object's view 'OrderDetailsView'.
 	/// </summary>	
-	public class OrderDetailsViewDAO : ObjectViewDAO<OrderDetailsView>, IOrderDetailsViewDAO
+	public partial class OrderDetailsViewDAO : ObjectViewDAO<OrderDetailsView>, IOrderDetailsViewDAO
 	{
 		public List<OrderDetailsView> GetAllWithOrder(Orders order)
 		{

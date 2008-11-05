@@ -10,7 +10,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// DAO for object 'Categories'.
 	/// </summary>	
-	public class CategoriesDAO : ObjectDAO<Categories>, ICategoriesDAO
+	public partial class CategoriesDAO : ObjectDAO<Categories>, ICategoriesDAO
 	{
 		public Categories GetCategoryOfProduct(Products products)
 		{

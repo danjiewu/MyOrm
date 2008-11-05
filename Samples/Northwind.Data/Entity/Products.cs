@@ -10,9 +10,13 @@ namespace Northwind.Data
 	/// Products.
 	/// </summary>
 	[Table("Products")]
+	[TableJoin(typeof(Categories), Products._CategoryID, AliasName = Products.Category)]
+	[TableJoin(typeof(Suppliers), Products._SupplierID, AliasName = Products.Supplier)]
 	[Serializable]
-	public class Products 
+	public partial class Products 
 	{
+		public const string Category = "Category";
+		public const string Supplier = "Supplier";
 		#region Constant		
 		public const string	_ProductID = "ProductID";
 		public const string	_ProductName = "ProductName";
@@ -117,13 +121,11 @@ namespace Northwind.Data
 	#region ProductsView
 	/// <summary>
 	/// ProductsView.
-	/// </summary>	
-	[TableJoin(typeof(Categories), Products._CategoryID, AliasName = ProductsView.Category)]
-	[TableJoin(typeof(Suppliers), Products._SupplierID, AliasName = ProductsView.Supplier)]
-    [Serializable]
-	public class ProductsView : Products
+	/// </summary>		
+	[Serializable]
+	public partial class ProductsView : Products
 	{
-		#region Constant		
+		#region Constant
 		public const string	_Category_CategoryName = "Category_CategoryName";			
 		public const string	_Category_Description = "Category_Description";			
 		public const string	_Category_Picture = "Category_Picture";			
@@ -138,9 +140,6 @@ namespace Northwind.Data
 		public const string	_Supplier_Phone = "Supplier_Phone";			
 		public const string	_Supplier_Fax = "Supplier_Fax";			
 		public const string	_Supplier_HomePage = "Supplier_HomePage";			
-			
-		public const string Category = "Category";
-		public const string Supplier = "Supplier";
 		#endregion
 		
 		#region Member Variables		
@@ -174,13 +173,13 @@ namespace Northwind.Data
 			get { return category_Description; }			
 			set { category_Description = value; }
 		}
-
-        [Column("Picture", Foreign = ProductsView.Category, ColumnMode = ColumnMode.Read)]
-        public byte[] Category_Picture
-        {
-            get { return category_Picture; }
-            set { category_Picture = value; }
-        }
+		
+		[Column("Picture", Foreign = ProductsView.Category, ColumnMode = ColumnMode.Read)]
+		public byte[] Category_Picture
+		{
+			get { return category_Picture; }			
+			set { category_Picture = value; }
+		}
 		
 		[Column("CompanyName", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
 		public string Supplier_CompanyName

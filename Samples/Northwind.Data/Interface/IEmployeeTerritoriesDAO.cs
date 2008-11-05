@@ -9,7 +9,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// Interface of DAO for object 'EmployeeTerritories'.
 	/// </summary>	
-	public interface IEmployeeTerritoriesDAO : IObjectDAO<EmployeeTerritories>, IObjectViewDAO<EmployeeTerritories>
+	public partial interface IEmployeeTerritoriesDAO : IObjectDAO<EmployeeTerritories>, IObjectViewDAO<EmployeeTerritories>
 	{
 		List<EmployeeTerritories> GetAllWithEmployee(Employees employee);
 		List<EmployeeTerritories> GetAllWithTerritory(Territories territory);
@@ -20,7 +20,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// Interface of DAO for object's view 'EmployeeTerritoriesView'.
 	/// </summary>	
-	public interface IEmployeeTerritoriesViewDAO : IObjectViewDAO<EmployeeTerritoriesView>
+	public partial interface IEmployeeTerritoriesViewDAO : IObjectViewDAO<EmployeeTerritoriesView>
 	{
 		List<EmployeeTerritoriesView> GetAllWithEmployee(Employees employee);
 		List<EmployeeTerritoriesView> GetAllWithTerritory(Territories territory);

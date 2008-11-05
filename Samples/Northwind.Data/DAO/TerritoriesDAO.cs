@@ -10,7 +10,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// DAO for object 'Territories'.
 	/// </summary>	
-	public class TerritoriesDAO : ObjectDAO<Territories>, ITerritoriesDAO
+	public partial class TerritoriesDAO : ObjectDAO<Territories>, ITerritoriesDAO
 	{
 		public Territories GetTerritoryOfEmployeeTerritory(EmployeeTerritories employeeTerritories)
 		{
@@ -29,7 +29,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// DAO for object's view 'TerritoriesView'.
 	/// </summary>	
-	public class TerritoriesViewDAO : ObjectViewDAO<TerritoriesView>, ITerritoriesViewDAO
+	public partial class TerritoriesViewDAO : ObjectViewDAO<TerritoriesView>, ITerritoriesViewDAO
 	{
 		public TerritoriesView GetTerritoryOfEmployeeTerritory(EmployeeTerritories employeeTerritories)
 		{

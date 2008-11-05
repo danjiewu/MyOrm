@@ -10,7 +10,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// DAO for object 'Employees'.
 	/// </summary>	
-	public class EmployeesDAO : ObjectDAO<Employees>, IEmployeesDAO
+	public partial class EmployeesDAO : ObjectDAO<Employees>, IEmployeesDAO
 	{
 		public Employees GetEmployeeOfOrder(Orders orders)
 		{
@@ -39,7 +39,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// DAO for object's view 'EmployeesView'.
 	/// </summary>	
-	public class EmployeesViewDAO : ObjectViewDAO<EmployeesView>, IEmployeesViewDAO
+	public partial class EmployeesViewDAO : ObjectViewDAO<EmployeesView>, IEmployeesViewDAO
 	{
 		public EmployeesView GetEmployeeOfOrder(Orders orders)
 		{

@@ -10,7 +10,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// DAO for object 'Suppliers'.
 	/// </summary>	
-	public class SuppliersDAO : ObjectDAO<Suppliers>, ISuppliersDAO
+	public partial class SuppliersDAO : ObjectDAO<Suppliers>, ISuppliersDAO
 	{
 		public Suppliers GetSupplierOfProduct(Products products)
 		{

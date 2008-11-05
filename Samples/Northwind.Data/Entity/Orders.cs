@@ -10,9 +10,15 @@ namespace Northwind.Data
 	/// Orders.
 	/// </summary>
 	[Table("Orders")]
+	[TableJoin(typeof(Customers), Orders._CustomerID, AliasName = Orders.Customer)]
+	[TableJoin(typeof(Employees), Orders._EmployeeID, AliasName = Orders.Employee)]
+	[TableJoin(typeof(Shippers), Orders._ShipVia, AliasName = Orders.Shipper)]
 	[Serializable]
-	public class Orders 
+	public partial class Orders 
 	{
+		public const string Customer = "Customer";
+		public const string Employee = "Employee";
+		public const string Shipper = "Shipper";
 		#region Constant		
 		public const string	_OrderID = "OrderID";
 		public const string	_CustomerID = "CustomerID";
@@ -153,14 +159,11 @@ namespace Northwind.Data
 	#region OrdersView
 	/// <summary>
 	/// OrdersView.
-	/// </summary>	
-	[TableJoin(typeof(Customers), Orders._CustomerID, AliasName = OrdersView.Customer)]
-	[TableJoin(typeof(Employees), Orders._EmployeeID, AliasName = OrdersView.Employee)]
-	[TableJoin(typeof(Shippers), Orders._ShipVia, AliasName = OrdersView.Shipper)]
-    [Serializable]
-	public class OrdersView : Orders
+	/// </summary>		
+	[Serializable]
+	public partial class OrdersView : Orders
 	{
-		#region Constant		
+		#region Constant
 		public const string	_Customer_CompanyName = "Customer_CompanyName";			
 		public const string	_Customer_ContactName = "Customer_ContactName";			
 		public const string	_Customer_ContactTitle = "Customer_ContactTitle";			
@@ -189,10 +192,6 @@ namespace Northwind.Data
 		public const string	_Employee_PhotoPath = "Employee_PhotoPath";			
 		public const string	_Shipper_CompanyName = "Shipper_CompanyName";			
 		public const string	_Shipper_Phone = "Shipper_Phone";			
-			
-		public const string Customer = "Customer";
-		public const string Employee = "Employee";
-		public const string Shipper = "Shipper";
 		#endregion
 		
 		#region Member Variables		
@@ -387,13 +386,13 @@ namespace Northwind.Data
 			get { return employee_Extension; }			
 			set { employee_Extension = value; }
 		}
-
-        [Column("Photo", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
-        public byte[] Employee_Photo
-        {
-            get { return employee_Photo; }
-            set { employee_Photo = value; }
-        }
+		
+		[Column("Photo", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
+		public byte[] Employee_Photo
+		{
+			get { return employee_Photo; }			
+			set { employee_Photo = value; }
+		}
 		
 		[Column("Notes", Foreign = OrdersView.Employee, ColumnMode = ColumnMode.Read)]
 		public string Employee_Notes

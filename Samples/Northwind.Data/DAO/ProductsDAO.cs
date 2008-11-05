@@ -10,7 +10,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// DAO for object 'Products'.
 	/// </summary>	
-	public class ProductsDAO : ObjectDAO<Products>, IProductsDAO
+	public partial class ProductsDAO : ObjectDAO<Products>, IProductsDAO
 	{
 		public Products GetProductOfOrderDetail(OrderDetails orderDetails)
 		{
@@ -34,7 +34,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// DAO for object's view 'ProductsView'.
 	/// </summary>	
-	public class ProductsViewDAO : ObjectViewDAO<ProductsView>, IProductsViewDAO
+	public partial class ProductsViewDAO : ObjectViewDAO<ProductsView>, IProductsViewDAO
 	{
 		public ProductsView GetProductOfOrderDetail(OrderDetails orderDetails)
 		{

@@ -9,7 +9,7 @@ namespace Northwind.Data
 	/// <summary>
 	/// Interface of DAO for object 'Region'.
 	/// </summary>	
-	public interface IRegionDAO : IObjectDAO<Region>, IObjectViewDAO<Region>
+	public partial interface IRegionDAO : IObjectDAO<Region>, IObjectViewDAO<Region>
 	{
 		Region GetRegionOfTerritory(Territories territories);
 	}
