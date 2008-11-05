@@ -33,7 +33,7 @@ namespace <%= Namespace %>
 	/// <summary>
 	/// Interface of DAO for object '<%= ClassName(SourceTable) %>'.
 	/// </summary>	
-	public interface <%= InterfaceName %> : IObjectDAO<%="<"+ClassName(SourceTable)+">"%>, IObjectViewDAO<%="<"+ClassName(SourceTable)+">"%>
+	public partial interface <%= InterfaceName %> : IObjectDAO<%="<"+ClassName(SourceTable)+">"%>, IObjectViewDAO<%="<"+ClassName(SourceTable)+">"%>
 	{
 		<%foreach(TableKeySchema key in SourceTable.PrimaryKeys){%>
 		<%=ClassName(SourceTable)%> Get<%=ForeignTableAliasName(key)%>Of<%=MakeSingle(ClassName(key.ForeignKeyTable))%>(<%=ClassName(key.ForeignKeyTable)%> <%=CamelCase(ClassName(key.ForeignKeyTable))%>);
@@ -49,7 +49,7 @@ namespace <%= Namespace %>
 	/// <summary>
 	/// Interface of DAO for object's view '<%= ViewClassName(SourceTable) %>'.
 	/// </summary>	
-	public interface <%= ViewInterfaceName %> : IObjectViewDAO<%="<"+ViewClassName(SourceTable)+">"%>
+	public partial interface <%= ViewInterfaceName %> : IObjectViewDAO<%="<"+ViewClassName(SourceTable)+">"%>
 	{
 		<%foreach(TableKeySchema key in SourceTable.PrimaryKeys){%>
 		<%=ViewClassName(SourceTable)%> Get<%=ForeignTableAliasName(key)%>Of<%=MakeSingle(ClassName(key.ForeignKeyTable))%>(<%=ClassName(key.ForeignKeyTable)%> <%=CamelCase(ClassName(key.ForeignKeyTable))%>);
