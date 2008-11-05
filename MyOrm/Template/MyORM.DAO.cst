@@ -63,7 +63,7 @@ namespace <%= Namespace %>
 	/// <summary>
 	/// DAO for object '<%= ClassName(SourceTable) %>'.
 	/// </summary>	
-	public class <%= DAOName %> : ObjectDAO<%="<"+ClassName(SourceTable)+">"%><%= String.IsNullOrEmpty(InterfaceName) ? null :", " + InterfaceName%>
+	public partial class <%= DAOName %> : ObjectDAO<%="<"+ClassName(SourceTable)+">"%><%= String.IsNullOrEmpty(InterfaceName) ? null :", " + InterfaceName%>
 	{
 		<%if(OptimizeRead){%>
 		#region Overrides Method
@@ -121,7 +121,7 @@ namespace <%= Namespace %>
 	/// <summary>
 	/// DAO for object's view '<%= ViewClassName(SourceTable) %>'.
 	/// </summary>	
-	public class <%= ViewDAOName %> : ObjectViewDAO<%="<"+ViewClassName(SourceTable)+">"%><%= String.IsNullOrEmpty(ViewInterfaceName) ? null :", " + ViewInterfaceName%>
+	public partial class <%= ViewDAOName %> : ObjectViewDAO<%="<"+ViewClassName(SourceTable)+">"%><%= String.IsNullOrEmpty(ViewInterfaceName) ? null :", " + ViewInterfaceName%>
 	{
 		<%if(OptimizeRead){%>
 		#region Overrides Method

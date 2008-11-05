@@ -41,9 +41,15 @@ namespace <%= Namespace %>
 	<% } %>
 	/// </summary>
 	[Table("<%= SourceTable.Name %>")]
+	<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
+	[TableJoin(typeof(<%=ClassName(key.PrimaryKeyTable)%>), <%=ForeignKeysName(key)%>, AliasName = <%=ClassName(SourceTable) + "." + ForeignTableAliasName(key)%>)]
+	<%}%>
 	[Serializable]
-	public class <%= ClassName(SourceTable) %> 
+	public partial class <%= ClassName(SourceTable) %> 
 	{
+		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
+		public const string <%=ForeignTableAliasName(key)%> = "<%=ForeignTableAliasName(key)%>";
+		<%}%>
 		<%if(!String.IsNullOrEmpty(PropertyConstPrefix)){%>
 		#region Constant		
 		<% foreach(ColumnSchema column in SourceTable.Columns) { %>
@@ -84,25 +90,19 @@ namespace <%= Namespace %>
 	<% if(!String.IsNullOrEmpty(SourceTable.Description)){%>
 	/// <%=SourceTable.Description%>
 	<% } %>
-	/// </summary>	
-		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
-	[TableJoin(typeof(<%=ClassName(key.PrimaryKeyTable)%>), <%=ForeignKeysName(key)%>, AliasName = <%=ViewClassName(SourceTable) + "." + ForeignTableAliasName(key)%>)]
-		<%}%>
-	public class <%= ViewClassName(SourceTable) %> : <%= ClassName(SourceTable) %>
+	/// </summary>		
+	[Serializable]
+	public partial class <%= ViewClassName(SourceTable) %> : <%= ClassName(SourceTable) %>
 	{
-		#region Constant		
 		<%if(!String.IsNullOrEmpty(PropertyConstPrefix)){%>
+		#region Constant
 			<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
 				<%foreach(ColumnSchema column in key.PrimaryKeyTable.NonKeyColumns){%>
 		public const string	<%=PropertyConstPrefix + ForeignPropertyName(key,column)%> = "<%=ForeignPropertyName(key,column)%>";			
 				<%}%>			
 			<%}%>
-			
-		<%}%>		
-		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
-		public const string <%=ForeignTableAliasName(key)%> = "<%=ForeignTableAliasName(key)%>";
-		<%}%>		
 		#endregion
+		<%}%>
 		
 		#region Member Variables		
 		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
