@@ -94,119 +94,119 @@ namespace Northwind.Data
 		#endregion
 
 		#region Public Properties
-		[Column("LastName", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		[Column("LastName", Foreign = EmployeeTerritoriesView.Employee)]
 		public string Employee_LastName
 		{
 			get { return employee_LastName; }			
 			set { employee_LastName = value; }
 		}
 		
-		[Column("FirstName", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		[Column("FirstName", Foreign = EmployeeTerritoriesView.Employee)]
 		public string Employee_FirstName
 		{
 			get { return employee_FirstName; }			
 			set { employee_FirstName = value; }
 		}
 		
-		[Column("Title", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		[Column("Title", Foreign = EmployeeTerritoriesView.Employee)]
 		public string Employee_Title
 		{
 			get { return employee_Title; }			
 			set { employee_Title = value; }
 		}
 		
-		[Column("TitleOfCourtesy", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		[Column("TitleOfCourtesy", Foreign = EmployeeTerritoriesView.Employee)]
 		public string Employee_TitleOfCourtesy
 		{
 			get { return employee_TitleOfCourtesy; }			
 			set { employee_TitleOfCourtesy = value; }
 		}
 		
-		[Column("BirthDate", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		[Column("BirthDate", Foreign = EmployeeTerritoriesView.Employee)]
 		public DateTime? Employee_BirthDate
 		{
 			get { return employee_BirthDate; }			
 			set { employee_BirthDate = value; }
 		}
 		
-		[Column("HireDate", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		[Column("HireDate", Foreign = EmployeeTerritoriesView.Employee)]
 		public DateTime? Employee_HireDate
 		{
 			get { return employee_HireDate; }			
 			set { employee_HireDate = value; }
 		}
 		
-		[Column("Address", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		[Column("Address", Foreign = EmployeeTerritoriesView.Employee)]
 		public string Employee_Address
 		{
 			get { return employee_Address; }			
 			set { employee_Address = value; }
 		}
 		
-		[Column("City", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		[Column("City", Foreign = EmployeeTerritoriesView.Employee)]
 		public string Employee_City
 		{
 			get { return employee_City; }			
 			set { employee_City = value; }
 		}
 		
-		[Column("Region", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		[Column("Region", Foreign = EmployeeTerritoriesView.Employee)]
 		public string Employee_Region
 		{
 			get { return employee_Region; }			
 			set { employee_Region = value; }
 		}
 		
-		[Column("PostalCode", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		[Column("PostalCode", Foreign = EmployeeTerritoriesView.Employee)]
 		public string Employee_PostalCode
 		{
 			get { return employee_PostalCode; }			
 			set { employee_PostalCode = value; }
 		}
 		
-		[Column("Country", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		[Column("Country", Foreign = EmployeeTerritoriesView.Employee)]
 		public string Employee_Country
 		{
 			get { return employee_Country; }			
 			set { employee_Country = value; }
 		}
 		
-		[Column("HomePhone", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		[Column("HomePhone", Foreign = EmployeeTerritoriesView.Employee)]
 		public string Employee_HomePhone
 		{
 			get { return employee_HomePhone; }			
 			set { employee_HomePhone = value; }
 		}
 		
-		[Column("Extension", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		[Column("Extension", Foreign = EmployeeTerritoriesView.Employee)]
 		public string Employee_Extension
 		{
 			get { return employee_Extension; }			
 			set { employee_Extension = value; }
 		}
 		
-		[Column("Photo", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		[Column("Photo", Foreign = EmployeeTerritoriesView.Employee)]
 		public byte[] Employee_Photo
 		{
 			get { return employee_Photo; }			
 			set { employee_Photo = value; }
 		}
 		
-		[Column("Notes", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		[Column("Notes", Foreign = EmployeeTerritoriesView.Employee)]
 		public string Employee_Notes
 		{
 			get { return employee_Notes; }			
 			set { employee_Notes = value; }
 		}
 		
-		[Column("PhotoPath", Foreign = EmployeeTerritoriesView.Employee, ColumnMode = ColumnMode.Read)]
+		[Column("PhotoPath", Foreign = EmployeeTerritoriesView.Employee)]
 		public string Employee_PhotoPath
 		{
 			get { return employee_PhotoPath; }			
 			set { employee_PhotoPath = value; }
 		}
 		
-		[Column("TerritoryDescription", Foreign = EmployeeTerritoriesView.Territory, ColumnMode = ColumnMode.Read)]
+		[Column("TerritoryDescription", Foreign = EmployeeTerritoriesView.Territory)]
 		public string Territory_TerritoryDescription
 		{
 			get { return territory_TerritoryDescription; }			

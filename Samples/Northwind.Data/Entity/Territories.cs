@@ -69,7 +69,7 @@ namespace Northwind.Data
 		#endregion
 
 		#region Public Properties
-		[Column("RegionDescription", Foreign = TerritoriesView.Region, ColumnMode = ColumnMode.Read)]
+		[Column("RegionDescription", Foreign = TerritoriesView.Region)]
 		public string Region_RegionDescription
 		{
 			get { return region_RegionDescription; }			
