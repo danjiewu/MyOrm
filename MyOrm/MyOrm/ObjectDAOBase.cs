@@ -39,6 +39,10 @@ namespace MyOrm
         /// 对like条件的字符串内容中的转义符进行替换的正则表达式
         /// </summary>
         protected static Regex sqlLike = new Regex(@"([%_\^\[\]\*\\])");
+        /// <summary>
+        /// 查找列名、表名等的正则表达式
+        /// </summary>
+        protected static Regex sqlNameRegex = new Regex(@"\[([^\]]+)\]");
         #endregion
 
         #region 私有变量
@@ -73,11 +77,27 @@ namespace MyOrm
         }
 
         /// <summary>
-        /// 表信息
+        /// 实体对象类型
         /// </summary>
-        protected abstract TableInfo Table
+        public abstract Type ObjectType
         {
             get;
+        }
+
+        /// <summary>
+        /// 表信息提供者
+        /// </summary>
+        protected virtual TableInfoProvider Provider
+        {
+            get { return Configuration.TableInfoProvider; }
+        }
+
+        /// <summary>
+        /// 表信息
+        /// </summary>
+        protected virtual TableInfo Table
+        {
+            get { return Provider.GetTableInfo(ObjectType); }
         }
 
         /// <summary>
@@ -97,18 +117,28 @@ namespace MyOrm
             {
                 if (fromTable == null)
                 {
-                    StringBuilder strFromTable = new StringBuilder(ToSqlName(TableName));
-                    foreach (TableJoinInfo tableJoin in Table.JoinTables)
+                    Dictionary<string, object> usedTable = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
+                    foreach (ColumnInfo column in SelectColumns)
                     {
-                        if (tableJoin.ForeignKeys.Count != tableJoin.TargetTable.Keys.Count) throw new Exception(String.Format("Different number between foreign keys of table \"{0}\" and primary keys of table \"{1}\".  ", TableName, tableJoin.TargetTable.TableName));
-                        StringBuilder strConditions = new StringBuilder();
-                        int index = 0;
-                        foreach (ColumnInfo key in tableJoin.TargetTable.Keys)
+                        usedTable[column.ForeignTable] = null;
+                    }
+
+                    StringBuilder strFromTable = new StringBuilder(ToSqlName(TableName));
+                    foreach (TableJoinInfo tableJoin in Provider.GetTableJoins(ObjectType))
+                    {
+                        string aliasName = String.IsNullOrEmpty(tableJoin.AliasName) ? tableJoin.TargetTable.TableName : tableJoin.AliasName;
+                        if (usedTable.ContainsKey(aliasName))
                         {
-                            if (index != 0) strConditions.Append(" and ");
-                            strConditions.AppendFormat("{0}.{1} = {2}.{3}", ToSqlName(String.IsNullOrEmpty(tableJoin.SourceTable) ? TableName : tableJoin.SourceTable), ToSqlName(tableJoin.ForeignKeys[index]), ToSqlName(string.IsNullOrEmpty(tableJoin.AliasName) ? tableJoin.TargetTable.TableName : tableJoin.AliasName), ToSqlName(key.ColumnName));
+                            if (tableJoin.ForeignKeys.Count != tableJoin.TargetTable.Keys.Count) throw new Exception(String.Format("Different number between foreign keys of table \"{0}\" and primary keys of table \"{1}\".  ", TableName, tableJoin.TargetTable.TableName));
+                            StringBuilder strConditions = new StringBuilder();
+                            int index = 0;
+                            foreach (ColumnInfo key in tableJoin.TargetTable.Keys)
+                            {
+                                if (index != 0) strConditions.Append(" and ");
+                                strConditions.AppendFormat("{0}.{1} = {2}.{3}", ToSqlName(String.IsNullOrEmpty(tableJoin.SourceTable) ? TableName : tableJoin.SourceTable), ToSqlName(tableJoin.ForeignKeys[index]), ToSqlName(string.IsNullOrEmpty(tableJoin.AliasName) ? tableJoin.TargetTable.TableName : tableJoin.AliasName), ToSqlName(key.ColumnName));
+                            }
+                            strFromTable.AppendFormat(" {0} join {1} {2} on {3}", tableJoin.JoinType, ToSqlName(tableJoin.TargetTable.TableName), aliasName, strConditions);
                         }
-                        strFromTable.AppendFormat(" {0} join {1} {2} on {3}", tableJoin.JoinType, ToSqlName(tableJoin.TargetTable.TableName), string.IsNullOrEmpty(tableJoin.AliasName) ? null : ToSqlName(tableJoin.AliasName), strConditions);
                     }
                     fromTable = strFromTable.ToString();
                 }
@@ -321,7 +351,7 @@ namespace MyOrm
                     param.Value = paramValue;
                     command.Parameters.Add(param);
                 }
-            command.CommandText = SQL;
+            command.CommandText = ReplaceSqlName(SQL);
             return command;
         }
 
@@ -342,6 +372,16 @@ namespace MyOrm
             if (String.IsNullOrEmpty(strCondition)) strCondition = " 1 = 1 ";
             string strSQL = SQLWithParam.Replace(ParamAllFields, AllFieldsSql).Replace(ParamTable, ToSqlName(TableName)).Replace(ParamFromTable, FromTable).Replace(ParamCondition, strCondition);
             return MakeParamCommand(strSQL, paramList);
+        }
+
+        /// <summary>
+        /// 将列名、表名等替换为数据库合法名称
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        protected virtual string ReplaceSqlName(string sql)
+        {
+            return sqlNameRegex.Replace(sql, "[$1]");
         }
 
         /// <summary>

@@ -13,6 +13,8 @@ namespace MyOrm.Metadata
     public class AttibuteTableInfoProvider : TableInfoProvider
     {
         private Dictionary<Type, TableInfo> tableInfoCache = new Dictionary<Type, TableInfo>();
+        private Dictionary<Type, TableJoinInfo[]> tableJoinCache = new Dictionary<Type, TableJoinInfo[]>();
+        private Dictionary<PropertyInfo, ColumnInfo> columnCache = new Dictionary<PropertyInfo, ColumnInfo>();
 
         /// <summary>
         /// 根据对象类型得到表信息
@@ -26,10 +28,33 @@ namespace MyOrm.Metadata
             {
                 TableInfo tableInfo = GenerateTableInfo(objectType);
                 tableInfoCache[objectType] = tableInfo;
-                tableInfo.JoinTables.AddRange(GenerateTableJoins(objectType));
             }
             return tableInfoCache[objectType];
         }
+
+        public override TableJoinInfo[] GetTableJoins(Type objectType)
+        {
+            if (objectType == null) return null;
+            if (!tableJoinCache.ContainsKey(objectType))
+            {
+                TableJoinInfo[] tableJoins = GenerateTableJoins(objectType);
+                tableJoinCache[objectType] = tableJoins;
+            }
+            return tableJoinCache[objectType];
+        }
+
+        public override ColumnInfo GetColumnInfo(PropertyInfo property)
+        {
+            if (property == null) return null;
+            if (!columnCache.ContainsKey(property))
+            {
+                ColumnInfo columnInfo = GenerateColumnInfo(property);
+                columnCache[property] = columnInfo;
+            }
+            return columnCache[property];
+        }
+
+        #region
 
         private TableInfo GenerateTableInfo(Type objectType)
         {
@@ -38,12 +63,11 @@ namespace MyOrm.Metadata
             {
                 TableAttribute tableAttribute = att[0];
                 string tableName = tableAttribute.TableName;
-                ColumnDefineMode defineMode = tableAttribute.ColumnDefineMode;
                 if (String.IsNullOrEmpty(tableName)) tableName = objectType.Name;
                 TableInfo table = new TableInfo(tableName, objectType);
                 foreach (PropertyInfo property in objectType.GetProperties())
                 {
-                    ColumnInfo column = GenerateColumnInfo(defineMode, property);
+                    ColumnInfo column = GetColumnInfo(property);
                     if (column != null)
                     {
                         table.Columns.Add(column);
@@ -54,23 +78,28 @@ namespace MyOrm.Metadata
             else return null;
         }
 
-        private ColumnInfo GenerateColumnInfo(ColumnDefineMode defineMode, PropertyInfo property)
+        private ColumnInfo GenerateColumnInfo(PropertyInfo property)
         {
-            ColumnAttribute[] atts = (ColumnAttribute[])property.GetCustomAttributes(typeof(ColumnAttribute), true);
-            if (atts.Length != 0 && (defineMode & ColumnDefineMode.Attribute) == ColumnDefineMode.Attribute)
+            TableAttribute[] tableAtts = (TableAttribute[])property.DeclaringType.GetCustomAttributes(typeof(TableAttribute), true);
+            ColumnDefineMode defineMode = tableAtts.Length > 0 ? tableAtts[0].ColumnDefineMode : ColumnDefineMode.Property;
+            if ((defineMode & ColumnDefineMode.Attribute) == ColumnDefineMode.Attribute)
             {
-                ColumnAttribute columnAttribute = atts[0];
-                ColumnInfo column = new ColumnInfo(property);
-                column.ColumnName = String.IsNullOrEmpty(columnAttribute.ColumnName) ? property.Name : columnAttribute.ColumnName;
-                column.IsPrimaryKey = columnAttribute.IsPrimaryKey;
-                column.DbType = columnAttribute.DbType == DbType.Object ? Utility.ConvertToDbType(property.PropertyType) : columnAttribute.DbType;
-                column.ForeignTable = columnAttribute.Foreign;
-                column.Length = columnAttribute.Length;
-                column.AllowNull = columnAttribute.AllowNull;
-                column.Mode = columnAttribute.ColumnMode & ((property.CanRead ? ColumnMode.Write : ColumnMode.Ignore) | (property.CanWrite ? ColumnMode.Read : ColumnMode.Ignore));
-                return column;
+                ColumnAttribute[] atts = (ColumnAttribute[])property.GetCustomAttributes(typeof(ColumnAttribute), true);
+                if (atts.Length != 0)
+                {
+                    ColumnAttribute columnAttribute = atts[0];
+                    ColumnInfo column = new ColumnInfo(property);
+                    column.ColumnName = String.IsNullOrEmpty(columnAttribute.ColumnName) ? property.Name : columnAttribute.ColumnName;
+                    column.IsPrimaryKey = columnAttribute.IsPrimaryKey;
+                    column.DbType = columnAttribute.DbType == DbType.Object ? Utility.ConvertToDbType(property.PropertyType) : columnAttribute.DbType;
+                    column.ForeignTable = columnAttribute.Foreign;
+                    column.Length = columnAttribute.Length;
+                    column.AllowNull = columnAttribute.AllowNull;
+                    column.Mode = columnAttribute.ColumnMode & ((String.IsNullOrEmpty(columnAttribute.Foreign) && property.CanRead ? ColumnMode.Write : ColumnMode.Ignore) | (property.CanWrite ? ColumnMode.Read : ColumnMode.Ignore));
+                    return column;
+                }
             }
-            else if ((defineMode & ColumnDefineMode.Property) == ColumnDefineMode.Property)
+            if ((defineMode & ColumnDefineMode.Property) == ColumnDefineMode.Property)
             {
                 ColumnInfo column = new ColumnInfo(property);
                 column.ColumnName = property.Name;
@@ -81,7 +110,7 @@ namespace MyOrm.Metadata
             return null;
         }
 
-        private List<TableJoinInfo> GenerateTableJoins(Type objectType)
+        private TableJoinInfo[] GenerateTableJoins(Type objectType)
         {
             List<TableJoinInfo> tableJoins = new List<TableJoinInfo>();
             if (objectType != null)
@@ -95,7 +124,8 @@ namespace MyOrm.Metadata
                     tableJoin.ForeignKeys.AddRange(att.ForeignKeys.Split(','));
                     tableJoins.Add(tableJoin);
                 }
-            return tableJoins;
+            return tableJoins.ToArray();
         }
+        #endregion
     }
 }

@@ -22,12 +22,13 @@ namespace MyOrm
 
         #region 属性
         /// <summary>
-        /// 表信息
+        /// 实体对象类型
         /// </summary>
-        protected override TableInfo Table
+        public override Type ObjectType
         {
-            get { return Configuration.TableInfoProvider.GetTableInfo(typeof(T)); }
+            get { return typeof(T); }
         }
+
         #endregion
 
         #region 预定义Command

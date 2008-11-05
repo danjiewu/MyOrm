@@ -73,14 +73,6 @@ namespace MyOrm.Metadata
         }
 
         /// <summary>
-        /// 关联表的信息
-        /// </summary>
-        public List<TableJoinInfo> JoinTables
-        {
-            get { return joinTables; }
-        }
-
-        /// <summary>
         /// 列名对应列的缓存
         /// </summary>
         protected Dictionary<string, ColumnInfo> ColumnCache
