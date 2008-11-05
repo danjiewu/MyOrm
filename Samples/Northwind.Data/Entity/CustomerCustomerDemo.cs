@@ -82,77 +82,77 @@ namespace Northwind.Data
 		#endregion
 
 		#region Public Properties
-		[Column("CustomerDesc", Foreign = CustomerCustomerDemoView.CustomerDemographic, ColumnMode = ColumnMode.Read)]
+		[Column("CustomerDesc", Foreign = CustomerCustomerDemoView.CustomerDemographic)]
 		public string CustomerDemographic_CustomerDesc
 		{
 			get { return customerDemographic_CustomerDesc; }			
 			set { customerDemographic_CustomerDesc = value; }
 		}
 		
-		[Column("CompanyName", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		[Column("CompanyName", Foreign = CustomerCustomerDemoView.Customer)]
 		public string Customer_CompanyName
 		{
 			get { return customer_CompanyName; }			
 			set { customer_CompanyName = value; }
 		}
 		
-		[Column("ContactName", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		[Column("ContactName", Foreign = CustomerCustomerDemoView.Customer)]
 		public string Customer_ContactName
 		{
 			get { return customer_ContactName; }			
 			set { customer_ContactName = value; }
 		}
 		
-		[Column("ContactTitle", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		[Column("ContactTitle", Foreign = CustomerCustomerDemoView.Customer)]
 		public string Customer_ContactTitle
 		{
 			get { return customer_ContactTitle; }			
 			set { customer_ContactTitle = value; }
 		}
 		
-		[Column("Address", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		[Column("Address", Foreign = CustomerCustomerDemoView.Customer)]
 		public string Customer_Address
 		{
 			get { return customer_Address; }			
 			set { customer_Address = value; }
 		}
 		
-		[Column("City", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		[Column("City", Foreign = CustomerCustomerDemoView.Customer)]
 		public string Customer_City
 		{
 			get { return customer_City; }			
 			set { customer_City = value; }
 		}
 		
-		[Column("Region", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		[Column("Region", Foreign = CustomerCustomerDemoView.Customer)]
 		public string Customer_Region
 		{
 			get { return customer_Region; }			
 			set { customer_Region = value; }
 		}
 		
-		[Column("PostalCode", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		[Column("PostalCode", Foreign = CustomerCustomerDemoView.Customer)]
 		public string Customer_PostalCode
 		{
 			get { return customer_PostalCode; }			
 			set { customer_PostalCode = value; }
 		}
 		
-		[Column("Country", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		[Column("Country", Foreign = CustomerCustomerDemoView.Customer)]
 		public string Customer_Country
 		{
 			get { return customer_Country; }			
 			set { customer_Country = value; }
 		}
 		
-		[Column("Phone", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		[Column("Phone", Foreign = CustomerCustomerDemoView.Customer)]
 		public string Customer_Phone
 		{
 			get { return customer_Phone; }			
 			set { customer_Phone = value; }
 		}
 		
-		[Column("Fax", Foreign = CustomerCustomerDemoView.Customer, ColumnMode = ColumnMode.Read)]
+		[Column("Fax", Foreign = CustomerCustomerDemoView.Customer)]
 		public string Customer_Fax
 		{
 			get { return customer_Fax; }			

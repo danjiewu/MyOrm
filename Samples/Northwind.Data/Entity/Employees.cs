@@ -234,112 +234,112 @@ namespace Northwind.Data
 		#endregion
 
 		#region Public Properties
-		[Column("LastName", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+		[Column("LastName", Foreign = EmployeesView.ReportsToEmployee)]
 		public string ReportsToEmployee_LastName
 		{
 			get { return reportsToEmployee_LastName; }			
 			set { reportsToEmployee_LastName = value; }
 		}
 		
-		[Column("FirstName", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+		[Column("FirstName", Foreign = EmployeesView.ReportsToEmployee)]
 		public string ReportsToEmployee_FirstName
 		{
 			get { return reportsToEmployee_FirstName; }			
 			set { reportsToEmployee_FirstName = value; }
 		}
 		
-		[Column("Title", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+		[Column("Title", Foreign = EmployeesView.ReportsToEmployee)]
 		public string ReportsToEmployee_Title
 		{
 			get { return reportsToEmployee_Title; }			
 			set { reportsToEmployee_Title = value; }
 		}
 		
-		[Column("TitleOfCourtesy", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+		[Column("TitleOfCourtesy", Foreign = EmployeesView.ReportsToEmployee)]
 		public string ReportsToEmployee_TitleOfCourtesy
 		{
 			get { return reportsToEmployee_TitleOfCourtesy; }			
 			set { reportsToEmployee_TitleOfCourtesy = value; }
 		}
 		
-		[Column("BirthDate", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+		[Column("BirthDate", Foreign = EmployeesView.ReportsToEmployee)]
 		public DateTime? ReportsToEmployee_BirthDate
 		{
 			get { return reportsToEmployee_BirthDate; }			
 			set { reportsToEmployee_BirthDate = value; }
 		}
 		
-		[Column("HireDate", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+		[Column("HireDate", Foreign = EmployeesView.ReportsToEmployee)]
 		public DateTime? ReportsToEmployee_HireDate
 		{
 			get { return reportsToEmployee_HireDate; }			
 			set { reportsToEmployee_HireDate = value; }
 		}
 		
-		[Column("Address", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+		[Column("Address", Foreign = EmployeesView.ReportsToEmployee)]
 		public string ReportsToEmployee_Address
 		{
 			get { return reportsToEmployee_Address; }			
 			set { reportsToEmployee_Address = value; }
 		}
 		
-		[Column("City", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+		[Column("City", Foreign = EmployeesView.ReportsToEmployee)]
 		public string ReportsToEmployee_City
 		{
 			get { return reportsToEmployee_City; }			
 			set { reportsToEmployee_City = value; }
 		}
 		
-		[Column("Region", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+		[Column("Region", Foreign = EmployeesView.ReportsToEmployee)]
 		public string ReportsToEmployee_Region
 		{
 			get { return reportsToEmployee_Region; }			
 			set { reportsToEmployee_Region = value; }
 		}
 		
-		[Column("PostalCode", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+		[Column("PostalCode", Foreign = EmployeesView.ReportsToEmployee)]
 		public string ReportsToEmployee_PostalCode
 		{
 			get { return reportsToEmployee_PostalCode; }			
 			set { reportsToEmployee_PostalCode = value; }
 		}
 		
-		[Column("Country", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+		[Column("Country", Foreign = EmployeesView.ReportsToEmployee)]
 		public string ReportsToEmployee_Country
 		{
 			get { return reportsToEmployee_Country; }			
 			set { reportsToEmployee_Country = value; }
 		}
 		
-		[Column("HomePhone", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+		[Column("HomePhone", Foreign = EmployeesView.ReportsToEmployee)]
 		public string ReportsToEmployee_HomePhone
 		{
 			get { return reportsToEmployee_HomePhone; }			
 			set { reportsToEmployee_HomePhone = value; }
 		}
 		
-		[Column("Extension", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+		[Column("Extension", Foreign = EmployeesView.ReportsToEmployee)]
 		public string ReportsToEmployee_Extension
 		{
 			get { return reportsToEmployee_Extension; }			
 			set { reportsToEmployee_Extension = value; }
 		}
 		
-		[Column("Photo", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+		[Column("Photo", Foreign = EmployeesView.ReportsToEmployee)]
 		public byte[] ReportsToEmployee_Photo
 		{
 			get { return reportsToEmployee_Photo; }			
 			set { reportsToEmployee_Photo = value; }
 		}
 		
-		[Column("Notes", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+		[Column("Notes", Foreign = EmployeesView.ReportsToEmployee)]
 		public string ReportsToEmployee_Notes
 		{
 			get { return reportsToEmployee_Notes; }			
 			set { reportsToEmployee_Notes = value; }
 		}
 		
-		[Column("PhotoPath", Foreign = EmployeesView.ReportsToEmployee, ColumnMode = ColumnMode.Read)]
+		[Column("PhotoPath", Foreign = EmployeesView.ReportsToEmployee)]
 		public string ReportsToEmployee_PhotoPath
 		{
 			get { return reportsToEmployee_PhotoPath; }			

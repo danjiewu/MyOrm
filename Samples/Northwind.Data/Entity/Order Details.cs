@@ -121,119 +121,119 @@ namespace Northwind.Data
 		#endregion
 
 		#region Public Properties
-		[Column("OrderDate", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		[Column("OrderDate", Foreign = OrderDetailsView.Order)]
 		public DateTime? Order_OrderDate
 		{
 			get { return order_OrderDate; }			
 			set { order_OrderDate = value; }
 		}
 		
-		[Column("RequiredDate", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		[Column("RequiredDate", Foreign = OrderDetailsView.Order)]
 		public DateTime? Order_RequiredDate
 		{
 			get { return order_RequiredDate; }			
 			set { order_RequiredDate = value; }
 		}
 		
-		[Column("ShippedDate", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		[Column("ShippedDate", Foreign = OrderDetailsView.Order)]
 		public DateTime? Order_ShippedDate
 		{
 			get { return order_ShippedDate; }			
 			set { order_ShippedDate = value; }
 		}
 		
-		[Column("Freight", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		[Column("Freight", Foreign = OrderDetailsView.Order)]
 		public decimal? Order_Freight
 		{
 			get { return order_Freight; }			
 			set { order_Freight = value; }
 		}
 		
-		[Column("ShipName", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		[Column("ShipName", Foreign = OrderDetailsView.Order)]
 		public string Order_ShipName
 		{
 			get { return order_ShipName; }			
 			set { order_ShipName = value; }
 		}
 		
-		[Column("ShipAddress", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		[Column("ShipAddress", Foreign = OrderDetailsView.Order)]
 		public string Order_ShipAddress
 		{
 			get { return order_ShipAddress; }			
 			set { order_ShipAddress = value; }
 		}
 		
-		[Column("ShipCity", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		[Column("ShipCity", Foreign = OrderDetailsView.Order)]
 		public string Order_ShipCity
 		{
 			get { return order_ShipCity; }			
 			set { order_ShipCity = value; }
 		}
 		
-		[Column("ShipRegion", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		[Column("ShipRegion", Foreign = OrderDetailsView.Order)]
 		public string Order_ShipRegion
 		{
 			get { return order_ShipRegion; }			
 			set { order_ShipRegion = value; }
 		}
 		
-		[Column("ShipPostalCode", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		[Column("ShipPostalCode", Foreign = OrderDetailsView.Order)]
 		public string Order_ShipPostalCode
 		{
 			get { return order_ShipPostalCode; }			
 			set { order_ShipPostalCode = value; }
 		}
 		
-		[Column("ShipCountry", Foreign = OrderDetailsView.Order, ColumnMode = ColumnMode.Read)]
+		[Column("ShipCountry", Foreign = OrderDetailsView.Order)]
 		public string Order_ShipCountry
 		{
 			get { return order_ShipCountry; }			
 			set { order_ShipCountry = value; }
 		}
 		
-		[Column("ProductName", Foreign = OrderDetailsView.Product, ColumnMode = ColumnMode.Read)]
+		[Column("ProductName", Foreign = OrderDetailsView.Product)]
 		public string Product_ProductName
 		{
 			get { return product_ProductName; }			
 			set { product_ProductName = value; }
 		}
 		
-		[Column("QuantityPerUnit", Foreign = OrderDetailsView.Product, ColumnMode = ColumnMode.Read)]
+		[Column("QuantityPerUnit", Foreign = OrderDetailsView.Product)]
 		public string Product_QuantityPerUnit
 		{
 			get { return product_QuantityPerUnit; }			
 			set { product_QuantityPerUnit = value; }
 		}
 		
-		[Column("UnitPrice", Foreign = OrderDetailsView.Product, ColumnMode = ColumnMode.Read)]
+		[Column("UnitPrice", Foreign = OrderDetailsView.Product)]
 		public decimal? Product_UnitPrice
 		{
 			get { return product_UnitPrice; }			
 			set { product_UnitPrice = value; }
 		}
 		
-		[Column("UnitsInStock", Foreign = OrderDetailsView.Product, ColumnMode = ColumnMode.Read)]
+		[Column("UnitsInStock", Foreign = OrderDetailsView.Product)]
 		public short? Product_UnitsInStock
 		{
 			get { return product_UnitsInStock; }			
 			set { product_UnitsInStock = value; }
 		}
 		
-		[Column("UnitsOnOrder", Foreign = OrderDetailsView.Product, ColumnMode = ColumnMode.Read)]
+		[Column("UnitsOnOrder", Foreign = OrderDetailsView.Product)]
 		public short? Product_UnitsOnOrder
 		{
 			get { return product_UnitsOnOrder; }			
 			set { product_UnitsOnOrder = value; }
 		}
 		
-		[Column("ReorderLevel", Foreign = OrderDetailsView.Product, ColumnMode = ColumnMode.Read)]
+		[Column("ReorderLevel", Foreign = OrderDetailsView.Product)]
 		public short? Product_ReorderLevel
 		{
 			get { return product_ReorderLevel; }			
 			set { product_ReorderLevel = value; }
 		}
 		
-		[Column("Discontinued", Foreign = OrderDetailsView.Product, ColumnMode = ColumnMode.Read)]
+		[Column("Discontinued", Foreign = OrderDetailsView.Product)]
 		public bool? Product_Discontinued
 		{
 			get { return product_Discontinued; }			

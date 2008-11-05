@@ -160,98 +160,98 @@ namespace Northwind.Data
 		#endregion
 
 		#region Public Properties
-		[Column("CategoryName", Foreign = ProductsView.Category, ColumnMode = ColumnMode.Read)]
+		[Column("CategoryName", Foreign = ProductsView.Category)]
 		public string Category_CategoryName
 		{
 			get { return category_CategoryName; }			
 			set { category_CategoryName = value; }
 		}
 		
-		[Column("Description", Foreign = ProductsView.Category, ColumnMode = ColumnMode.Read)]
+		[Column("Description", Foreign = ProductsView.Category)]
 		public string Category_Description
 		{
 			get { return category_Description; }			
 			set { category_Description = value; }
 		}
 		
-		[Column("Picture", Foreign = ProductsView.Category, ColumnMode = ColumnMode.Read)]
+		[Column("Picture", Foreign = ProductsView.Category)]
 		public byte[] Category_Picture
 		{
 			get { return category_Picture; }			
 			set { category_Picture = value; }
 		}
 		
-		[Column("CompanyName", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		[Column("CompanyName", Foreign = ProductsView.Supplier)]
 		public string Supplier_CompanyName
 		{
 			get { return supplier_CompanyName; }			
 			set { supplier_CompanyName = value; }
 		}
 		
-		[Column("ContactName", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		[Column("ContactName", Foreign = ProductsView.Supplier)]
 		public string Supplier_ContactName
 		{
 			get { return supplier_ContactName; }			
 			set { supplier_ContactName = value; }
 		}
 		
-		[Column("ContactTitle", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		[Column("ContactTitle", Foreign = ProductsView.Supplier)]
 		public string Supplier_ContactTitle
 		{
 			get { return supplier_ContactTitle; }			
 			set { supplier_ContactTitle = value; }
 		}
 		
-		[Column("Address", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		[Column("Address", Foreign = ProductsView.Supplier)]
 		public string Supplier_Address
 		{
 			get { return supplier_Address; }			
 			set { supplier_Address = value; }
 		}
 		
-		[Column("City", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		[Column("City", Foreign = ProductsView.Supplier)]
 		public string Supplier_City
 		{
 			get { return supplier_City; }			
 			set { supplier_City = value; }
 		}
 		
-		[Column("Region", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		[Column("Region", Foreign = ProductsView.Supplier)]
 		public string Supplier_Region
 		{
 			get { return supplier_Region; }			
 			set { supplier_Region = value; }
 		}
 		
-		[Column("PostalCode", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		[Column("PostalCode", Foreign = ProductsView.Supplier)]
 		public string Supplier_PostalCode
 		{
 			get { return supplier_PostalCode; }			
 			set { supplier_PostalCode = value; }
 		}
 		
-		[Column("Country", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		[Column("Country", Foreign = ProductsView.Supplier)]
 		public string Supplier_Country
 		{
 			get { return supplier_Country; }			
 			set { supplier_Country = value; }
 		}
 		
-		[Column("Phone", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		[Column("Phone", Foreign = ProductsView.Supplier)]
 		public string Supplier_Phone
 		{
 			get { return supplier_Phone; }			
 			set { supplier_Phone = value; }
 		}
 		
-		[Column("Fax", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		[Column("Fax", Foreign = ProductsView.Supplier)]
 		public string Supplier_Fax
 		{
 			get { return supplier_Fax; }			
 			set { supplier_Fax = value; }
 		}
 		
-		[Column("HomePage", Foreign = ProductsView.Supplier, ColumnMode = ColumnMode.Read)]
+		[Column("HomePage", Foreign = ProductsView.Supplier)]
 		public string Supplier_HomePage
 		{
 			get { return supplier_HomePage; }			
