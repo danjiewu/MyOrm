@@ -28,7 +28,6 @@ namespace MyOrm.Metadata
         private ReadOnlyCollection<ColumnInfo> keys = null;
         private Dictionary<string, ColumnInfo> columnCache = new Dictionary<string, ColumnInfo>(StringComparer.OrdinalIgnoreCase);
         private Dictionary<string, ColumnInfo> propertyCache = new Dictionary<string, ColumnInfo>(StringComparer.OrdinalIgnoreCase);
-        private List<TableJoinInfo> joinTables = new List<TableJoinInfo>();
         #endregion
 
         /// <summary>
