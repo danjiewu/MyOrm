@@ -59,10 +59,6 @@ namespace MyOrm.Attribute
         /// <summary>
         /// 优先使用对象Property的Attribute得到数据库列定义，若不存在Attribute则根据对象Property得到数据库列定义
         /// </summary>
-        AttributeAndProperty = Property | Attribute,
-        /// <summary>
-        /// 根据配置文件得到数据库列定义，未实现
-        /// </summary>
-        Configuration = 4
+        AttributeAndProperty = Property | Attribute
     }   
 }

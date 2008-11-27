@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyOrm.Attribute", "MyOrm.At
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyOrm.Metadata", "MyOrm.Metadata\MyOrm.Metadata.csproj", "{00A1865D-27F5-458D-AAE5-3023AD1F17EC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyOrm.Xml", "MyOrm.Xml\MyOrm.Xml.csproj", "{A63CCF0B-2B8F-423F-8659-FB831E89B4E5}"
+EndProject
 Global
 	GlobalSection(SubversionScc) = preSolution
 		Svn-Managed = True
@@ -35,6 +37,10 @@ Global
 		{00A1865D-27F5-458D-AAE5-3023AD1F17EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{00A1865D-27F5-458D-AAE5-3023AD1F17EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{00A1865D-27F5-458D-AAE5-3023AD1F17EC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A63CCF0B-2B8F-423F-8659-FB831E89B4E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A63CCF0B-2B8F-423F-8659-FB831E89B4E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A63CCF0B-2B8F-423F-8659-FB831E89B4E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A63CCF0B-2B8F-423F-8659-FB831E89B4E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
