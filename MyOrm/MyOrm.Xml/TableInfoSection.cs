@@ -7,6 +7,13 @@ namespace MyOrm.Xml
 {
     public class TableInfoSection : ConfigurationSection
     {
-        public
+        private TableNode[] tables;
+
+        [ConfigurationCollection(typeof(TableNode))]
+        public TableNode[] Tables
+        {
+            get { return tables; }
+            set { tables = value; }
+        }
     }
 }
