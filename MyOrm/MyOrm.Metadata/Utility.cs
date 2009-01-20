@@ -17,6 +17,7 @@ namespace MyOrm
         /// <returns></returns>
         public static DbType ConvertToDbType(Type type)
         {
+            if (Nullable.GetUnderlyingType(type) != null) type = Nullable.GetUnderlyingType(type);
             if (type == typeof(Byte)) return DbType.Byte;
             else if (type == typeof(Byte[])) return DbType.Binary;
             else if (type == typeof(Boolean)) return DbType.Boolean;
