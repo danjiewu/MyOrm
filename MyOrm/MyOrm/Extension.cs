@@ -153,7 +153,7 @@ namespace MyOrm
         {
             lock (transactionCache)
             {
-                if (CurrentTransaction(connection) == null)
+                if (CurrentTransaction(connection) == null || CurrentTransaction(connection).Connection == null)
                 {
                     transactionCache[connection] = connection.BeginTransaction();
                 }
