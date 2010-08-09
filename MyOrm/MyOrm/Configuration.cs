@@ -2,14 +2,14 @@ using System;
 using System.Data;
 using System.Configuration;
 using System.Data.Common;
-using MyOrm.Metadata;
+using MyOrm.Common;
 
 namespace MyOrm
 {
     /// <summary>
     /// MyOrm配置项
     /// </summary>
-    public class MyOrmConfigurationSection : ConfigurationSection
+    public class OrmConfigurationSection : ConfigurationSection
     {
         /// <summary>
         /// 默认数据库连接配置
@@ -24,7 +24,7 @@ namespace MyOrm
         /// <summary>
         /// 表信息提供类型名
         /// </summary>
-        [ConfigurationProperty("Provider", DefaultValue = "MyOrm.Metadata.AttibuteTableInfoProvider, MyOrm.Attribute")]
+        [ConfigurationProperty("Provider", DefaultValue = "MyOrm.Common.AttibuteTableInfoProvider, MyOrm.Common")]
         public string TableInfoProvider
         {
             get { return (string)this["Provider"]; }
@@ -44,20 +44,20 @@ namespace MyOrm
     /// <summary>
     /// 配置
     /// </summary>
-    public static class Configuration
+    public static class DefaultConfiguration
     {
         private static IDbConnection defaultConnection;
         private static TableInfoProvider tableInfoProvider;
-        private static MyOrmConfigurationSection configSection;
+        private static OrmConfigurationSection configSection;
 
         /// <summary>
         /// 配置项
         /// </summary>
-        public static MyOrmConfigurationSection ConfigSection
+        public static OrmConfigurationSection ConfigSection
         {
             get
             {
-                if (configSection == null) configSection = ConfigurationManager.GetSection("MyOrm") as MyOrmConfigurationSection;
+                if (configSection == null) configSection = ConfigurationManager.GetSection("MyOrm.Orm") as OrmConfigurationSection;
                 return configSection;
             }
         }

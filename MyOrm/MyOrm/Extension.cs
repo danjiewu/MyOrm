@@ -23,12 +23,13 @@ namespace MyOrm
         {
             Transaction = TransactionManager.CurrentTransaction(Connection);
             if (Connection.State == ConnectionState.Closed) Connection.Open();
+            CommandText = SQLBuilder.Default.ReplaceSqlName(CommandText);
             //Console.WriteLine(CommandText);//TODO: Add log here.
         }
 
         protected virtual void PostExcuteCommand(ExcuteType excuteType)
         {
-            if (Connection.State == ConnectionState.Open && excuteType != ExcuteType.ExecuteReader) Connection.Close();
+            //if (Connection.State == ConnectionState.Open && excuteType != ExcuteType.ExecuteReader) Connection.Close();
         }
 
         #region IDbCommand Members
@@ -199,8 +200,13 @@ namespace MyOrm
             {
                 foreach (IDbConnection connection in transactionCache.Keys)
                 {
-                    Commit(connection);
+                    IDbTransaction transaction = CurrentTransaction(connection);
+                    if (transaction != null)
+                    {
+                        transaction.Commit();
+                    }
                 }
+                transactionCache.Clear();
             }
         }
 
@@ -230,8 +236,13 @@ namespace MyOrm
             {
                 foreach (IDbConnection connection in transactionCache.Keys)
                 {
-                    Rollback(connection);
+                    IDbTransaction transaction = CurrentTransaction(connection);
+                    if (transaction != null)
+                    {
+                        transaction.Rollback();
+                    }
                 }
+                transactionCache.Clear();
             }
         }
     }

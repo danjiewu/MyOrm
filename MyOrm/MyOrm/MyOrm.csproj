@@ -66,19 +66,18 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="Extension.cs">
     </Compile>
+    <Compile Include="IObjectDAO.cs" />
+    <Compile Include="IObjectViewDAO.cs" />
     <Compile Include="ObjectDAO.cs" />
     <Compile Include="ObjectDAOBase.cs" />
     <Compile Include="ObjectViewDAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQLBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyOrm.Common\MyOrm.Common.csproj">
       <Project>{C43F1A98-E5AA-4D5B-A014-01CDA10092FA}</Project>
       <Name>MyOrm.Common</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MyOrm.Metadata\MyOrm.Metadata.csproj">
-      <Project>{00A1865D-27F5-458D-AAE5-3023AD1F17EC}</Project>
-      <Name>MyOrm.Metadata</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
