@@ -69,12 +69,6 @@
     <Compile Include="TableJoinAttribute.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\MyOrm.Metadata\MyOrm.Metadata.csproj">
-      <Project>{00A1865D-27F5-458D-AAE5-3023AD1F17EC}</Project>
-      <Name>MyOrm.Metadata</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
