@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Data;
-using MyOrm.Metadata;
 using MyOrm.Common;
 
 namespace MyOrm
@@ -11,13 +10,33 @@ namespace MyOrm
     /// 实体类的增删改操作
     /// </summary>
     /// <typeparam name="T">实体类型</typeparam>
-    public class ObjectDAO<T> : ObjectViewDAO<T>, IObjectDAO<T>, IObjectDAO where T : new()
+    public class ObjectDAO<T> : ObjectDAOBase, IObjectDAO<T>, IObjectDAO
     {
         #region 私有变量
         private IDbCommand insertCommand;
         private IDbCommand updateCommand;
         private IDbCommand deleteCommand;
+        private IDbCommand updateOrInsertCommand;
         #endregion
+
+        public override Type ObjectType
+        {
+            get { return typeof(T); }
+        }
+
+        protected override Table Table
+        {
+            get { return Provider.GetTableDefinition(typeof(T)); }
+        }
+
+        protected ColumnDefinition IdentityColumn
+        {
+            get
+            {
+                foreach (ColumnDefinition column in TableDefinition.Columns) if (column.IsIdentity) return column;
+                return null;
+            }
+        }
 
         #region 预定义Command
         /// <summary>
@@ -38,22 +57,22 @@ namespace MyOrm
             IDbCommand command = NewCommand();
             StringBuilder strColumns = new StringBuilder();
             StringBuilder strValues = new StringBuilder();
-            foreach (ColumnInfo column in Table.Columns)
+            foreach (ColumnDefinition column in TableDefinition.Columns)
             {
-                if ((column.Mode & ColumnMode.Insert) != ColumnMode.Ignore)
+                if (!column.IsIdentity && (column.Mode & ColumnMode.Insert) != ColumnMode.None)
                 {
                     if (strColumns.Length != 0) strColumns.Append(",");
                     if (strValues.Length != 0) strValues.Append(",");
 
-                    strColumns.Append(ToSqlName(column.ColumnName));
-                    strValues.Append(ToSqlParam(column.ColumnName));
+                    strColumns.Append(ToSqlName(column.Name));
+                    strValues.Append(ToSqlParam(column.PropertyName));
                     IDataParameter param = command.CreateParameter();
                     param.DbType = column.DbType;
-                    param.ParameterName = column.ColumnName;
+                    param.ParameterName = ToParamName(column.PropertyName);
                     command.Parameters.Add(param);
                 }
             }
-            command.CommandText = String.Format("insert into {0} ({1}) values ({2});", ToSqlName(TableName), strColumns, strValues);
+            command.CommandText = String.Format("insert into {0} ({1}) values ({2}); {3}", ToSqlName(TableName), strColumns, strValues, IdentityColumn == null ? null : "select @@IDENTITY as [ID];");
             return command;
         }
 
@@ -74,15 +93,15 @@ namespace MyOrm
         {
             IDbCommand command = NewCommand();
             StringBuilder strColumns = new StringBuilder();
-            foreach (ColumnInfo column in Table.Columns)
+            foreach (ColumnDefinition column in TableDefinition.Columns)
             {
-                if ((column.Mode & ColumnMode.Update) != ColumnMode.Ignore && !column.IsPrimaryKey)
+                if ((column.Mode & ColumnMode.Update) != ColumnMode.None && !column.IsPrimaryKey)
                 {
                     if (strColumns.Length != 0) strColumns.Append(",");
-                    strColumns.AppendFormat("{0} = {1}", ToSqlName(column.ColumnName), ToSqlParam(column.ColumnName));
+                    strColumns.AppendFormat("{0} = {1}", ToSqlName(column.Name), ToSqlParam(column.PropertyName));
                     IDataParameter param = command.CreateParameter();
                     param.DbType = column.DbType;
-                    param.ParameterName = column.ColumnName;
+                    param.ParameterName = ToParamName(column.PropertyName);
                     command.Parameters.Add(param);
                 }
             }
@@ -109,6 +128,60 @@ namespace MyOrm
             command.CommandText = String.Format("delete from {0} where {1}", ToSqlName(TableName), MakeIsKeyCondition(command));
             return command;
         }
+
+        /// <summary>
+        /// 实现更新或添加操作的IDbCommand
+        /// </summary>
+        protected IDbCommand UpdateOrInsertCommand
+        {
+            get
+            {
+                if (updateOrInsertCommand == null) updateOrInsertCommand = MakeUpdateOrInsertCommand();
+                return updateOrInsertCommand;
+            }
+        }
+
+        private IDbCommand MakeUpdateOrInsertCommand()
+        {
+            IDbCommand command = NewCommand();
+            StringBuilder strColumns = new StringBuilder();
+            StringBuilder strValues = new StringBuilder();
+            StringBuilder strUpdateColumns = new StringBuilder();
+            foreach (ColumnDefinition column in TableDefinition.Columns)
+            {
+                bool columnAdded = false;
+                if (!column.IsIdentity && (column.Mode & ColumnMode.Insert) != ColumnMode.None)
+                {
+                    if (strColumns.Length != 0) strColumns.Append(",");
+                    if (strValues.Length != 0) strValues.Append(",");
+
+                    strColumns.Append(ToSqlName(column.Name));
+                    strValues.Append(ToSqlParam(column.PropertyName));
+                    columnAdded = true;
+                }
+
+                if ((column.Mode & ColumnMode.Update) != ColumnMode.None && !column.IsPrimaryKey)
+                {
+                    if (strUpdateColumns.Length != 0) strUpdateColumns.Append(",");
+                    strUpdateColumns.AppendFormat("{0} = {1}", ToSqlName(column.Name), ToSqlParam(column.PropertyName));
+                    columnAdded = true;
+                }
+
+                if (columnAdded)
+                {
+                    IDataParameter param = command.CreateParameter();
+                    param.DbType = column.DbType;
+                    param.ParameterName = ToParamName(column.PropertyName);
+                    command.Parameters.Add(param);
+                }
+            }
+            string insertCommandText = String.Format("insert into {0} ({1}) values ({2}); {3}", ToSqlName(TableName), strColumns, strValues, IdentityColumn == null ? null : "select @@IDENTITY as [ID];");
+            string updateCommandText = String.Format("update {0} set {1} where {2};", ToSqlName(TableName), strUpdateColumns, MakeIsKeyCondition(command));
+
+            command.CommandText = String.Format("if exists(select 1 from {0} where {1}) begin {2} select -1; end else begin {3} end", ToSqlName(TableName), MakeIsKeyCondition(command), updateCommandText, insertCommandText);
+            return command;
+        }
+
         #endregion
 
         #region 方法
@@ -119,12 +192,19 @@ namespace MyOrm
         /// <returns>是否成功添加</returns>
         public virtual bool Insert(T t)
         {
+            if (t == null) throw new ArgumentNullException("t");
             foreach (IDataParameter param in InsertCommand.Parameters)
             {
-                ColumnInfo column = Table.GetColumn(param.ParameterName);
+                ColumnDefinition column = TableDefinition.GetColumn(ToNativeName(param.ParameterName));
                 param.Value = ConvertToDBValue(column.GetValue(t), column);
             }
-            return InsertCommand.ExecuteNonQuery() > 0;
+            if (IdentityColumn == null)
+                return InsertCommand.ExecuteNonQuery() > 0;
+            else
+            {
+                IdentityColumn.SetValue(t, Convert.ChangeType(InsertCommand.ExecuteScalar(), IdentityColumn.PropertyType));
+                return true;
+            }
         }
 
         /// <summary>
@@ -134,22 +214,49 @@ namespace MyOrm
         /// <returns>是否成功更新</returns>
         public virtual bool Update(T t)
         {
+            if (t == null) throw new ArgumentNullException("t");
             foreach (IDataParameter param in UpdateCommand.Parameters)
             {
-                ColumnInfo column = Table.GetColumn(param.ParameterName);
+                ColumnDefinition column = TableDefinition.GetColumn(ToNativeName(param.ParameterName));
                 param.Value = ConvertToDBValue(column.GetValue(t), column);
             }
             return UpdateCommand.ExecuteNonQuery() > 0;
         }
 
         /// <summary>
+        /// 将对象更新到数据库，检查数据库冲突
+        /// </summary>
+        /// <param name="current">待更新的对象</param>
+        /// <param name="original">原始的对象</param>
+        /// <returns>是否成功更新</returns>
+        public bool Update(T current, T original)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// 更新或添加对象，若存在则更新，若不存在则添加
         /// </summary>
-        /// <param name="o">待更新或添加的对象</param>
-        /// <returns>是否成功更新或添加</returns>
-        public bool UpdateOrInsert(T o)
+        /// <param name="t">待更新或添加的对象</param>
+        /// <returns>指示更新还是添加</returns>
+        public UpdateOrInsertResult UpdateOrInsert(T t)
         {
-            return Update(o) ? true : Insert(o);
+            if (t == null) throw new ArgumentNullException("t");
+            foreach (IDataParameter param in UpdateOrInsertCommand.Parameters)
+            {
+                ColumnDefinition column = TableDefinition.GetColumn(ToNativeName(param.ParameterName));
+                param.Value = ConvertToDBValue(column.GetValue(t), column);
+            }
+            int ret = Convert.ToInt32(UpdateOrInsertCommand.ExecuteScalar());
+            if (ret >= 0)
+            {
+                if (IdentityColumn != null) IdentityColumn.SetValue(t, ret);
+                return UpdateOrInsertResult.Inserted;
+            }
+            else
+            {
+                return UpdateOrInsertResult.Updated;
+            }
         }
 
         /// <summary>
@@ -159,7 +266,21 @@ namespace MyOrm
         /// <returns>是否成功删除</returns>
         public virtual bool Delete(T t)
         {
+            if (t == null) throw new ArgumentNullException("t");
             return DeleteByKeys(GetKeyValues(t));
+        }
+
+        /// <summary>
+        /// 根据条件删除对象
+        /// </summary>
+        /// <param name="condition">条件</param>
+        /// <returns>删除对象数量</returns>
+        public virtual int Delete(Condition condition)
+        {
+            using (IDbCommand command = MakeConditionCommand("delete from @Table" + (condition == null ? null : " where @Condition"), condition))
+            {
+                return command.ExecuteNonQuery();
+            }
         }
 
         /// <summary>
@@ -173,7 +294,7 @@ namespace MyOrm
             int i = 0;
             foreach (IDataParameter param in DeleteCommand.Parameters)
             {
-                param.Value = ConvertToDBValue(keys[i], Table.Keys[i]);
+                param.Value = ConvertToDBValue(keys[i], TableDefinition.Keys[i]);
                 i++;
             }
             return DeleteCommand.ExecuteNonQuery() > 0;
@@ -192,7 +313,12 @@ namespace MyOrm
             return Update((T)o);
         }
 
-        bool IObjectDAO.UpdateOrInsert(object o)
+        bool IObjectDAO.Update(object current, object original)
+        {
+            return Update((T)current, (T)original);
+        }
+
+        UpdateOrInsertResult IObjectDAO.UpdateOrInsert(object o)
         {
             return UpdateOrInsert((T)o);
         }
@@ -203,5 +329,12 @@ namespace MyOrm
         }
 
         #endregion
+    }
+
+    public enum UpdateOrInsertResult
+    {
+        Inserted,
+        Updated,
+        Failed
     }
 }

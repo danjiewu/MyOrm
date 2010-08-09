@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Data;
 using System.Text.RegularExpressions;
-using MyOrm.Metadata;
 using MyOrm.Common;
 
 namespace MyOrm
@@ -15,10 +14,6 @@ namespace MyOrm
     public abstract class ObjectDAOBase
     {
         #region 预定义变量
-        /// <summary>
-        /// SQL语句中like条件中的转义符
-        /// </summary>
-        protected const char LikeEscapeChar = '\\';
         /// <summary>
         /// 表示SQL查询中所有字段的标记
         /// </summary>
@@ -35,22 +30,13 @@ namespace MyOrm
         /// 表示SQL查询中条件语句的标记
         /// </summary>
         protected const string ParamCondition = "@Condition";
-        /// <summary>
-        /// 对like条件的字符串内容中的转义符进行替换的正则表达式
-        /// </summary>
-        protected static Regex sqlLike = new Regex(@"([%_\^\[\]\*\\])");
-        /// <summary>
-        /// 查找列名、表名等的正则表达式
-        /// </summary>
-        protected static Regex sqlNameRegex = new Regex(@"\[([^\]]+)\]");
+
         #endregion
 
         #region 私有变量
         private IDbConnection connection;
-        private string fromTable = null;
-        private string allFieldsSql = null;
-        private List<ColumnInfo> selectColumns;
 
+        private string tableName = null;
         private Exception ExceptionWrongKeys = null;
         private Exception ExceptionNoKeys = null;
         #endregion
@@ -59,21 +45,13 @@ namespace MyOrm
         /// <summary>
         /// 数据库连接
         /// </summary>
-        public virtual IDbConnection Connection
+        internal virtual IDbConnection Connection
         {
             get
             {
-                if (connection == null) connection = Configuration.DefaultConnection;
+                if (connection == null) connection = DefaultConfiguration.DefaultConnection;
                 return connection;
             }
-        }
-
-        /// <summary>
-        /// 表示数据库null值
-        /// </summary>
-        public virtual object DBNullValue
-        {
-            get { return DBNull.Value; }
         }
 
         /// <summary>
@@ -85,97 +63,51 @@ namespace MyOrm
         }
 
         /// <summary>
-        /// 表信息提供者
+        /// 表信息
         /// </summary>
-        protected virtual TableInfoProvider Provider
+        protected abstract Table Table
         {
-            get { return Configuration.TableInfoProvider; }
+            get;
         }
 
         /// <summary>
-        /// 表信息
+        /// 表定义
         /// </summary>
-        protected virtual TableInfo Table
+        protected TableDefinition TableDefinition
         {
-            get { return Provider.GetTableInfo(ObjectType); }
+            get { return Table.Definition; }
+        }
+
+        /// <summary>
+        /// 构建SQL语句的SQLBuilder
+        /// </summary>
+        protected virtual SQLBuilder SqlBuilder
+        {
+            get { return SQLBuilder.Default; }
+        }
+
+        protected SQLBuildContext CurrentContext
+        {
+            get { return new SQLBuildContext() { Table = Table }; }
+        }
+
+        /// <summary>
+        /// 表信息提供者
+        /// </summary>
+        protected TableInfoProvider Provider
+        {
+            get { return DefaultConfiguration.TableInfoProvider; }
         }
 
         /// <summary>
         /// 表名
         /// </summary>
-        protected virtual string TableName
-        {
-            get { return Table.TableName; }
-        }
-
-        /// <summary>
-        /// 查询时使用的相关联的多个表
-        /// </summary>
-        protected virtual string FromTable
+        protected string TableName
         {
             get
             {
-                if (fromTable == null)
-                {
-                    Dictionary<string, object> usedTable = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
-                    foreach (ColumnInfo column in SelectColumns)
-                    {
-                        if (!String.IsNullOrEmpty(column.ForeignTable)) usedTable[column.ForeignTable] = null;
-                    }
-
-                    StringBuilder strFromTable = new StringBuilder(ToSqlName(TableName));
-                    foreach (TableJoinInfo tableJoin in Provider.GetTableJoins(ObjectType))
-                    {
-                        string aliasName = String.IsNullOrEmpty(tableJoin.AliasName) ? tableJoin.TargetTable.TableName : tableJoin.AliasName;
-                        if (usedTable.ContainsKey(aliasName))
-                        {
-                            if (tableJoin.ForeignKeys.Count != tableJoin.TargetTable.Keys.Count) throw new Exception(String.Format("Different number between foreign keys of table \"{0}\" and primary keys of table \"{1}\".  ", TableName, tableJoin.TargetTable.TableName));
-                            StringBuilder strConditions = new StringBuilder();
-                            int index = 0;
-                            foreach (ColumnInfo key in tableJoin.TargetTable.Keys)
-                            {
-                                if (index != 0) strConditions.Append(" and ");
-                                strConditions.AppendFormat("{0}.{1} = {2}.{3}", ToSqlName(String.IsNullOrEmpty(tableJoin.SourceTable) ? TableName : tableJoin.SourceTable), ToSqlName(tableJoin.ForeignKeys[index]), ToSqlName(string.IsNullOrEmpty(tableJoin.AliasName) ? tableJoin.TargetTable.TableName : tableJoin.AliasName), ToSqlName(key.ColumnName));
-                            }
-                            strFromTable.AppendFormat(" {0} join {1} {2} on {3}", tableJoin.JoinType, ToSqlName(tableJoin.TargetTable.TableName), ToSqlName(aliasName), strConditions);
-                        }
-                    }
-                    fromTable = strFromTable.ToString();
-                }
-                return fromTable;
-            }
-        }
-
-        /// <summary>
-        /// 查询时需要获取的所有列
-        /// </summary>
-        protected virtual List<ColumnInfo> SelectColumns
-        {
-            get
-            {
-                if (selectColumns == null) selectColumns = Table.Columns.FindAll(delegate(ColumnInfo column) { return (column.Mode & ColumnMode.Read) != ColumnMode.Ignore; });
-                return selectColumns;
-            }
-        }
-
-        /// <summary>
-        /// 查询时需要获取的所有字段的Sql
-        /// </summary>
-        protected virtual string AllFieldsSql
-        {
-            get
-            {
-                if (allFieldsSql == null)
-                {
-                    StringBuilder strAllFields = new StringBuilder();
-                    foreach (ColumnInfo column in SelectColumns)
-                    {
-                        if (strAllFields.Length != 0) strAllFields.Append(",");
-                        strAllFields.AppendFormat("{0} as {1}", GetFullName(column), ToSqlName(column.PropertyName));
-                    }
-                    allFieldsSql = strAllFields.ToString();
-                }
-                return allFieldsSql;
+                if (tableName == null) tableName = Table.Name;
+                return tableName;
             }
         }
         #endregion
@@ -187,149 +119,7 @@ namespace MyOrm
         /// <returns></returns>
         protected virtual IDbCommand NewCommand()
         {
-            return Configuration.UseAutoCommand ? new AutoCommand(Connection.CreateCommand()) : Connection.CreateCommand();
-        }
-
-        /// <summary>
-        /// 获取查询时的列全名
-        /// </summary>
-        /// <param name="column">列</param>
-        /// <returns></returns>
-        protected string GetFullName(ColumnInfo column)
-        {
-            return string.Format("{0}.{1}", ToSqlName(String.IsNullOrEmpty(column.ForeignTable) ? TableName : column.ForeignTable), ToSqlName(column.ColumnName));
-        }
-
-        /// <summary>
-        /// 名称转化为数据库合法名称
-        /// </summary>
-        /// <param name="name">字符串名称</param>
-        /// <returns>数据库合法名称</returns>
-        protected virtual string ToSqlName(string name)
-        {
-            return String.Format("[{0}]", name);
-        }
-
-        /// <summary>
-        /// 参数名称转化为数据库参数
-        /// </summary>
-        /// <param name="paramName">参数名称</param>
-        /// <returns>数据库参数</returns>
-        protected virtual string ToSqlParam(string paramName)
-        {
-            return String.Format("@{0}", paramName);
-        }
-
-        ///<summary>
-        /// 根据表达式、条件比较符、值得到SQL字符串
-        /// </summary>
-        /// <param name="expression">表达式</param>
-        /// <param name="op">条件比较符</param>
-        /// <param name="value">值</param>
-        /// <returns></returns>
-        protected string BuildSql(string expression, ConditionOperator op, string value)//TODO
-        {
-            switch (op)
-            {
-                case ConditionOperator.Equals: return String.Format("{0} = {1}", expression, value);
-                case ConditionOperator.NotEquals: return String.Format("{0} <> {1}", expression, value);
-                case ConditionOperator.LargerThan: return String.Format("{0} > {1}", expression, value);
-                case ConditionOperator.SmallerThan: return String.Format("{0} < {1}", expression, value);
-                case ConditionOperator.NotLargerThan: return String.Format("{0} <= {1}", expression, value);
-                case ConditionOperator.NotSmallerThan: return String.Format("{0} >= {1}", expression, value);
-                case ConditionOperator.StartsWith: return String.Format("{0} like {1} + '%' escape '{2}'", expression, value, LikeEscapeChar);
-                case ConditionOperator.EndsWith: return String.Format("{0} like '%' + {1} escape '{2}'", expression, value, LikeEscapeChar);
-                case ConditionOperator.Contains: return String.Format("{0} like '%' + {1} + '%' escape '{2}'", expression, value, LikeEscapeChar);
-                case ConditionOperator.NotStartsWith: return String.Format("{0} not like {1} + '%' escape '{2}'", expression, value, LikeEscapeChar);
-                case ConditionOperator.NotEndsWith: return String.Format("{0} not like '%' + {1} escape '{2}'", expression, value, LikeEscapeChar);
-                case ConditionOperator.NotContains: return String.Format("{0} not like '%' + {1} + '%' escape '{2}'", expression, value, LikeEscapeChar);
-                default:
-                    return string.Empty;
-            }
-        }
-
-        /// <summary>
-        /// 根据查询条件生成SQL语句与SQL参数
-        /// </summary>
-        /// <param name="conditon">查询条件，可为查询条件集合或单个条件，为空表示无条件</param>
-        /// <param name="outputParams">供输出的参数列表，在该列表中添加SQL参数</param>
-        /// <returns>生成的SQL语句，null表示无条件</returns>
-        protected string BuildConditionSql(Condition conditon, IList outputParams)
-        {
-            if (conditon == null)
-                return null;
-            else if (conditon is SimpleCondition)
-                return BuildSimpleConditionSql(conditon as SimpleCondition, outputParams);
-            else if (conditon is ConditionSet)
-                return BuildConditionSetSql(conditon as ConditionSet, outputParams);
-            else
-                return BuildCustomConditionSql(conditon, outputParams);
-        }
-
-        /// <summary>
-        /// 根据查询条件集合生成SQL语句与SQL参数
-        /// </summary>
-        /// <param name="conditionSet">查询条件的集合</param>
-        /// <param name="outputParams">供输出的参数列表，在该列表中添加SQL参数</param>
-        /// <returns>生成的SQL语句，null表示无条件</returns>
-        protected string BuildConditionSetSql(ConditionSet conditionSet, IList outputParams)
-        {
-            List<string> conditions = new List<string>();
-            foreach (Condition subConditon in conditionSet.SubConditions)
-            {
-                string str = BuildConditionSql(subConditon, outputParams);
-                if (!String.IsNullOrEmpty(str)) conditions.Add(str);
-            }
-            if (conditions.Count == 0) return null;
-            return "(" + String.Join(" " + conditionSet.JoinType + " ", conditions.ToArray()) + ")";
-        }
-
-        /// <summary>
-        /// 根据简单查询条件生成SQL语句与SQL参数
-        /// </summary>
-        /// <param name="simpleCondition">简单查询条件</param>
-        /// <param name="outputParams">参数列表，在该列表中添加SQL参数</param>
-        /// <returns>生成的SQL语句</returns>
-        protected string BuildSimpleConditionSql(SimpleCondition simpleCondition, IList outputParams)
-        {
-            string expression;
-            if (simpleCondition.ExpressionType == ExpressionType.Property)
-            {
-                ColumnInfo column = Table.GetColumnByProperty(simpleCondition.Expression);
-                if (column == null)
-                    throw new Exception(String.Format("Property \"{0}\" does not exist in type \"{1}\".", simpleCondition.Expression, Table.ObjectType.FullName));
-                else
-                    expression = GetFullName(column);
-            }
-            else
-            {
-                expression = simpleCondition.Expression;//TODO
-            }
-
-            if ((simpleCondition.Value == null || simpleCondition.Value == DBNullValue) && simpleCondition.Operator == ConditionOperator.Equals)
-                return string.Format("{0} is null", expression);
-            else if ((simpleCondition.Value == null || simpleCondition.Value == DBNullValue) && simpleCondition.Operator == ConditionOperator.NotEquals)
-                return string.Format("{0} is not null", expression);
-            else
-            {
-                object value = simpleCondition.Value;
-                ConditionOperator positiveOp = simpleCondition.Operator & ConditionOperator.Positive;
-                if (positiveOp == ConditionOperator.Contains || positiveOp == ConditionOperator.EndsWith || positiveOp == ConditionOperator.StartsWith)
-                    value = sqlLike.Replace(Convert.ToString(value), LikeEscapeChar + "$1");
-                outputParams.Add(value);
-                return BuildSql(expression, simpleCondition.Operator, ToSqlParam(Convert.ToString(outputParams.Count - 1)));
-            }
-        }
-
-        /// <summary>
-        /// 根据自定义条件生成SQL语句与SQL参数
-        /// </summary>
-        /// <param name="customConditon">自定义的查询条件</param>
-        /// <param name="outputParams">供输出的参数列表，在该列表中添加SQL参数</param>
-        /// <returns>生成的SQL语句，null表示无条件</returns>
-        protected virtual string BuildCustomConditionSql(Condition customConditon, IList outputParams)
-        {
-            throw new Exception(String.Format("Unknown condition type \"{0}\"! Please override the \"BuildCustomConditionSql\" method.", customConditon.GetType().FullName));
+            return DefaultConfiguration.UseAutoCommand ? new AutoCommand(Connection.CreateCommand()) : Connection.CreateCommand();
         }
 
         /// <summary>
@@ -345,9 +135,8 @@ namespace MyOrm
             if (paramValues != null)
                 foreach (object paramValue in paramValues)
                 {
-                    String paramName = Convert.ToString(paramIndex++);
                     IDataParameter param = command.CreateParameter();
-                    param.ParameterName = paramName;
+                    param.ParameterName = ToParamName(Convert.ToString(paramIndex++));
                     param.Value = paramValue;
                     command.Parameters.Add(param);
                 }
@@ -359,30 +148,20 @@ namespace MyOrm
         /// <summary>
         /// 根据SQL语句和条件建立IDbCommand
         /// </summary>
-        /// <param name="SQLWithParam">带参数的SQL语句，参数可以为"@AllFields","@Table","@FromTable","@Condition"之一
+        /// <param name="SQLWithParam">带参数的SQL语句
         /// <example>"select @AllFields from @FromTable where @Condition"表示从表中查询所有符合条件的记录</example>
-        /// <example>"select count(*) from @FromTable "表示从表中所有记录的数量，conditions参数需为空</example>
+        /// <example>"select count(*) from @FromTable "表示从表中所有记录的数量，condition参数需为空</example>
         /// <example>"delete from @Table where @Condition"表示从表中删除所有符合条件的记录</example>
         /// </param>        
         /// <param name="condition">条件，为null时表示无条件</param>
         /// <returns>IDbCommand</returns>
-        protected IDbCommand MakeConditionCommand(string SQLWithParam, Condition condition)
+        protected virtual IDbCommand MakeConditionCommand(string SQLWithParam, Condition condition)
         {
             List<object> paramList = new List<object>();
-            string strCondition = BuildConditionSql(condition, paramList);
+            string strCondition = SqlBuilder.BuildConditionSql(CurrentContext, condition, paramList);
             if (String.IsNullOrEmpty(strCondition)) strCondition = " 1 = 1 ";
-            string strSQL = SQLWithParam.Replace(ParamAllFields, AllFieldsSql).Replace(ParamTable, ToSqlName(TableName)).Replace(ParamFromTable, FromTable).Replace(ParamCondition, strCondition);
-            return MakeParamCommand(strSQL, paramList);
-        }
-
-        /// <summary>
-        /// 将列名、表名等替换为数据库合法名称
-        /// </summary>
-        /// <param name="sql"></param>
-        /// <returns></returns>
-        protected virtual string ReplaceSqlName(string sql)
-        {
-            return sqlNameRegex.Replace(sql, "[$1]");
+            string sql = SQLWithParam.Replace(ParamTable, TableName).Replace(ParamCondition, strCondition);
+            return MakeParamCommand(sql, paramList);
         }
 
         /// <summary>
@@ -394,14 +173,17 @@ namespace MyOrm
         {
             ThrowExceptionIfNoKeys();
             StringBuilder strConditions = new StringBuilder();
-            foreach (ColumnInfo key in Table.Keys)
+            foreach (ColumnDefinition key in TableDefinition.Keys)
             {
-                if (strConditions.Length == 0) strConditions.Append(" and ");
-                strConditions.AppendFormat("{0}.{1} = {2}", ToSqlName(TableName), ToSqlName(key.ColumnName), ToSqlParam(key.ColumnName));
-                IDataParameter param = command.CreateParameter();
-                param.DbType = key.DbType;
-                param.ParameterName = key.ColumnName;
-                command.Parameters.Add(param);
+                if (strConditions.Length != 0) strConditions.Append(" and ");
+                strConditions.AppendFormat("{0}.{1} = {2}", ToSqlName(TableName), ToSqlName(key.Name), ToSqlParam(key.PropertyName));
+                if (!command.Parameters.Contains(key.PropertyName))
+                {
+                    IDataParameter param = command.CreateParameter();
+                    param.DbType = key.DbType;
+                    param.ParameterName = ToParamName(key.PropertyName);
+                    command.Parameters.Add(param);
+                }
             }
             return strConditions.ToString();
         }
@@ -414,7 +196,7 @@ namespace MyOrm
         protected virtual object[] GetKeyValues(object o)
         {
             List<object> values = new List<object>();
-            foreach (ColumnInfo key in Table.Keys)
+            foreach (ColumnDefinition key in TableDefinition.Keys)
             {
                 values.Add(key.GetValue(o));
             }
@@ -427,9 +209,9 @@ namespace MyOrm
         /// <param name="dbValue">数据库取得的值</param>
         /// <param name="column">列属性</param>
         /// <returns>对象属性类型所对应的值</returns>
-        protected object ConvertToObjectValue(object dbValue, ColumnInfo column)//TODO: 
+        protected object ConvertToObjectValue(object dbValue, ColumnDefinition column)//TODO: 
         {
-            if (Equals(dbValue, DBNullValue)) dbValue = null;
+            if (Equals(dbValue, DBNull.Value)) dbValue = null;
             if (column.PropertyType.IsValueType && dbValue == null)
                 return Activator.CreateInstance(column.PropertyType);
             else
@@ -442,9 +224,9 @@ namespace MyOrm
         /// <param name="value">值</param>
         /// <param name="column">列属性</param>
         /// <returns>数据库中的值</returns>
-        protected object ConvertToDBValue(object value, ColumnInfo column)//TODO:
+        protected object ConvertToDBValue(object value, ColumnDefinition column)//TODO:
         {
-            if (value == null) return DBNullValue;
+            if (value == null) return DBNull.Value;
             return value;
         }
 
@@ -453,7 +235,7 @@ namespace MyOrm
         /// </summary>
         protected void ThrowExceptionIfNoKeys()
         {
-            if (Table.Keys.Count == 0)
+            if (TableDefinition.Keys.Count == 0)
             {
                 if (ExceptionNoKeys == null) ExceptionNoKeys = new Exception(String.Format("No key definition found in type \"{0}\", please set the value of property \"IsPrimaryKey\" of key column to true.", Table.ObjectType.FullName));
                 throw ExceptionNoKeys;
@@ -466,16 +248,66 @@ namespace MyOrm
         /// <param name="keys">主键</param>
         protected void ThrowExceptionIfWrongKeys(params object[] keys)
         {
-            if (keys.Length != Table.Keys.Count)
+            if (keys.Length != TableDefinition.Keys.Count)
             {
                 if (ExceptionWrongKeys == null)
                 {
                     List<string> strKeys = new List<string>();
-                    foreach (ColumnInfo key in Table.Keys) strKeys.Add(key.ColumnName);
+                    foreach (ColumnDefinition key in TableDefinition.Keys) strKeys.Add(key.Name);
                     ExceptionWrongKeys = new ArgumentOutOfRangeException("keys", String.Format("Wrong keys' number. Type \"{0}\" has {1} key(s):'{2}'.", Table.ObjectType.FullName, strKeys.Count, String.Join("','", strKeys.ToArray())));
                 }
                 throw ExceptionWrongKeys;
             }
+        }
+
+        /// <summary>
+        /// 名称转化为数据库合法名称
+        /// </summary>
+        /// <param name="name">字符串名称</param>
+        /// <returns>数据库合法名称</returns>
+        protected string ToSqlName(string name)
+        {
+            return SqlBuilder.ToSqlName(name);
+        }
+
+        /// <summary>
+        /// 原始名称转化为数据库参数
+        /// </summary>
+        /// <param name="nativeName">原始名称</param>
+        /// <returns>数据库参数</returns>
+        protected string ToSqlParam(string nativeName)
+        {
+            return SqlBuilder.ToSqlParam(nativeName);
+        }
+
+        /// <summary>
+        /// 原始名称转化为参数名称
+        /// </summary>
+        /// <param name="nativeName">原始名称</param>
+        /// <returns>参数名称</returns>
+        protected string ToParamName(string nativeName)
+        {
+            return SqlBuilder.ToParamName(nativeName);
+        }
+
+        /// <summary>
+        /// 参数名称转化为原始名称
+        /// </summary>
+        /// <param name="paramName">参数名称</param>
+        /// <returns>原始名称</returns>
+        protected string ToNativeName(string paramName)
+        {
+            return SqlBuilder.ToNativeName(paramName);
+        }
+
+        /// <summary>
+        /// 将列名、表名等替换为数据库合法名称
+        /// </summary>
+        /// <param name="sql"></param>
+        /// <returns></returns>
+        protected string ReplaceSqlName(string sql)
+        {
+            return SqlBuilder.ReplaceSqlName(sql);
         }
         #endregion
     }

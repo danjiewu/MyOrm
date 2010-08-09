@@ -62,11 +62,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attributes\ColumnAttribute.cs" />
+    <Compile Include="Attributes\ForeignTypeAttribute.cs" />
+    <Compile Include="Attributes\TableAttributes.cs" />
+    <Compile Include="Attributes\TableJoinAttribute.cs" />
     <Compile Include="Condition.cs" />
+    <Compile Include="Helper.cs" />
     <Compile Include="IIndexedProperty.cs" />
     <Compile Include="IObjectDAO.cs" />
     <Compile Include="IObjectViewDAO.cs" />
+    <Compile Include="MetaDefinition\AttibuteTableInfoProvider.cs" />
+    <Compile Include="MetaDefinition\Column.cs" />
+    <Compile Include="MetaDefinition\FastInvoke.cs" />
+    <Compile Include="MetaDefinition\SqlStatement.cs" />
+    <Compile Include="MetaDefinition\Table.cs" />
+    <Compile Include="MetaDefinition\TableInfoProvider.cs" />
+    <Compile Include="MetaDefinition\TableView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
@@ -85,6 +98,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -5,28 +5,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyOrm", "MyOrm\MyOrm.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyOrm.Common", "MyOrm.Common\MyOrm.Common.csproj", "{C43F1A98-E5AA-4D5B-A014-01CDA10092FA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyOrm.Attribute", "MyOrm.Attribute\MyOrm.Attribute.csproj", "{47C9FD6D-4CC7-4D0D-A7B8-4266CE8A059E}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyOrm.Metadata", "MyOrm.Metadata\MyOrm.Metadata.csproj", "{00A1865D-27F5-458D-AAE5-3023AD1F17EC}"
-EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 5
+		SccNumberOfProjects = 3
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
 		SccLocalPath0 = .
-		SccProjectUniqueName1 = MyOrm.Attribute\\MyOrm.Attribute.csproj
-		SccProjectName1 = MyOrm.Attribute
-		SccLocalPath1 = MyOrm.Attribute
-		SccProjectUniqueName2 = MyOrm.Common\\MyOrm.Common.csproj
-		SccProjectName2 = MyOrm.Common
-		SccLocalPath2 = MyOrm.Common
-		SccProjectUniqueName3 = MyOrm.Metadata\\MyOrm.Metadata.csproj
-		SccProjectName3 = MyOrm.Metadata
-		SccLocalPath3 = MyOrm.Metadata
-		SccProjectUniqueName4 = MyOrm\\MyOrm.csproj
-		SccProjectName4 = MyOrm
-		SccLocalPath4 = MyOrm
+		SccProjectUniqueName1 = MyOrm.Common\\MyOrm.Common.csproj
+		SccProjectName1 = MyOrm.Common
+		SccLocalPath1 = MyOrm.Common
+		SccProjectUniqueName2 = MyOrm\\MyOrm.csproj
+		SccProjectName2 = MyOrm
+		SccLocalPath2 = MyOrm
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,14 +31,6 @@ Global
 		{C43F1A98-E5AA-4D5B-A014-01CDA10092FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C43F1A98-E5AA-4D5B-A014-01CDA10092FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C43F1A98-E5AA-4D5B-A014-01CDA10092FA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{47C9FD6D-4CC7-4D0D-A7B8-4266CE8A059E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{47C9FD6D-4CC7-4D0D-A7B8-4266CE8A059E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{47C9FD6D-4CC7-4D0D-A7B8-4266CE8A059E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{47C9FD6D-4CC7-4D0D-A7B8-4266CE8A059E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{00A1865D-27F5-458D-AAE5-3023AD1F17EC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{00A1865D-27F5-458D-AAE5-3023AD1F17EC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{00A1865D-27F5-458D-AAE5-3023AD1F17EC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{00A1865D-27F5-458D-AAE5-3023AD1F17EC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
