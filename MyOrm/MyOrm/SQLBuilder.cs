@@ -191,6 +191,11 @@ namespace MyOrm
                 case ConditionOperator.StartsWith: return String.Format(@"{0} {1} like CONCAT({2}, '%') escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
                 case ConditionOperator.EndsWith: return String.Format(@"{0} {1} like CONCAT('%', {2}) escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
                 case ConditionOperator.Contains: return String.Format(@"{0} {1} like CONCAT('%', {2}, '%') escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
+#elif ORACLE
+                case ConditionOperator.StartsWith: return String.Format(@"{0} {1} like {2} || '%' escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
+                case ConditionOperator.EndsWith: return String.Format(@"{0} {1} like '%' || {2} escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
+                case ConditionOperator.Contains: return String.Format(@"{0} {1} like '%' || {2} || '%' escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
+
 #else
                 case ConditionOperator.StartsWith: return String.Format(@"{0} {1} like {2} + '%' escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
                 case ConditionOperator.EndsWith: return String.Format(@"{0} {1} like '%' + {2} escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);

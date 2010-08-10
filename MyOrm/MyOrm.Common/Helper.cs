@@ -7,8 +7,14 @@ using System.Collections;
 
 namespace MyOrm.Common
 {
-    public static class Helper
+    public static class ConditionConvert
     {
+        /// <summary>
+        /// 判定对象是否符合给定的条件
+        /// </summary>
+        /// <param name="condition">用来判定的条件</param>
+        /// <param name="target">判定对象</param>
+        /// <returns>判定结果</returns>
         public static EnsureResult Ensure(Condition condition, object target)
         {
             if (condition == null) return EnsureResult.True;
@@ -68,6 +74,13 @@ namespace MyOrm.Common
                 return opposite ? EnsureResult.False : EnsureResult.True;
         }
 
+        /// <summary>
+        /// 将属性和字符串转换为简单查询条件
+        /// </summary>
+        /// <param name="property">属性</param>
+        /// <param name="text">表示查询语句的字符串,可以为"=","<",">","!","%","<=",">="
+        /// </list></param>
+        /// <returns>简单查询条件</returns>
         public static SimpleCondition ParseCondition(PropertyDescriptor property, string text)
         {
             if (text.Length > 1)
@@ -87,7 +100,7 @@ namespace MyOrm.Common
                 text = text.Substring(1);
             }
 
-            if (text.Length > 0)
+            if (text.Length > 0) 
             {
                 switch (text[0])
                 {
@@ -113,17 +126,25 @@ namespace MyOrm.Common
             return new SimpleCondition(property.Name, ConditionOperator.Equals, ParseValue(property, text), opposite);
         }
 
-        public static SimpleCondition GenerateCondition(PropertyDescriptor property, ConditionOperator op, string value, bool opposite)
-        {
-            return new SimpleCondition(property.Name, op, ParseValue(property, value), opposite);
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="property"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static object ParseValue(PropertyDescriptor property, string value)
         {
             if (String.IsNullOrEmpty(value)) return null;
             return property.Converter.ConvertFromString(value);
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="op"></param>
+        /// <param name="opposite"></param>
+        /// <param name="value"></param>
+        /// <returns></returns>
         public static string ToText(ConditionOperator op, bool opposite, object value)
         {
             switch (op)
@@ -142,17 +163,11 @@ namespace MyOrm.Common
                 default: return Convert.ToString(value);
             }
         }
-
-        public static string GetDisplayName(Type type)
-        {
-            if (type == null) return null;
-            DisplayNameAttribute[] atts = (DisplayNameAttribute[])type.GetCustomAttributes(typeof(DisplayNameAttribute), true);
-            string displayName = null;
-            if (atts.Length > 0) displayName = atts[0].DisplayName;
-            return String.IsNullOrEmpty(displayName) ? type.Name : displayName;
-        }
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public enum EnsureResult
     {
         False,

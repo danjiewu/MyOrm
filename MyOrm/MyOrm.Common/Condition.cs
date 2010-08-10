@@ -8,15 +8,15 @@ namespace MyOrm.Common
 {
     /// <summary>
     /// 查询条件
-    /// <seealso cref="MyOrm.Orm.Common.SimpleCondition"/>
-    /// <seealso cref="MyOrm.Orm.Common.ConditionSet"/>  
-    /// <seealso cref="MyOrm.Orm.Common.ForeignCondition"/>    
+    /// <seealso cref="MyOrm.Common.SimpleCondition"/>
+    /// <seealso cref="MyOrm.Common.ConditionSet"/>  
+    /// <seealso cref="MyOrm.Common.ForeignCondition"/>    
     /// </summary>
     [Serializable]
     public abstract class Condition
     {
         /// <summary>
-        /// 非
+        /// 逻辑求反
         /// </summary>
         public bool Opposite { get; set; }
     }
@@ -93,7 +93,6 @@ namespace MyOrm.Common
         /// <summary>
         /// 属性名
         /// </summary>
-        /// 
         public string Property { get; set; }
 
         /// <summary>

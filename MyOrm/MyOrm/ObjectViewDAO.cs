@@ -194,7 +194,9 @@ namespace MyOrm
         {
 #if MYSQL
             using (IDbCommand command = MakeConditionCommand("select 1 from @FromTable where @Condition limit 1", condition))
-#else 
+#elif ORACLE
+            using (IDbCommand command = MakeConditionCommand("select 1 from @FromTable where rownumber = 1 and @Condition", condition))
+#else
             using (IDbCommand command = MakeConditionCommand("select top 1 1 from @FromTable where @Condition", condition))
 #endif
             {
@@ -317,7 +319,7 @@ namespace MyOrm
             }
 #if MYSQL
             string paramedSQL = String.Format("select @AllFieldsfrom @FromTable where @Condition Order by {0} {1} limit {2},{3} ", orderby, direction == ListSortDirection.Ascending ? "asc" : "desc", startIndex, sectionSize);
-#else       
+#else
             string paramedSQL = String.Format("select * from (select @AllFields, Row_Number() over (Order by {0} {1}) as Row_Number from @FromTable where @Condition) as TempTable where Row_Number > {2} and Row_Number <= {3}", orderby, direction == ListSortDirection.Ascending ? "asc" : "desc", startIndex, startIndex + sectionSize);
 #endif
             using (IDbCommand command = MakeConditionCommand(paramedSQL, condition))

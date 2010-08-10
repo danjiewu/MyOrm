@@ -5,6 +5,9 @@ using System.Collections.ObjectModel;
 
 namespace MyOrm.Common
 {
+    /// <summary>
+    /// 数据库表定义
+    /// </summary>
     public abstract class Table : SqlStatement
     {
         internal Table(ICollection<Column> columns)
@@ -17,12 +20,18 @@ namespace MyOrm.Common
         private ReadOnlyCollection<Column> columns;
         private Dictionary<string, Column> namedColumnCache = new Dictionary<string, Column>(StringComparer.OrdinalIgnoreCase);
         #endregion
-
+        
+        /// <summary>
+        /// 对应的数据库表的定义
+        /// </summary>
         public abstract TableDefinition Definition
         {
             get;
         }
 
+        /// <summary>
+        /// 对象类型
+        /// </summary>
         public Type ObjectType
         {
             get { return Definition.ObjectType; }
@@ -73,11 +82,18 @@ namespace MyOrm.Common
             namedColumnCache.Clear();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return Name;
         }
 
+        /// <summary>
+        /// 格式化的表达式
+        /// </summary>
         public override string FormattedExpression
         {
             get
@@ -87,6 +103,9 @@ namespace MyOrm.Common
         }
     }
 
+    /// <summary>
+    /// 数据库表的定义
+    /// </summary>
     public class TableDefinition : Table
     {
         internal TableDefinition(Type objectType, ICollection<ColumnDefinition> columns) :
@@ -100,11 +119,17 @@ namespace MyOrm.Common
         private ReadOnlyCollection<ColumnDefinition> columnDefinitions;
         private ReadOnlyCollection<ColumnDefinition> keys = null;
 
+        /// <summary>
+        /// 对应数据库表的定义
+        /// </summary>
         public override TableDefinition Definition
         {
             get { return this; }
         }
 
+        /// <summary>
+        /// 对象类型
+        /// </summary>
         public new Type ObjectType
         {
             get { return objectType; }
@@ -150,7 +175,9 @@ namespace MyOrm.Common
         }
     }
 
-
+    /// <summary>
+    /// 数据库表的信息
+    /// </summary>
     public class TableInfo : SqlStatement
     {
         public TableInfo(TableDefinition table)
@@ -164,6 +191,9 @@ namespace MyOrm.Common
         public ReadOnlyCollection<ColumnInfo> columns;
         private Dictionary<string, ColumnInfo> namedColumnCache = new Dictionary<string, ColumnInfo>();
 
+        /// <summary>
+        /// 对应数据库表的定义
+        /// </summary>
         public TableDefinition Table
         {
             get { return table; }

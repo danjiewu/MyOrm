@@ -47,7 +47,7 @@ namespace MyOrm.Common
         /// 指定关联的对象类型和外键生成关联信息
         /// </summary>
         /// <param name="targetType">关联的对象类型</param>
-        /// <param name="foreignKeys">外键</param>
+        /// <param name="foreignKey">外键</param>
         public TableJoinAttribute(Type targetType, string foreignKey)
         {
             this.targetType = targetType;
