@@ -5,6 +5,9 @@ using System.Collections.ObjectModel;
 
 namespace MyOrm.Common
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class JoinedTable : TableInfo
     {
         public JoinedTable(TableDefinition foreignTable)
@@ -45,6 +48,12 @@ namespace MyOrm.Common
     /// </summary>
     public class TableView : Table
     {
+        /// <summary>
+        /// 创建用于查询的关联表
+        /// </summary>
+        /// <param name="table">主表</param>
+        /// <param name="joinedTables">关联的外表</param>
+        /// <param name="columns">查询的列集合</param>
         public TableView(TableDefinition table, ICollection<JoinedTable> joinedTables, ICollection<Column> columns)
             : base(columns)
         {
@@ -55,11 +64,17 @@ namespace MyOrm.Common
         private TableDefinition table;
         private ReadOnlyCollection<JoinedTable> joinedTables;
 
+        /// <summary>
+        /// 关联的外表集合
+        /// </summary>
         public ReadOnlyCollection<JoinedTable> JoinedTables
         {
             get { return joinedTables; }
         }
 
+        /// <summary>
+        /// 格式化的表达式
+        /// </summary>
         public override string FormattedExpression
         {
             get
@@ -73,6 +88,9 @@ namespace MyOrm.Common
             }
         }
 
+        /// <summary>
+        /// 主表的定义
+        /// </summary>
         public override TableDefinition Definition
         {
             get { return table; }

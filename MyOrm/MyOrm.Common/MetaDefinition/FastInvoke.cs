@@ -10,7 +10,7 @@ namespace FastMethodInvoker
 
     /// <summary> 
     /// 引用自CodeProject的FastInvoke项目
-    /// http://www.codeproject.com/KB/cs/FastMethodInvoker.aspx
+    /// <see cref="http://www.codeproject.com/KB/cs/FastMethodInvoker.aspx"/>
     /// </summary>
     public class FastInvoke
     { 

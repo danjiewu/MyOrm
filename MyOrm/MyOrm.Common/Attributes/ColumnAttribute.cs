@@ -103,11 +103,19 @@ namespace MyOrm.Common
     [AttributeUsage(AttributeTargets.Property, AllowMultiple = false, Inherited = true)]
     public class ForeignColumnAttribute : Attribute
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="foreignType">关联的外部对象类型</param>
         public ForeignColumnAttribute(Type foreignType)
         {
             this.Foreign = foreignType;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="foreignName">关联的外部表名称</param>
         public ForeignColumnAttribute(string foreignName)
         {
             this.Foreign = foreignName;

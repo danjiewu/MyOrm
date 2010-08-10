@@ -7,8 +7,15 @@ using System.Reflection;
 
 namespace MyOrm.Common
 {
+    /// <summary>
+    /// 列信息
+    /// </summary>
     public class ColumnInfo : SqlStatement
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="column"></param>
         public ColumnInfo(Column column)
         {
             Name = column.Name;
@@ -45,13 +52,26 @@ namespace MyOrm.Common
         }
     }
 
+    /// <summary>
+    /// 关联外表的列信息
+    /// </summary>
     public class ForeignColumn : Column
     {
         internal ForeignColumn(PropertyInfo property) : base(property) { }
 
+        /// <summary>
+        /// 所在外表的别名
+        /// </summary>
         public string Foreign { get; internal set; }
+
+        /// <summary>
+        /// 指向的列
+        /// </summary>
         public ColumnInfo TargetColumn { get; internal set; }
 
+        /// <summary>
+        /// 格式化的表达式
+        /// </summary>
         public override string FormattedExpression
         {
             get
@@ -80,6 +100,9 @@ namespace MyOrm.Common
             if (property.CanRead) this.getValueHandle = FastInvoke.GetMethodInvoker(property.GetGetMethod());
         }
 
+        /// <summary>
+        /// 所属的表信息
+        /// </summary>
         public Table Table { get; internal set; }
 
         /// <summary>

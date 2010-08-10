@@ -18,10 +18,10 @@ namespace MyOrm.Common
 
         private static readonly object SyncLock = new object();
         /// <summary>
-        /// 根据对象类型得到表信息
+        /// 根据对象类型得到对应的数据库表定义
         /// </summary>
         /// <param name="objectType">对象类型</param>
-        /// <returns>表信息</returns>
+        /// <returns>表定义</returns>
         public override TableDefinition GetTableDefinition(Type objectType)
         {
             if (objectType == null) return null;
@@ -36,6 +36,11 @@ namespace MyOrm.Common
             return tableInfoCache[objectType];
         }
 
+        /// <summary>
+        /// 根据属性得到对应字段的数据库列定义
+        /// </summary>
+        /// <param name="property">对象的属性</param>
+        /// <returns>数据库列定义</returns>
         public override ColumnDefinition GetColumnDefinition(PropertyInfo property)
         {
             if (property == null) return null;
@@ -182,7 +187,6 @@ namespace MyOrm.Common
                 return null;
             }
         }
-
 
         private TableView GenerateTableView(Type objectType)
         {
