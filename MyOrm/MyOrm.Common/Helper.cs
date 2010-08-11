@@ -26,7 +26,7 @@ namespace MyOrm.Common
                 return EnsureResult.Undetermined;
         }
 
-        private static EnsureResult Ensure(SimpleCondition condition, object target)
+        public static EnsureResult Ensure(SimpleCondition condition, object target)
         {
             if (!String.IsNullOrEmpty(condition.ExpressionFormat) || condition.Operator == ConditionOperator.Constant) return EnsureResult.Undetermined;
             object value = target is IIndexedProperty ? ((IIndexedProperty)target)[condition.Property] : target.GetType().GetProperty(condition.Property).GetValue(target, null);
@@ -54,7 +54,7 @@ namespace MyOrm.Common
             return result ? EnsureResult.True : EnsureResult.False;
         }
 
-        private static EnsureResult Ensure(ConditionSet condition, object target)
+        public static EnsureResult Ensure(ConditionSet condition, object target)
         {
             bool undetermined = false;
             bool opposite = condition.Opposite;
