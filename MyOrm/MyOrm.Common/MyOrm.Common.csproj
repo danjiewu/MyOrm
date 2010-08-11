@@ -67,7 +67,7 @@
     <Compile Include="Attributes\TableAttributes.cs" />
     <Compile Include="Attributes\TableJoinAttribute.cs" />
     <Compile Include="Condition.cs" />
-    <Compile Include="Helper.cs" />
+    <Compile Include="ConditionConvert.cs" />
     <Compile Include="IIndexedProperty.cs" />
     <Compile Include="IObjectDAO.cs" />
     <Compile Include="IObjectViewDAO.cs" />
