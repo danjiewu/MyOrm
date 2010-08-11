@@ -5,6 +5,17 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyOrm", "MyOrm\MyOrm.csproj
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyOrm.Common", "MyOrm.Common\MyOrm.Common.csproj", "{C43F1A98-E5AA-4D5B-A014-01CDA10092FA}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Templates", "Templates", "{2995A48B-B798-4D66-831B-C780619B1CFC}"
+	ProjectSection(SolutionItems) = preProject
+		Template\MyORM.class.cst = Template\MyORM.class.cst
+		Template\MyORM.cst = Template\MyORM.cst
+		Template\MyORM.DAO.cst = Template\MyORM.DAO.cst
+		Template\MyORM.DAO.factory.cst = Template\MyORM.DAO.factory.cst
+		Template\MyORM.factory.cst = Template\MyORM.factory.cst
+		Template\MyORM.inc = Template\MyORM.inc
+		Template\MyORM.interface.cst = Template\MyORM.interface.cst
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
 		SccNumberOfProjects = 3
