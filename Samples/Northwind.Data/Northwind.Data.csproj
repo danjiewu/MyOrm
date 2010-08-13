@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{2248AF91-D547-4C9A-AA3C-E8C7613CE561}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoStandardLibraries>false</NoStandardLibraries>
+    <AssemblyName>ClassLibrary</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <RootNamespace>Northwind.Data</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="DAOFactory.cs" />
+    <Compile Include="DAO\CategoriesDAO.cs" />
+    <Compile Include="DAO\CustomerCustomerDemoDAO.cs" />
+    <Compile Include="DAO\CustomerDemographicsDAO.cs" />
+    <Compile Include="DAO\CustomersDAO.cs" />
+    <Compile Include="DAO\EmployeesDAO.cs" />
+    <Compile Include="DAO\EmployeeTerritoriesDAO.cs" />
+    <Compile Include="DAO\Order DetailsDAO.cs" />
+    <Compile Include="DAO\OrdersDAO.cs" />
+    <Compile Include="DAO\ProductsDAO.cs" />
+    <Compile Include="DAO\RegionDAO.cs" />
+    <Compile Include="DAO\ShippersDAO.cs" />
+    <Compile Include="DAO\SuppliersDAO.cs" />
+    <Compile Include="DAO\TerritoriesDAO.cs" />
+    <Compile Include="Entity\Categories.cs" />
+    <Compile Include="Entity\CustomerCustomerDemo.cs" />
+    <Compile Include="Entity\CustomerDemographics.cs" />
+    <Compile Include="Entity\Customers.cs" />
+    <Compile Include="Entity\Employees.cs" />
+    <Compile Include="Entity\EmployeeTerritories.cs" />
+    <Compile Include="Entity\Order Details.cs" />
+    <Compile Include="Entity\Orders.cs" />
+    <Compile Include="Entity\Products.cs" />
+    <Compile Include="Entity\Region.cs" />
+    <Compile Include="Entity\Shippers.cs" />
+    <Compile Include="Entity\Suppliers.cs" />
+    <Compile Include="Entity\Territories.cs" />
+    <Compile Include="IDAOFactory.cs" />
+    <Compile Include="Interface\ICategoriesDAO.cs" />
+    <Compile Include="Interface\ICustomerCustomerDemoDAO.cs" />
+    <Compile Include="Interface\ICustomerDemographicsDAO.cs" />
+    <Compile Include="Interface\ICustomersDAO.cs" />
+    <Compile Include="Interface\IEmployeesDAO.cs" />
+    <Compile Include="Interface\IEmployeeTerritoriesDAO.cs" />
+    <Compile Include="Interface\IOrder DetailsDAO.cs" />
+    <Compile Include="Interface\IOrdersDAO.cs" />
+    <Compile Include="Interface\IProductsDAO.cs" />
+    <Compile Include="Interface\IRegionDAO.cs" />
+    <Compile Include="Interface\IShippersDAO.cs" />
+    <Compile Include="Interface\ISuppliersDAO.cs" />
+    <Compile Include="Interface\ITerritoriesDAO.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
+  <ProjectExtensions>
+    <VisualStudio AllowExistingFolder="true" />
+  </ProjectExtensions>
+</Project>
