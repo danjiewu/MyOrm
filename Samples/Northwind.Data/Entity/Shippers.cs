@@ -1,7 +1,6 @@
 using System;
 using System.Data;
-using MyOrm.Metadata;
-using MyOrm.Attribute;
+using MyOrm.Common;
 
 namespace Northwind.Data
 {	
@@ -9,44 +8,38 @@ namespace Northwind.Data
 	/// <summary>
 	/// Shippers.
 	/// </summary>
-	[Table("Shippers")]
+	[Table("Shippers")]	
 	[Serializable]
-	public partial class Shippers 
-	{
-		#region Constant		
-		public const string	_ShipperID = "ShipperID";
-		public const string	_CompanyName = "CompanyName";
-		public const string	_Phone = "Phone";
-		#endregion
-		
-		#region Member Variables		
-		private int shipperID;
-		private string companyName;
-		private string phone;
+	public partial class Shippers : EntityBase
+	{		
+		#region Constant
+        public static class Properties
+        {
+		    public const string	ShipperID = "ShipperID";
+		    public const string	CompanyName = "CompanyName";
+		    public const string	Phone = "Phone";
+        }
 		#endregion
 
 		#region Public Properties
+		/// <summary>
+		/// ShipperID
+		/// </summary>
 		[Column(IsPrimaryKey = true)]
-		public int ShipperID
-		{
-			get { return shipperID; }			
-			set { shipperID = value; }
-		}
-		
+		public int ShipperID { get; set; }	
+        
+		/// <summary>
+		/// CompanyName
+		/// </summary>
 		[Column]
-		public string CompanyName
-		{
-			get { return companyName; }			
-			set { companyName = value; }
-		}
-		
+		public string CompanyName { get; set; }	
+        
+		/// <summary>
+		/// Phone
+		/// </summary>
 		[Column]
-		public string Phone
-		{
-			get { return phone; }			
-			set { phone = value; }
-		}
-		
+		public string Phone { get; set; }	
+        
 		#endregion
 	}
 	#endregion
