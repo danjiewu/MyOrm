@@ -42,17 +42,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dll\MyOrm.dll</HintPath>
     </Reference>
-    <Reference Include="MyOrm.Attribute, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dll\MyOrm.Attribute.dll</HintPath>
-    </Reference>
     <Reference Include="MyOrm.Common, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Dll\MyOrm.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="MyOrm.Metadata, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\Dll\MyOrm.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -106,6 +98,9 @@
           <IISUrl>
           </IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
           <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
         </WebProjectProperties>
       </FlavorProperties>

@@ -1,7 +1,6 @@
 using System;
 using System.Data;
-using MyOrm.Metadata;
-using MyOrm.Attribute;
+using MyOrm.Common;
 
 namespace Northwind.Data
 {	
@@ -9,39 +8,33 @@ namespace Northwind.Data
 	/// <summary>
 	/// CustomerCustomerDemo.
 	/// </summary>
-	[Table("CustomerCustomerDemo")]
-	[TableJoin(typeof(CustomerDemographics), CustomerCustomerDemo._CustomerTypeID, AliasName = CustomerCustomerDemo.CustomerDemographic)]
-	[TableJoin(typeof(Customers), CustomerCustomerDemo._CustomerID, AliasName = CustomerCustomerDemo.Customer)]
+	[Table("CustomerCustomerDemo")]	
 	[Serializable]
-	public partial class CustomerCustomerDemo 
-	{
-		public const string CustomerDemographic = "CustomerDemographic";
-		public const string Customer = "Customer";
-		#region Constant		
-		public const string	_CustomerID = "CustomerID";
-		public const string	_CustomerTypeID = "CustomerTypeID";
-		#endregion
-		
-		#region Member Variables		
-		private string customerID;
-		private string customerTypeID;
+	public partial class CustomerCustomerDemo : EntityBase
+	{		
+		#region Constant
+        public static class Properties
+        {
+		    public const string	CustomerID = "CustomerID";
+		    public const string	CustomerTypeID = "CustomerTypeID";
+        }
 		#endregion
 
 		#region Public Properties
+		/// <summary>
+		/// CustomerID
+		/// </summary>
+        [ForeignType(typeof(Customers))]
 		[Column(IsPrimaryKey = true)]
-		public string CustomerID
-		{
-			get { return customerID; }			
-			set { customerID = value; }
-		}
-		
+		public string CustomerID { get; set; }	
+        
+		/// <summary>
+		/// CustomerTypeID
+		/// </summary>
+        [ForeignType(typeof(CustomerDemographics))]
 		[Column(IsPrimaryKey = true)]
-		public string CustomerTypeID
-		{
-			get { return customerTypeID; }			
-			set { customerTypeID = value; }
-		}
-		
+		public string CustomerTypeID { get; set; }	
+        
 		#endregion
 	}
 	#endregion
@@ -49,116 +42,98 @@ namespace Northwind.Data
 	#region CustomerCustomerDemoView
 	/// <summary>
 	/// CustomerCustomerDemoView.
-	/// </summary>		
+	/// </summary>
+	[TableJoin(typeof(CustomerDemographics), CustomerCustomerDemo.Properties.CustomerTypeID, AliasName = "CustomerDemographic")]
+	[TableJoin(typeof(Customers), CustomerCustomerDemo.Properties.CustomerID, AliasName = "Customer")]
 	[Serializable]
 	public partial class CustomerCustomerDemoView : CustomerCustomerDemo
 	{
 		#region Constant
-		public const string	_CustomerDemographic_CustomerDesc = "CustomerDemographic_CustomerDesc";			
-		public const string	_Customer_CompanyName = "Customer_CompanyName";			
-		public const string	_Customer_ContactName = "Customer_ContactName";			
-		public const string	_Customer_ContactTitle = "Customer_ContactTitle";			
-		public const string	_Customer_Address = "Customer_Address";			
-		public const string	_Customer_City = "Customer_City";			
-		public const string	_Customer_Region = "Customer_Region";			
-		public const string	_Customer_PostalCode = "Customer_PostalCode";			
-		public const string	_Customer_Country = "Customer_Country";			
-		public const string	_Customer_Phone = "Customer_Phone";			
-		public const string	_Customer_Fax = "Customer_Fax";			
-		#endregion
-		
-		#region Member Variables		
-		private string customerDemographic_CustomerDesc;			
-		private string customer_CompanyName;			
-		private string customer_ContactName;			
-		private string customer_ContactTitle;			
-		private string customer_Address;			
-		private string customer_City;			
-		private string customer_Region;			
-		private string customer_PostalCode;			
-		private string customer_Country;			
-		private string customer_Phone;			
-		private string customer_Fax;			
+        public new static class Properties
+        {
+		    public const string	CustomerID = "CustomerID";
+		    public const string	CustomerTypeID = "CustomerTypeID";
+		    public const string	CustomerDemographic_CustomerDesc = "CustomerDemographic_CustomerDesc";			
+		    public const string	Customer_CompanyName = "Customer_CompanyName";			
+		    public const string	Customer_ContactName = "Customer_ContactName";			
+		    public const string	Customer_ContactTitle = "Customer_ContactTitle";			
+		    public const string	Customer_Address = "Customer_Address";			
+		    public const string	Customer_City = "Customer_City";			
+		    public const string	Customer_Region = "Customer_Region";			
+		    public const string	Customer_PostalCode = "Customer_PostalCode";			
+		    public const string	Customer_Country = "Customer_Country";			
+		    public const string	Customer_Phone = "Customer_Phone";			
+		    public const string	Customer_Fax = "Customer_Fax";			
+        }
 		#endregion
 
 		#region Public Properties
-		[Column("CustomerDesc", Foreign = CustomerCustomerDemoView.CustomerDemographic)]
-		public string CustomerDemographic_CustomerDesc
-		{
-			get { return customerDemographic_CustomerDesc; }			
-			set { customerDemographic_CustomerDesc = value; }
-		}
-		
-		[Column("CompanyName", Foreign = CustomerCustomerDemoView.Customer)]
-		public string Customer_CompanyName
-		{
-			get { return customer_CompanyName; }			
-			set { customer_CompanyName = value; }
-		}
-		
-		[Column("ContactName", Foreign = CustomerCustomerDemoView.Customer)]
-		public string Customer_ContactName
-		{
-			get { return customer_ContactName; }			
-			set { customer_ContactName = value; }
-		}
-		
-		[Column("ContactTitle", Foreign = CustomerCustomerDemoView.Customer)]
-		public string Customer_ContactTitle
-		{
-			get { return customer_ContactTitle; }			
-			set { customer_ContactTitle = value; }
-		}
-		
-		[Column("Address", Foreign = CustomerCustomerDemoView.Customer)]
-		public string Customer_Address
-		{
-			get { return customer_Address; }			
-			set { customer_Address = value; }
-		}
-		
-		[Column("City", Foreign = CustomerCustomerDemoView.Customer)]
-		public string Customer_City
-		{
-			get { return customer_City; }			
-			set { customer_City = value; }
-		}
-		
-		[Column("Region", Foreign = CustomerCustomerDemoView.Customer)]
-		public string Customer_Region
-		{
-			get { return customer_Region; }			
-			set { customer_Region = value; }
-		}
-		
-		[Column("PostalCode", Foreign = CustomerCustomerDemoView.Customer)]
-		public string Customer_PostalCode
-		{
-			get { return customer_PostalCode; }			
-			set { customer_PostalCode = value; }
-		}
-		
-		[Column("Country", Foreign = CustomerCustomerDemoView.Customer)]
-		public string Customer_Country
-		{
-			get { return customer_Country; }			
-			set { customer_Country = value; }
-		}
-		
-		[Column("Phone", Foreign = CustomerCustomerDemoView.Customer)]
-		public string Customer_Phone
-		{
-			get { return customer_Phone; }			
-			set { customer_Phone = value; }
-		}
-		
-		[Column("Fax", Foreign = CustomerCustomerDemoView.Customer)]
-		public string Customer_Fax
-		{
-			get { return customer_Fax; }			
-			set { customer_Fax = value; }
-		}
-		
+		/// <summary>
+		/// CustomerDesc of CustomerDemographic
+		/// </summary>
+		[ForeignColumn("CustomerDemographic", Property = CustomerDemographics.Properties.CustomerDesc)]
+		public string CustomerDemographic_CustomerDesc { get; set; }	
+        
+		/// <summary>
+		/// CompanyName of Customer
+		/// </summary>
+		[ForeignColumn("Customer", Property = Customers.Properties.CompanyName)]
+		public string Customer_CompanyName { get; set; }	
+        
+		/// <summary>
+		/// ContactName of Customer
+		/// </summary>
+		[ForeignColumn("Customer", Property = Customers.Properties.ContactName)]
+		public string Customer_ContactName { get; set; }	
+        
+		/// <summary>
+		/// ContactTitle of Customer
+		/// </summary>
+		[ForeignColumn("Customer", Property = Customers.Properties.ContactTitle)]
+		public string Customer_ContactTitle { get; set; }	
+        
+		/// <summary>
+		/// Address of Customer
+		/// </summary>
+		[ForeignColumn("Customer", Property = Customers.Properties.Address)]
+		public string Customer_Address { get; set; }	
+        
+		/// <summary>
+		/// City of Customer
+		/// </summary>
+		[ForeignColumn("Customer", Property = Customers.Properties.City)]
+		public string Customer_City { get; set; }	
+        
+		/// <summary>
+		/// Region of Customer
+		/// </summary>
+		[ForeignColumn("Customer", Property = Customers.Properties.Region)]
+		public string Customer_Region { get; set; }	
+        
+		/// <summary>
+		/// PostalCode of Customer
+		/// </summary>
+		[ForeignColumn("Customer", Property = Customers.Properties.PostalCode)]
+		public string Customer_PostalCode { get; set; }	
+        
+		/// <summary>
+		/// Country of Customer
+		/// </summary>
+		[ForeignColumn("Customer", Property = Customers.Properties.Country)]
+		public string Customer_Country { get; set; }	
+        
+		/// <summary>
+		/// Phone of Customer
+		/// </summary>
+		[ForeignColumn("Customer", Property = Customers.Properties.Phone)]
+		public string Customer_Phone { get; set; }	
+        
+		/// <summary>
+		/// Fax of Customer
+		/// </summary>
+		[ForeignColumn("Customer", Property = Customers.Properties.Fax)]
+		public string Customer_Fax { get; set; }	
+        
 		#endregion
 	}
 	#endregion	

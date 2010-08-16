@@ -1,7 +1,6 @@
 using System;
 using System.Data;
-using MyOrm.Metadata;
-using MyOrm.Attribute;
+using MyOrm.Common;
 
 namespace Northwind.Data
 {	
@@ -9,181 +8,144 @@ namespace Northwind.Data
 	/// <summary>
 	/// Employees.
 	/// </summary>
-	[Table("Employees")]
-	[TableJoin(typeof(Employees), Employees._ReportsTo, AliasName = Employees.ReportsToEmployee)]
+	[Table("Employees")]	
 	[Serializable]
-	public partial class Employees 
-	{
-		public const string ReportsToEmployee = "ReportsToEmployee";
-		#region Constant		
-		public const string	_EmployeeID = "EmployeeID";
-		public const string	_LastName = "LastName";
-		public const string	_FirstName = "FirstName";
-		public const string	_Title = "Title";
-		public const string	_TitleOfCourtesy = "TitleOfCourtesy";
-		public const string	_BirthDate = "BirthDate";
-		public const string	_HireDate = "HireDate";
-		public const string	_Address = "Address";
-		public const string	_City = "City";
-		public const string	_Region = "Region";
-		public const string	_PostalCode = "PostalCode";
-		public const string	_Country = "Country";
-		public const string	_HomePhone = "HomePhone";
-		public const string	_Extension = "Extension";
-		public const string	_Photo = "Photo";
-		public const string	_Notes = "Notes";
-		public const string	_ReportsTo = "ReportsTo";
-		public const string	_PhotoPath = "PhotoPath";
-		#endregion
-		
-		#region Member Variables		
-		private int employeeID;
-		private string lastName;
-		private string firstName;
-		private string title;
-		private string titleOfCourtesy;
-		private DateTime? birthDate;
-		private DateTime? hireDate;
-		private string address;
-		private string city;
-		private string region;
-		private string postalCode;
-		private string country;
-		private string homePhone;
-		private string extension;
-		private byte[] photo;
-		private string notes;
-		private int? reportsTo;
-		private string photoPath;
+	public partial class Employees : EntityBase
+	{		
+		#region Constant
+        public static class Properties
+        {
+		    public const string	EmployeeID = "EmployeeID";
+		    public const string	LastName = "LastName";
+		    public const string	FirstName = "FirstName";
+		    public const string	Title = "Title";
+		    public const string	TitleOfCourtesy = "TitleOfCourtesy";
+		    public const string	BirthDate = "BirthDate";
+		    public const string	HireDate = "HireDate";
+		    public const string	Address = "Address";
+		    public const string	City = "City";
+		    public const string	Region = "Region";
+		    public const string	PostalCode = "PostalCode";
+		    public const string	Country = "Country";
+		    public const string	HomePhone = "HomePhone";
+		    public const string	Extension = "Extension";
+		    public const string	Photo = "Photo";
+		    public const string	Notes = "Notes";
+		    public const string	ReportsTo = "ReportsTo";
+		    public const string	PhotoPath = "PhotoPath";
+        }
 		#endregion
 
 		#region Public Properties
+		/// <summary>
+		/// EmployeeID
+		/// </summary>
 		[Column(IsPrimaryKey = true)]
-		public int EmployeeID
-		{
-			get { return employeeID; }			
-			set { employeeID = value; }
-		}
-		
+		public int EmployeeID { get; set; }	
+        
+		/// <summary>
+		/// LastName
+		/// </summary>
+		[Column(IsIndex = true)]
+		public string LastName { get; set; }	
+        
+		/// <summary>
+		/// FirstName
+		/// </summary>
 		[Column]
-		public string LastName
-		{
-			get { return lastName; }			
-			set { lastName = value; }
-		}
-		
+		public string FirstName { get; set; }	
+        
+		/// <summary>
+		/// Title
+		/// </summary>
 		[Column]
-		public string FirstName
-		{
-			get { return firstName; }			
-			set { firstName = value; }
-		}
-		
+		public string Title { get; set; }	
+        
+		/// <summary>
+		/// TitleOfCourtesy
+		/// </summary>
 		[Column]
-		public string Title
-		{
-			get { return title; }			
-			set { title = value; }
-		}
-		
+		public string TitleOfCourtesy { get; set; }	
+        
+		/// <summary>
+		/// BirthDate
+		/// </summary>
 		[Column]
-		public string TitleOfCourtesy
-		{
-			get { return titleOfCourtesy; }			
-			set { titleOfCourtesy = value; }
-		}
-		
+		public DateTime? BirthDate { get; set; }	
+        
+		/// <summary>
+		/// HireDate
+		/// </summary>
 		[Column]
-		public DateTime? BirthDate
-		{
-			get { return birthDate; }			
-			set { birthDate = value; }
-		}
-		
+		public DateTime? HireDate { get; set; }	
+        
+		/// <summary>
+		/// Address
+		/// </summary>
 		[Column]
-		public DateTime? HireDate
-		{
-			get { return hireDate; }			
-			set { hireDate = value; }
-		}
-		
+		public string Address { get; set; }	
+        
+		/// <summary>
+		/// City
+		/// </summary>
 		[Column]
-		public string Address
-		{
-			get { return address; }			
-			set { address = value; }
-		}
-		
+		public string City { get; set; }	
+        
+		/// <summary>
+		/// Region
+		/// </summary>
 		[Column]
-		public string City
-		{
-			get { return city; }			
-			set { city = value; }
-		}
-		
+		public string Region { get; set; }	
+        
+		/// <summary>
+		/// PostalCode
+		/// </summary>
+		[Column(IsIndex = true)]
+		public string PostalCode { get; set; }	
+        
+		/// <summary>
+		/// Country
+		/// </summary>
 		[Column]
-		public string Region
-		{
-			get { return region; }			
-			set { region = value; }
-		}
-		
+		public string Country { get; set; }	
+        
+		/// <summary>
+		/// HomePhone
+		/// </summary>
 		[Column]
-		public string PostalCode
-		{
-			get { return postalCode; }			
-			set { postalCode = value; }
-		}
-		
+		public string HomePhone { get; set; }	
+        
+		/// <summary>
+		/// Extension
+		/// </summary>
 		[Column]
-		public string Country
-		{
-			get { return country; }			
-			set { country = value; }
-		}
-		
+		public string Extension { get; set; }	
+        
+		/// <summary>
+		/// Photo
+		/// </summary>
 		[Column]
-		public string HomePhone
-		{
-			get { return homePhone; }			
-			set { homePhone = value; }
-		}
-		
+		public byte[] Photo { get; set; }	
+        
+		/// <summary>
+		/// Notes
+		/// </summary>
 		[Column]
-		public string Extension
-		{
-			get { return extension; }			
-			set { extension = value; }
-		}
-		
+		public string Notes { get; set; }	
+        
+		/// <summary>
+		/// ReportsTo
+		/// </summary>
+        [ForeignType(typeof(Employees))]
 		[Column]
-		public byte[] Photo
-		{
-			get { return photo; }			
-			set { photo = value; }
-		}
-		
+		public int? ReportsTo { get; set; }	
+        
+		/// <summary>
+		/// PhotoPath
+		/// </summary>
 		[Column]
-		public string Notes
-		{
-			get { return notes; }			
-			set { notes = value; }
-		}
-		
-		[Column]
-		public int? ReportsTo
-		{
-			get { return reportsTo; }			
-			set { reportsTo = value; }
-		}
-		
-		[Column]
-		public string PhotoPath
-		{
-			get { return photoPath; }			
-			set { photoPath = value; }
-		}
-		
+		public string PhotoPath { get; set; }	
+        
 		#endregion
 	}
 	#endregion
@@ -191,161 +153,148 @@ namespace Northwind.Data
 	#region EmployeesView
 	/// <summary>
 	/// EmployeesView.
-	/// </summary>		
+	/// </summary>
+	[TableJoin(typeof(Employees), Employees.Properties.ReportsTo, AliasName = "ReportsToEmployee")]
 	[Serializable]
 	public partial class EmployeesView : Employees
 	{
 		#region Constant
-		public const string	_ReportsToEmployee_LastName = "ReportsToEmployee_LastName";			
-		public const string	_ReportsToEmployee_FirstName = "ReportsToEmployee_FirstName";			
-		public const string	_ReportsToEmployee_Title = "ReportsToEmployee_Title";			
-		public const string	_ReportsToEmployee_TitleOfCourtesy = "ReportsToEmployee_TitleOfCourtesy";			
-		public const string	_ReportsToEmployee_BirthDate = "ReportsToEmployee_BirthDate";			
-		public const string	_ReportsToEmployee_HireDate = "ReportsToEmployee_HireDate";			
-		public const string	_ReportsToEmployee_Address = "ReportsToEmployee_Address";			
-		public const string	_ReportsToEmployee_City = "ReportsToEmployee_City";			
-		public const string	_ReportsToEmployee_Region = "ReportsToEmployee_Region";			
-		public const string	_ReportsToEmployee_PostalCode = "ReportsToEmployee_PostalCode";			
-		public const string	_ReportsToEmployee_Country = "ReportsToEmployee_Country";			
-		public const string	_ReportsToEmployee_HomePhone = "ReportsToEmployee_HomePhone";			
-		public const string	_ReportsToEmployee_Extension = "ReportsToEmployee_Extension";			
-		public const string	_ReportsToEmployee_Photo = "ReportsToEmployee_Photo";			
-		public const string	_ReportsToEmployee_Notes = "ReportsToEmployee_Notes";			
-		public const string	_ReportsToEmployee_PhotoPath = "ReportsToEmployee_PhotoPath";			
-		#endregion
-		
-		#region Member Variables		
-		private string reportsToEmployee_LastName;			
-		private string reportsToEmployee_FirstName;			
-		private string reportsToEmployee_Title;			
-		private string reportsToEmployee_TitleOfCourtesy;			
-		private DateTime? reportsToEmployee_BirthDate;			
-		private DateTime? reportsToEmployee_HireDate;			
-		private string reportsToEmployee_Address;			
-		private string reportsToEmployee_City;			
-		private string reportsToEmployee_Region;			
-		private string reportsToEmployee_PostalCode;			
-		private string reportsToEmployee_Country;			
-		private string reportsToEmployee_HomePhone;			
-		private string reportsToEmployee_Extension;			
-		private byte[] reportsToEmployee_Photo;			
-		private string reportsToEmployee_Notes;			
-		private string reportsToEmployee_PhotoPath;			
+        public new static class Properties
+        {
+		    public const string	EmployeeID = "EmployeeID";
+		    public const string	LastName = "LastName";
+		    public const string	FirstName = "FirstName";
+		    public const string	Title = "Title";
+		    public const string	TitleOfCourtesy = "TitleOfCourtesy";
+		    public const string	BirthDate = "BirthDate";
+		    public const string	HireDate = "HireDate";
+		    public const string	Address = "Address";
+		    public const string	City = "City";
+		    public const string	Region = "Region";
+		    public const string	PostalCode = "PostalCode";
+		    public const string	Country = "Country";
+		    public const string	HomePhone = "HomePhone";
+		    public const string	Extension = "Extension";
+		    public const string	Photo = "Photo";
+		    public const string	Notes = "Notes";
+		    public const string	ReportsTo = "ReportsTo";
+		    public const string	PhotoPath = "PhotoPath";
+		    public const string	ReportsToEmployee_LastName = "ReportsToEmployee_LastName";			
+		    public const string	ReportsToEmployee_FirstName = "ReportsToEmployee_FirstName";			
+		    public const string	ReportsToEmployee_Title = "ReportsToEmployee_Title";			
+		    public const string	ReportsToEmployee_TitleOfCourtesy = "ReportsToEmployee_TitleOfCourtesy";			
+		    public const string	ReportsToEmployee_BirthDate = "ReportsToEmployee_BirthDate";			
+		    public const string	ReportsToEmployee_HireDate = "ReportsToEmployee_HireDate";			
+		    public const string	ReportsToEmployee_Address = "ReportsToEmployee_Address";			
+		    public const string	ReportsToEmployee_City = "ReportsToEmployee_City";			
+		    public const string	ReportsToEmployee_Region = "ReportsToEmployee_Region";			
+		    public const string	ReportsToEmployee_PostalCode = "ReportsToEmployee_PostalCode";			
+		    public const string	ReportsToEmployee_Country = "ReportsToEmployee_Country";			
+		    public const string	ReportsToEmployee_HomePhone = "ReportsToEmployee_HomePhone";			
+		    public const string	ReportsToEmployee_Extension = "ReportsToEmployee_Extension";			
+		    public const string	ReportsToEmployee_Photo = "ReportsToEmployee_Photo";			
+		    public const string	ReportsToEmployee_Notes = "ReportsToEmployee_Notes";			
+		    public const string	ReportsToEmployee_PhotoPath = "ReportsToEmployee_PhotoPath";			
+        }
 		#endregion
 
 		#region Public Properties
-		[Column("LastName", Foreign = EmployeesView.ReportsToEmployee)]
-		public string ReportsToEmployee_LastName
-		{
-			get { return reportsToEmployee_LastName; }			
-			set { reportsToEmployee_LastName = value; }
-		}
-		
-		[Column("FirstName", Foreign = EmployeesView.ReportsToEmployee)]
-		public string ReportsToEmployee_FirstName
-		{
-			get { return reportsToEmployee_FirstName; }			
-			set { reportsToEmployee_FirstName = value; }
-		}
-		
-		[Column("Title", Foreign = EmployeesView.ReportsToEmployee)]
-		public string ReportsToEmployee_Title
-		{
-			get { return reportsToEmployee_Title; }			
-			set { reportsToEmployee_Title = value; }
-		}
-		
-		[Column("TitleOfCourtesy", Foreign = EmployeesView.ReportsToEmployee)]
-		public string ReportsToEmployee_TitleOfCourtesy
-		{
-			get { return reportsToEmployee_TitleOfCourtesy; }			
-			set { reportsToEmployee_TitleOfCourtesy = value; }
-		}
-		
-		[Column("BirthDate", Foreign = EmployeesView.ReportsToEmployee)]
-		public DateTime? ReportsToEmployee_BirthDate
-		{
-			get { return reportsToEmployee_BirthDate; }			
-			set { reportsToEmployee_BirthDate = value; }
-		}
-		
-		[Column("HireDate", Foreign = EmployeesView.ReportsToEmployee)]
-		public DateTime? ReportsToEmployee_HireDate
-		{
-			get { return reportsToEmployee_HireDate; }			
-			set { reportsToEmployee_HireDate = value; }
-		}
-		
-		[Column("Address", Foreign = EmployeesView.ReportsToEmployee)]
-		public string ReportsToEmployee_Address
-		{
-			get { return reportsToEmployee_Address; }			
-			set { reportsToEmployee_Address = value; }
-		}
-		
-		[Column("City", Foreign = EmployeesView.ReportsToEmployee)]
-		public string ReportsToEmployee_City
-		{
-			get { return reportsToEmployee_City; }			
-			set { reportsToEmployee_City = value; }
-		}
-		
-		[Column("Region", Foreign = EmployeesView.ReportsToEmployee)]
-		public string ReportsToEmployee_Region
-		{
-			get { return reportsToEmployee_Region; }			
-			set { reportsToEmployee_Region = value; }
-		}
-		
-		[Column("PostalCode", Foreign = EmployeesView.ReportsToEmployee)]
-		public string ReportsToEmployee_PostalCode
-		{
-			get { return reportsToEmployee_PostalCode; }			
-			set { reportsToEmployee_PostalCode = value; }
-		}
-		
-		[Column("Country", Foreign = EmployeesView.ReportsToEmployee)]
-		public string ReportsToEmployee_Country
-		{
-			get { return reportsToEmployee_Country; }			
-			set { reportsToEmployee_Country = value; }
-		}
-		
-		[Column("HomePhone", Foreign = EmployeesView.ReportsToEmployee)]
-		public string ReportsToEmployee_HomePhone
-		{
-			get { return reportsToEmployee_HomePhone; }			
-			set { reportsToEmployee_HomePhone = value; }
-		}
-		
-		[Column("Extension", Foreign = EmployeesView.ReportsToEmployee)]
-		public string ReportsToEmployee_Extension
-		{
-			get { return reportsToEmployee_Extension; }			
-			set { reportsToEmployee_Extension = value; }
-		}
-		
-		[Column("Photo", Foreign = EmployeesView.ReportsToEmployee)]
-		public byte[] ReportsToEmployee_Photo
-		{
-			get { return reportsToEmployee_Photo; }			
-			set { reportsToEmployee_Photo = value; }
-		}
-		
-		[Column("Notes", Foreign = EmployeesView.ReportsToEmployee)]
-		public string ReportsToEmployee_Notes
-		{
-			get { return reportsToEmployee_Notes; }			
-			set { reportsToEmployee_Notes = value; }
-		}
-		
-		[Column("PhotoPath", Foreign = EmployeesView.ReportsToEmployee)]
-		public string ReportsToEmployee_PhotoPath
-		{
-			get { return reportsToEmployee_PhotoPath; }			
-			set { reportsToEmployee_PhotoPath = value; }
-		}
-		
+		/// <summary>
+		/// LastName of ReportsToEmployee
+		/// </summary>
+		[ForeignColumn("ReportsToEmployee", Property = Employees.Properties.LastName)]
+		public string ReportsToEmployee_LastName { get; set; }	
+        
+		/// <summary>
+		/// FirstName of ReportsToEmployee
+		/// </summary>
+		[ForeignColumn("ReportsToEmployee", Property = Employees.Properties.FirstName)]
+		public string ReportsToEmployee_FirstName { get; set; }	
+        
+		/// <summary>
+		/// Title of ReportsToEmployee
+		/// </summary>
+		[ForeignColumn("ReportsToEmployee", Property = Employees.Properties.Title)]
+		public string ReportsToEmployee_Title { get; set; }	
+        
+		/// <summary>
+		/// TitleOfCourtesy of ReportsToEmployee
+		/// </summary>
+		[ForeignColumn("ReportsToEmployee", Property = Employees.Properties.TitleOfCourtesy)]
+		public string ReportsToEmployee_TitleOfCourtesy { get; set; }	
+        
+		/// <summary>
+		/// BirthDate of ReportsToEmployee
+		/// </summary>
+		[ForeignColumn("ReportsToEmployee", Property = Employees.Properties.BirthDate)]
+		public DateTime? ReportsToEmployee_BirthDate { get; set; }	
+        
+		/// <summary>
+		/// HireDate of ReportsToEmployee
+		/// </summary>
+		[ForeignColumn("ReportsToEmployee", Property = Employees.Properties.HireDate)]
+		public DateTime? ReportsToEmployee_HireDate { get; set; }	
+        
+		/// <summary>
+		/// Address of ReportsToEmployee
+		/// </summary>
+		[ForeignColumn("ReportsToEmployee", Property = Employees.Properties.Address)]
+		public string ReportsToEmployee_Address { get; set; }	
+        
+		/// <summary>
+		/// City of ReportsToEmployee
+		/// </summary>
+		[ForeignColumn("ReportsToEmployee", Property = Employees.Properties.City)]
+		public string ReportsToEmployee_City { get; set; }	
+        
+		/// <summary>
+		/// Region of ReportsToEmployee
+		/// </summary>
+		[ForeignColumn("ReportsToEmployee", Property = Employees.Properties.Region)]
+		public string ReportsToEmployee_Region { get; set; }	
+        
+		/// <summary>
+		/// PostalCode of ReportsToEmployee
+		/// </summary>
+		[ForeignColumn("ReportsToEmployee", Property = Employees.Properties.PostalCode)]
+		public string ReportsToEmployee_PostalCode { get; set; }	
+        
+		/// <summary>
+		/// Country of ReportsToEmployee
+		/// </summary>
+		[ForeignColumn("ReportsToEmployee", Property = Employees.Properties.Country)]
+		public string ReportsToEmployee_Country { get; set; }	
+        
+		/// <summary>
+		/// HomePhone of ReportsToEmployee
+		/// </summary>
+		[ForeignColumn("ReportsToEmployee", Property = Employees.Properties.HomePhone)]
+		public string ReportsToEmployee_HomePhone { get; set; }	
+        
+		/// <summary>
+		/// Extension of ReportsToEmployee
+		/// </summary>
+		[ForeignColumn("ReportsToEmployee", Property = Employees.Properties.Extension)]
+		public string ReportsToEmployee_Extension { get; set; }	
+        
+		/// <summary>
+		/// Photo of ReportsToEmployee
+		/// </summary>
+		[ForeignColumn("ReportsToEmployee", Property = Employees.Properties.Photo)]
+		public byte[] ReportsToEmployee_Photo { get; set; }	
+        
+		/// <summary>
+		/// Notes of ReportsToEmployee
+		/// </summary>
+		[ForeignColumn("ReportsToEmployee", Property = Employees.Properties.Notes)]
+		public string ReportsToEmployee_Notes { get; set; }	
+        
+		/// <summary>
+		/// PhotoPath of ReportsToEmployee
+		/// </summary>
+		[ForeignColumn("ReportsToEmployee", Property = Employees.Properties.PhotoPath)]
+		public string ReportsToEmployee_PhotoPath { get; set; }	
+        
 		#endregion
 	}
 	#endregion	

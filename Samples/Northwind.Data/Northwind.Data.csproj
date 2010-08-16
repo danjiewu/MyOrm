@@ -42,34 +42,15 @@
     <Reference Include="MyOrm">
       <HintPath>..\Dll\MyOrm.dll</HintPath>
     </Reference>
-    <Reference Include="MyOrm.Attribute">
-      <HintPath>..\Dll\MyOrm.Attribute.dll</HintPath>
-    </Reference>
     <Reference Include="MyOrm.Common">
       <HintPath>..\Dll\MyOrm.Common.dll</HintPath>
-    </Reference>
-    <Reference Include="MyOrm.Metadata">
-      <HintPath>..\Dll\MyOrm.Metadata.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAOFactory.cs" />
-    <Compile Include="DAO\CategoriesDAO.cs" />
-    <Compile Include="DAO\CustomerCustomerDemoDAO.cs" />
-    <Compile Include="DAO\CustomerDemographicsDAO.cs" />
-    <Compile Include="DAO\CustomersDAO.cs" />
-    <Compile Include="DAO\EmployeesDAO.cs" />
-    <Compile Include="DAO\EmployeeTerritoriesDAO.cs" />
-    <Compile Include="DAO\Order DetailsDAO.cs" />
-    <Compile Include="DAO\OrdersDAO.cs" />
-    <Compile Include="DAO\ProductsDAO.cs" />
-    <Compile Include="DAO\RegionDAO.cs" />
-    <Compile Include="DAO\ShippersDAO.cs" />
-    <Compile Include="DAO\SuppliersDAO.cs" />
-    <Compile Include="DAO\TerritoriesDAO.cs" />
+    <Compile Include="EntityBase.cs" />
     <Compile Include="Entity\Categories.cs" />
     <Compile Include="Entity\CustomerCustomerDemo.cs" />
     <Compile Include="Entity\CustomerDemographics.cs" />
@@ -83,20 +64,6 @@
     <Compile Include="Entity\Shippers.cs" />
     <Compile Include="Entity\Suppliers.cs" />
     <Compile Include="Entity\Territories.cs" />
-    <Compile Include="IDAOFactory.cs" />
-    <Compile Include="Interface\ICategoriesDAO.cs" />
-    <Compile Include="Interface\ICustomerCustomerDemoDAO.cs" />
-    <Compile Include="Interface\ICustomerDemographicsDAO.cs" />
-    <Compile Include="Interface\ICustomersDAO.cs" />
-    <Compile Include="Interface\IEmployeesDAO.cs" />
-    <Compile Include="Interface\IEmployeeTerritoriesDAO.cs" />
-    <Compile Include="Interface\IOrder DetailsDAO.cs" />
-    <Compile Include="Interface\IOrdersDAO.cs" />
-    <Compile Include="Interface\IProductsDAO.cs" />
-    <Compile Include="Interface\IRegionDAO.cs" />
-    <Compile Include="Interface\IShippersDAO.cs" />
-    <Compile Include="Interface\ISuppliersDAO.cs" />
-    <Compile Include="Interface\ITerritoriesDAO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
