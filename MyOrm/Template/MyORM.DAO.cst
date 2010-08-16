@@ -3,11 +3,9 @@
 <%@ Property Name="Namespace" Type="System.String" Default="MyNamespace.Data" Category="Object" Description="The class namespace that the mapping file should use" %>
 <%@ Property Name="Assembly" Type="System.String" Default="MyApp.MyAssembly" Category="Object" Description="The assembly that the class will be used in" %>
 <%@ Property Name="RemoveTablePrefix" Type="System.String" Default="tbl" Category="Object" Description="The prefix to remove from table names" %>
-<%@ Property Name="PropertyConstPrefix" Type="System.String" Default=null Category="Object" Description="The prefix to add to const property name. Leave it empty if don't need to generate const property name." %>
 <%@ Property Name="DAONameFormat" Type="System.String" Default="{0}DAO" Category="Object" Description="Name of obejct DAO" %>
 <%@ Property Name="InterfaceNameFormat" Type="System.String" Default="I{0}DAO" Category="Object" Description="Name of interface of obejct DAO" %>
 <%@ Property Name="UseNullable" Type="System.Boolean" Default="true" Category="Object" Description="Allow to use the type System.Nullable<T>." %>
-<%@ Property Name="OptimizeRead" Type="System.Boolean" Default="false" Category="Object" Description="Optimize the translation from data record to object." %>
 <%@ Assembly Name="SchemaExplorer" %>
 <%@ Assembly Name="System.Data" %>
 <%@ Import Namespace="SchemaExplorer" %>
@@ -21,7 +19,7 @@ private string DAOName{
 }
 
 private string ViewDAOName{
-	get{return string.Format(DAONameFormat,ViewClassName(SourceTable));}
+	get{return string.Format(DAONameFormat,ViewName(SourceTable));}
 }
 
 private string InterfaceName{
@@ -29,27 +27,8 @@ private string InterfaceName{
 }
 
 private string ViewInterfaceName{
- 	get{return string.Format(InterfaceNameFormat,ViewClassName(SourceTable));}
+ 	get{return string.Format(InterfaceNameFormat,ViewName(SourceTable));}
 }
-
-private string ReadValue(string property, ColumnSchema column){	
-	if(column.AllowDBNull)
-	{
-		return ReadNullableValue(property, column);
-	}
-	else
-	{
-		string typeCast = column.DataType == DbType.Object ? null : "(" + NativeType(column) + ")";
-		return typeCast + "record[" + property + "]";
-	}
-}
-
-private string ReadNullableValue(string property, ColumnSchema column){	
-	string typeCast = column.DataType == DbType.Object ? null : "(" + MemberType(column) + ")";
-	string nullValue = IsValueType(column) ? "default(" + MemberType(column) + ")" : "null";		
-	return "record.IsDBNull(record.GetOrdinal(" + property + "))? " + nullValue + " : " + typeCast + "record[" + property + "]";	
-}
-
 </script>
 using System;
 using System.Data;
@@ -63,111 +42,69 @@ namespace <%= Namespace %>
 	/// <summary>
 	/// DAO for object '<%= ClassName(SourceTable) %>'.
 	/// </summary>	
-	public partial class <%= DAOName %> : ObjectDAO<%="<"+ClassName(SourceTable)+">"%><%= String.IsNullOrEmpty(InterfaceName) ? null :", " + InterfaceName%>
-	{
-		<%if(OptimizeRead){%>
-		#region Overrides Method
-		
-		protected override <%=ClassName(SourceTable)%> Read(IDataRecord record)
-		{
-			<%=ClassName(SourceTable)%> o = new <%=ClassName(SourceTable)%>();
-			<% foreach(ColumnSchema column in SourceTable.Columns) { %>
-			<% string property = PropertyString(column, ClassName(SourceTable), PropertyName(column)); %>
-			o.<%=PropertyName(column)%> = <%=ReadValue(property, column)%>;
-			<% } %>	
-			return o;
-		}
-		
-		#endregion Overrides Method
-		
-		<% } %>
-		<%foreach(TableKeySchema key in SourceTable.PrimaryKeys){%>
-		<%string argName = CamelCase(ClassName(key.ForeignKeyTable));%>
-		public <%=ClassName(SourceTable)%> Get<%=ForeignTableAliasName(key)%>Of<%=MakeSingle(ClassName(key.ForeignKeyTable))%>(<%=ClassName(key.ForeignKeyTable)%> <%=argName%>)
-		{
-			<%
-			SortedList<string,ColumnSchema> columns = new SortedList<string,ColumnSchema>();			
-			foreach(ColumnSchema column in key.ForeignKeyMemberColumns){
-				columns.Add(PropertyName(key.PrimaryKeyMemberColumns[columns.Count]), column);
-			}
-			List<string> properties = new List<ColumnSchema>(columns.Values).ConvertAll<string>(delegate(ColumnSchema column){return PropertyName(column);});
-			%>
-			return GetObject(<%=argName + "." + String.Join(", " + argName + ".", properties.ToArray())%>);
-		}
-		
-		<%}%>		
-		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
-		<%string argName = CamelCase(ForeignTableAliasName(key));%>
-		public <%="List<" + ClassName(SourceTable) + ">"%> GetAllWith<%=ForeignTableAliasName(key)%>(<%=ClassName(key.PrimaryKeyTable)%> <%=argName%>)
-		{
-			<%if(key.ForeignKeyMemberColumns.Count == 1){ %>
-			return Search(new SimpleCondition(<%=PropertyString(key.ForeignKeyMemberColumns[0].Column, ClassName(SourceTable), PropertyName(key.ForeignKeyMemberColumns[0].Column))%>, <%=argName%>.<%=PropertyName(key.PrimaryKeyMemberColumns[0].Column)%>));
-			<% } %>
-			<% else{ %>
-			ConditionSet condtions = new ConditionSet();
-			<%for(int i = 0; i < key.ForeignKeyMemberColumns.Count; i++){%>
-			condtions.Add(new SimpleCondition(<%=PropertyString(key.ForeignKeyMemberColumns[i].Column, ClassName(SourceTable), PropertyName(key.ForeignKeyMemberColumns[i].Column))%>, <%=argName%>.<%=PropertyName(key.PrimaryKeyMemberColumns[0].Column)%>));
-			<% } %>
-			return Search(condtions);
-			<% } %>
-		}
-		
-		<%}%>
-	}
+	public partial class <%= DAOName %> : ObjectDAO<%="<"+ClassName(SourceTable)+">"%><%= String.IsNullOrEmpty(InterfaceName) ? null :", " + InterfaceName%> { }
 	#endregion
-	<%if(SourceTable.ForeignKeys.Count!=0){%>
-	
+
 	#region <%= ViewDAOName %>
 	/// <summary>
 	/// DAO for object's view '<%= ViewClassName(SourceTable) %>'.
 	/// </summary>	
 	public partial class <%= ViewDAOName %> : ObjectViewDAO<%="<"+ViewClassName(SourceTable)+">"%><%= String.IsNullOrEmpty(ViewInterfaceName) ? null :", " + ViewInterfaceName%>
 	{
-		<%if(OptimizeRead){%>
-		#region Overrides Method
-		
-		protected override <%=ViewClassName(SourceTable)%> Read(IDataRecord record)
-		{
-			<%=ViewClassName(SourceTable)%> o = new <%=ViewClassName(SourceTable)%>();
-			<% foreach(ColumnSchema column in SourceTable.Columns) { %>
-			<% string property = PropertyString(column, ClassName(SourceTable), PropertyName(column)); %>
-			o.<%=PropertyName(column)%> = <%=ReadValue(property, column)%>;
+        <%foreach(ColumnSchema column in SourceTable.Columns){
+           if(!column.IsPrimaryKeyMember && column.IsUnique){
+            string argName = CamelCase(PropertyName(column));
+        %>
+        /// <summary>
+        /// Get <%= ClassName(SourceTable) %> by unique <%=PropertyName(column)%>.
+        /// </summary>
+        /// <param name="<%=argName%>"><%=PropertyName(column)%> of the <%=ClassName(SourceTable)%></param>
+        /// <returns></returns>
+        public <%=ViewClassName(SourceTable)%> GetBy<%=PropertyName(column)%>(<%=NativeType(column)%> <%=argName%>)
+        {
+            return SearchOne(new SimpleCondition(<%=PropertyString(column,ViewClassName(SourceTable),PropertyName(column))%>, <%=argName%>));
+        }
+        
+        <%
+            }
+        }
+        %> 
+        <%foreach(ColumnSchema column in SourceTable.Columns){
+           if(!column.IsUnique && IsIndex(column)){
+            string argName = CamelCase(PropertyName(column));
+        %>
+        /// <summary>
+        /// Get all the <%=MakePlural(ClassName(SourceTable))%> by <%=PropertyName(column)%>.
+        /// </summary>
+        /// <param name="<%=argName%>"><%=PropertyName(column)%> of the <%=ClassName(SourceTable)%></param>
+        /// <returns></returns>
+        public List<<%=ViewClassName(SourceTable)%>> GetAllBy<%=PropertyName(column)%>(<%=NativeType(column)%> <%=argName%>)
+        {
+            return Search(new SimpleCondition(<%=PropertyString(column,ViewClassName(SourceTable),PropertyName(column))%>, <%=argName%>));
+        }
+        
+        <%
+            }
+        }
+        %>
+		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>		
+        /// <summary>
+        /// Get all the <%=MakePlural(ClassName(SourceTable))%> of the <%=ForeignTableAliasName(key)%>.
+        /// </summary>
+        <%if(key.ForeignKeyMemberColumns.Count == 1){ %>
+        <%string argName = CamelCase(ForeignTableAliasName(key)+"ID");%>
+        /// <param name="<%=argName%>">ID of <%=ForeignTableAliasName(key)%></param>
+        /// <returns></returns>
+		public <%="List<" + ViewClassName(SourceTable) + ">"%> GetAllWith<%=ForeignTableAliasName(key)%>(<%=NativeType(key.ForeignKeyMemberColumns[0].Column)%> <%=argName%>)
+		{			
+			return Search(new SimpleCondition(<%=PropertyString(key.ForeignKeyMemberColumns[0].Column, ViewClassName(SourceTable), PropertyName(key.ForeignKeyMemberColumns[0].Column))%>, <%=argName%>));
 			<% } %>
-			<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
-				<%foreach(ColumnSchema column in key.PrimaryKeyTable.NonKeyColumns){%>
-				<% string property = PropertyString(column, ViewClassName(SourceTable), ForeignPropertyName(key, column)); %>
-			o.<%=ForeignPropertyName(key, column)%> = <%=ReadNullableValue(property, column)%>;
-				<%}%>			
-			<%}%>
-			return o;
-		}
-		
-		#endregion Overrides Method
-		
-		<%}%>		
-		<%foreach(TableKeySchema key in SourceTable.PrimaryKeys){%>
-		<%string argName = CamelCase(ClassName(key.ForeignKeyTable));%>
-		public <%=ViewClassName(SourceTable)%> Get<%=ForeignTableAliasName(key)%>Of<%=MakeSingle(ClassName(key.ForeignKeyTable))%>(<%=ClassName(key.ForeignKeyTable)%> <%=argName%>)
-		{
-			<%
-			SortedList<string,ColumnSchema> columns = new SortedList<string,ColumnSchema>();			
-			foreach(ColumnSchema column in key.ForeignKeyMemberColumns){
-				columns.Add(PropertyName(key.PrimaryKeyMemberColumns[columns.Count]), column);
-			}
-			List<string> properties = new List<ColumnSchema>(columns.Values).ConvertAll<string>(delegate(ColumnSchema column){return PropertyName(column);});
-			%>
-			return GetObject(<%=argName + "." + String.Join(", " + argName + ".", properties.ToArray())%>);
-		}
-		
-		<%}%>		
-		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
-		<%string argName = CamelCase(ForeignTableAliasName(key));%>
+	    <% else{ %>
+        <%string argName = CamelCase(ForeignTableAliasName(key));%>
+        /// <param name="<%=argName%>"><%=ForeignTableAliasName(key)%></param>
+        /// <returns></returns>
 		public <%="List<" + ViewClassName(SourceTable) + ">"%> GetAllWith<%=ForeignTableAliasName(key)%>(<%=ClassName(key.PrimaryKeyTable)%> <%=argName%>)
 		{
-			<%if(key.ForeignKeyMemberColumns.Count == 1){ %>
-			return Search(new SimpleCondition(<%=PropertyString(key.ForeignKeyMemberColumns[0].Column, ViewClassName(SourceTable), PropertyName(key.ForeignKeyMemberColumns[0].Column))%>, <%=argName%>.<%=PropertyName(key.PrimaryKeyMemberColumns[0].Column)%>));
-			<% } %>
-			<% else{ %>
 			ConditionSet condtions = new ConditionSet();
 			<%for(int i = 0; i < key.ForeignKeyMemberColumns.Count; i++){%>
 			condtions.Add(new SimpleCondition(<%=PropertyString(key.ForeignKeyMemberColumns[i].Column, ViewClassName(SourceTable), PropertyName(key.ForeignKeyMemberColumns[i].Column))%>, <%=argName%>.<%=PropertyName(key.PrimaryKeyMemberColumns[0].Column)%>));
@@ -179,5 +116,4 @@ namespace <%= Namespace %>
 		<%}%>
 	}
 	#endregion	
-	<%}%>
 }
