@@ -3,7 +3,6 @@
 <%@ Property Name="Namespace" Type="System.String" Default="MyNamespace.Data" Category="Object" Description="The class namespace that the mapping file should use" %>
 <%@ Property Name="Assembly" Type="System.String" Default="MyApp.MyAssembly" Category="Object" Description="The assembly that the class will be used in" %>
 <%@ Property Name="RemoveTablePrefix" Type="System.String" Default="tbl" Category="Object" Description="The prefix to remove from table names" %>
-<%@ Property Name="PropertyConstPrefix" Type="System.String" Default=null Category="Object" Description="The prefix to add to const property name. Leave it empty if don't need to generate const property name." %>
 <%@ Property Name="UseNullable" Type="System.Boolean" Default="true" Category="Object" Description="Allow to use the type System.Nullable<T>." %>
 <%@ Assembly Name="SchemaExplorer" %>
 <%@ Assembly Name="System.Data" %>
@@ -28,8 +27,6 @@ public string ForeignKeysName(TableKeySchema foreignKey){
 </script>
 using System;
 using System.Data;
-using MyOrm.Metadata;
-using MyOrm.Attribute;
 
 namespace <%= Namespace %>
 {	
@@ -40,44 +37,36 @@ namespace <%= Namespace %>
 	/// <%=SourceTable.Description%>
 	<% } %>
 	/// </summary>
-	[Table("<%= SourceTable.Name %>")]
-	<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
-	[TableJoin(typeof(<%=ClassName(key.PrimaryKeyTable)%>), <%=ForeignKeysName(key)%>, AliasName = <%=ClassName(SourceTable) + "." + ForeignTableAliasName(key)%>)]
-	<%}%>
+	[Table("<%= SourceTable.Name %>")]	
 	[Serializable]
-	public partial class <%= ClassName(SourceTable) %> 
-	{
-		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
-		public const string <%=ForeignTableAliasName(key)%> = "<%=ForeignTableAliasName(key)%>";
-		<%}%>
-		<%if(!String.IsNullOrEmpty(PropertyConstPrefix)){%>
-		#region Constant		
+	public partial class <%= ClassName(SourceTable) %> : EntityBase
+	{		
+        <%if(SourceTable.Columns.Count>0){%>
+		#region Constant
+        public static class Properties
+        {
 		<% foreach(ColumnSchema column in SourceTable.Columns) { %>
-		public const string	<%= PropertyConstPrefix + PropertyName(column )%> = "<%= PropertyName(column) %>";
+		    public const string	<%= PropertyName(column )%> = "<%= PropertyName(column) %>";
 		<% } %>		
+        }
 		#endregion
-		
-		<%}%>		
-		#region Member Variables		
-		<% foreach(ColumnSchema column in SourceTable.Columns) { %>
-		private <%= MemberType(column) %> <%= MemberName(column) %>;
-		<% } %>
-		#endregion
+        <%}%>		
 
 		#region Public Properties
 		<% foreach(ColumnSchema column in SourceTable.Columns) { %>
-		<%if(!String.IsNullOrEmpty(column.Description)){%>
 		/// <summary>
-		/// <%=column.Description%>
+		/// <%=String.IsNullOrEmpty(column.Description)?PropertyName(column):column.Description%>
 		/// </summary>
-		<%}%>
-		[Column<%=column.IsPrimaryKeyMember ? "(IsPrimaryKey = true)" : null%>]
-		public <%= MemberType(column) %> <%= PropertyName(column) %>
-		{
-			get { return <%= MemberName(column) %>; }			
-			set { <%= MemberName(column) %> = value; }
-		}
-		
+        <%if(column.IsForeignKeyMember){        
+        foreach(TableKeySchema foreignKey in SourceTable.ForeignKeys){
+            if(foreignKey.ForeignKeyMemberColumns.Count==1&&  Equals(foreignKey.ForeignKeyMemberColumns[0], column)){%>
+        [ForeignType(typeof(<%=ClassName(foreignKey.PrimaryKeyTable)%>))]
+        <%}
+        }
+        }%>
+		[Column<%=column.IsPrimaryKeyMember ? "(IsPrimaryKey = true)" : column.IsUnique ? "(IsUnique = true)" : IsIndex(column) ? "(IsIndex = true)" : null%>]
+		public <%= MemberType(column) %> <%= PropertyName(column) %> { get; set; }	
+        
 		<% } %>
 		#endregion
 	}
@@ -90,43 +79,33 @@ namespace <%= Namespace %>
 	<% if(!String.IsNullOrEmpty(SourceTable.Description)){%>
 	/// <%=SourceTable.Description%>
 	<% } %>
-	/// </summary>		
+	/// </summary>
+    <%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
+	[TableJoin(typeof(<%=ClassName(key.PrimaryKeyTable)%>), <%=ForeignKeysName(key)%>, AliasName = "<%=ForeignTableAliasName(key)%>")]
+	<%}%>
 	[Serializable]
 	public partial class <%= ViewClassName(SourceTable) %> : <%= ClassName(SourceTable) %>
 	{
-		<%if(!String.IsNullOrEmpty(PropertyConstPrefix)){%>
-		#region Constant
+		#region Constant       
+        public static class Properties
+        {
 			<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
 				<%foreach(ColumnSchema column in key.PrimaryKeyTable.NonKeyColumns){%>
-		public const string	<%=PropertyConstPrefix + ForeignPropertyName(key,column)%> = "<%=ForeignPropertyName(key,column)%>";			
+		    public const string	<%= ForeignPropertyName(key,column)%> = "<%=ForeignPropertyName(key,column)%>";			
 				<%}%>			
 			<%}%>
-		#endregion
-		<%}%>
-		
-		#region Member Variables		
-		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
-			<%foreach(ColumnSchema column in key.PrimaryKeyTable.NonKeyColumns){%>
-		private <%= NullableType(column) %> <%= ForeignMemberName(key, column) %>;			
-			<%}%>			
-		<%}%>		
+        }
 		#endregion
 
 		#region Public Properties
 		<%foreach(TableKeySchema key in SourceTable.ForeignKeys){%>
 			<%foreach(ColumnSchema column in key.PrimaryKeyTable.NonKeyColumns){%>
-				<%if(!String.IsNullOrEmpty(column.Description)){%>
 		/// <summary>
-		/// <%=column.Description%>
+		/// <%=column.Name + " of " + ForeignTableAliasName(key)%>
 		/// </summary>
-				<%}%>
-		[Column("<%=column.Name%>", Foreign = <%=ViewClassName(SourceTable)%>.<%=ForeignTableAliasName(key)%>, ColumnMode = ColumnMode.Read)]
-		public <%= NullableType(column) %> <%= ForeignPropertyName(key, column) %>
-		{
-			get { return <%= ForeignMemberName(key, column) %>; }			
-			set { <%= ForeignMemberName(key, column) %> = value; }
-		}
-		
+		[ForeignColumn("<%=ForeignTableAliasName(key)%>", Property = <%=ClassName(key.PrimaryKeyTable)%>.Properties.<%= PropertyName(column )%>)]
+		public <%= NullableType(column) %> <%= ForeignPropertyName(key, column) %> { get; set; }	
+        
 			<%}%>	
 		<% } %>
 		#endregion

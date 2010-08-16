@@ -18,6 +18,20 @@ public string PascalCase(string name)
 	return char.ToUpper(output[0]) + output.Substring(1);
 }
 
+public bool IsIndex(ColumnSchema column)
+{
+    foreach(IndexSchema index in column.Table.Indexes){
+        if(index.MemberColumns.Count == 1 && Equals(index.MemberColumns[0], column)) return true;
+    }
+    return false;
+}
+
+public string RemoveIDSuffix(string name)
+{
+	if(name.EndsWith("ID", StringComparison.OrdinalIgnoreCase))return name.Substring(0,name.Length -2 );
+	return name;
+}
+
 public string MakePlural(string name)
 {
 	Regex plural1 = new Regex("(?<keep>[^aeiou])y$");
@@ -98,7 +112,12 @@ public string ForeignMemberName(TableKeySchema foreignKey, ColumnSchema column)
 
 public string ViewClassName(TableSchema table)
 {
-	return ClassName(table)+"View";
+	return table.ForeignKeys.Count == 0? ClassName(table) : ViewName(table);
+}
+
+public string ViewName(TableSchema table)
+{
+    return ClassName(table)+"View";
 }
 
 public string MemberName(ColumnSchema column)
@@ -112,7 +131,7 @@ public string PropertyName(ColumnSchema column)
 }
 
 public string PropertyString(ColumnSchema column, string calssName, string propertyName){
-	return (String.IsNullOrEmpty(PropertyConstPrefix) ? "\"" + propertyName + "\"" : calssName + "." + PropertyConstPrefix + propertyName);
+	return calssName + ".Properties." + propertyName;
 }
 
 public string NativeType(ColumnSchema column){

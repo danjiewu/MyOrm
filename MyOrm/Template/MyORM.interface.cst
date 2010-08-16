@@ -19,7 +19,7 @@ private string InterfaceName{
 }
 
 private string ViewInterfaceName{
- 	get{return string.Format(InterfaceNameFormat,ViewClassName(SourceTable));}
+ 	get{return string.Format(InterfaceNameFormat,ViewName(SourceTable));}
 }
 </script>
 using System;
