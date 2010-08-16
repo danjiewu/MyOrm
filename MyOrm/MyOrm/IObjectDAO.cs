@@ -109,4 +109,11 @@ namespace MyOrm
         int Delete(Condition condition);
     }
     #endregion
+
+    public enum UpdateOrInsertResult
+    {
+        Inserted,
+        Updated,
+        Failed
+    }
 }
