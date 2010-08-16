@@ -330,11 +330,4 @@ namespace MyOrm
 
         #endregion
     }
-
-    public enum UpdateOrInsertResult
-    {
-        Inserted,
-        Updated,
-        Failed
-    }
 }
