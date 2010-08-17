@@ -3,20 +3,19 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2248AF91-D547-4C9A-AA3C-E8C7613CE561}</ProjectGuid>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{634F4F78-0190-4DAE-A834-306CEF49D6E3}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Northwind.Data</RootNamespace>
-    <AssemblyName>Northwind.Data</AssemblyName>
-    <NoStandardLibraries>false</NoStandardLibraries>
-    <AssemblyName>ClassLibrary</AssemblyName>
+    <RootNamespace>Northwind.Business</RootNamespace>
+    <AssemblyName>Northwind.RemoteAPI</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -35,36 +34,38 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
-  <PropertyGroup>
-    <RootNamespace>Northwind.Data</RootNamespace>
-  </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MyOrm.Common">
-      <HintPath>..\Dll\MyOrm.Common.dll</HintPath>
+    <Reference Include="Castle.Core">
+      <HintPath>..\Dll\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.DynamicProxy2">
+      <HintPath>..\Dll\Castle.DynamicProxy2.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net">
+      <HintPath>..\Dll\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="EntityBase.cs" />
-    <Compile Include="Entity\Categories.cs" />
-    <Compile Include="Entity\CustomerCustomerDemo.cs" />
-    <Compile Include="Entity\CustomerDemographics.cs" />
-    <Compile Include="Entity\Customers.cs" />
-    <Compile Include="Entity\Employees.cs" />
-    <Compile Include="Entity\EmployeeTerritories.cs" />
-    <Compile Include="Entity\OrderDetails.cs" />
-    <Compile Include="Entity\Orders.cs" />
-    <Compile Include="Entity\Products.cs" />
-    <Compile Include="Entity\Region.cs" />
-    <Compile Include="Entity\Shippers.cs" />
-    <Compile Include="Entity\Suppliers.cs" />
-    <Compile Include="Entity\Territories.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RemoteDAOFactory.cs" />
+    <Compile Include="RemoteDispatcher.cs" />
+    <Compile Include="RemoteInteceptor.cs" />
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSHARP.Targets" />
-  <ProjectExtensions>
-    <VisualStudio AllowExistingFolder="true" />
-  </ProjectExtensions>
+  <ItemGroup>
+    <ProjectReference Include="..\Northwind.Contract\Northwind.Contract.csproj">
+      <Project>{8B95CA4A-2081-4AEA-B563-632B015B2AAF}</Project>
+      <Name>Northwind.Contract</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
 </Project>

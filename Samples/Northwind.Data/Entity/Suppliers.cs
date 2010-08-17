@@ -104,6 +104,51 @@ namespace Northwind.Data
 		public string HomePage { get; set; }	
         
 		#endregion
+        
+        #region IIndexedProperty
+		public override object this[string propertyName]
+		{
+			get
+			{
+				switch (propertyName)
+				{
+					case Properties.SupplierID: return SupplierID;
+					case Properties.CompanyName: return CompanyName;
+					case Properties.ContactName: return ContactName;
+					case Properties.ContactTitle: return ContactTitle;
+					case Properties.Address: return Address;
+					case Properties.City: return City;
+					case Properties.Region: return Region;
+					case Properties.PostalCode: return PostalCode;
+					case Properties.Country: return Country;
+					case Properties.Phone: return Phone;
+					case Properties.Fax: return Fax;
+					case Properties.HomePage: return HomePage;
+					default: return base[propertyName];
+				}
+			}
+			set
+			{
+				switch (propertyName)
+				{
+					case Properties.SupplierID: SupplierID = (int)value; break;
+					case Properties.CompanyName: CompanyName = (string)value; break;
+					case Properties.ContactName: ContactName = (string)value; break;
+					case Properties.ContactTitle: ContactTitle = (string)value; break;
+					case Properties.Address: Address = (string)value; break;
+					case Properties.City: City = (string)value; break;
+					case Properties.Region: Region = (string)value; break;
+					case Properties.PostalCode: PostalCode = (string)value; break;
+					case Properties.Country: Country = (string)value; break;
+					case Properties.Phone: Phone = (string)value; break;
+					case Properties.Fax: Fax = (string)value; break;
+					case Properties.HomePage: HomePage = (string)value; break;
+					default: base[propertyName] = value; break;
+				}
+			}
+		}
+		
+		#endregion
 	}
 	#endregion
 }

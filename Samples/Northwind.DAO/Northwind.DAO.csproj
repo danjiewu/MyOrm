@@ -51,13 +51,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DAOFactory.cs" />
     <Compile Include="DAO\CategoriesDAO.cs" />
     <Compile Include="DAO\CustomerCustomerDemoDAO.cs" />
     <Compile Include="DAO\CustomerDemographicsDAO.cs" />
     <Compile Include="DAO\CustomersDAO.cs" />
     <Compile Include="DAO\EmployeesDAO.cs" />
     <Compile Include="DAO\EmployeeTerritoriesDAO.cs" />
-    <Compile Include="DAO\Order DetailsDAO.cs" />
+    <Compile Include="DAO\OrderDetailsDAO.cs" />
     <Compile Include="DAO\OrdersDAO.cs" />
     <Compile Include="DAO\ProductsDAO.cs" />
     <Compile Include="DAO\RegionDAO.cs" />

@@ -2,25 +2,26 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
-using MyOrm;
 using MyOrm.Common;
 using System.ComponentModel;
+using Northwind.DAO;
 
 namespace Northwind.Business
 {
     public class EntityServiceBase<T, TView> : IEntityService<T>, IEntityViewService<TView> where TView : T, new()
     {
+        protected internal static DAOFactory DAOFactory = new DAOFactory();
+
+        protected internal IObjectDAO<T> ObjectDAO
+        {
+            get { return DAOFactory.GetObjectDAO<T>(); }
+        }
+
+        protected internal IObjectViewDAO<TView> ObjectViewDAO
+        {
+            get { return DAOFactory.GetObjectViewDAO<TView>(); }
+        }
         #region IEntityService<T> 成员
-
-        protected internal ObjectDAO<T> ObjectDAO
-        {
-            get { return ServiceProvider.GetService<ObjectDAO<T>>(); }
-        }
-
-        protected internal ObjectViewDAO<TView> ObjectViewDAO
-        {
-            get { return ServiceProvider.GetService<ObjectViewDAO<TView>>(); }
-        }
 
         public Type EntityType
         {
@@ -44,7 +45,14 @@ namespace Northwind.Business
 
         public UpdateOrInsertResult UpdateOrInsert(T entity)
         {
-            return ObjectDAO.UpdateOrInsert(entity);
+            try
+            {
+                return ObjectDAO.UpdateOrInsert(entity);
+            }
+            finally
+            {
+                entity = default(T);
+            }
         }
 
         public bool DeleteID(params object[] id)

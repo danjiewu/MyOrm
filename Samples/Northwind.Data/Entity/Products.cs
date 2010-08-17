@@ -92,6 +92,47 @@ namespace Northwind.Data
 		public bool Discontinued { get; set; }	
         
 		#endregion
+        
+        #region IIndexedProperty
+		public override object this[string propertyName]
+		{
+			get
+			{
+				switch (propertyName)
+				{
+					case Properties.ProductID: return ProductID;
+					case Properties.ProductName: return ProductName;
+					case Properties.SupplierID: return SupplierID;
+					case Properties.CategoryID: return CategoryID;
+					case Properties.QuantityPerUnit: return QuantityPerUnit;
+					case Properties.UnitPrice: return UnitPrice;
+					case Properties.UnitsInStock: return UnitsInStock;
+					case Properties.UnitsOnOrder: return UnitsOnOrder;
+					case Properties.ReorderLevel: return ReorderLevel;
+					case Properties.Discontinued: return Discontinued;
+					default: return base[propertyName];
+				}
+			}
+			set
+			{
+				switch (propertyName)
+				{
+					case Properties.ProductID: ProductID = (int)value; break;
+					case Properties.ProductName: ProductName = (string)value; break;
+					case Properties.SupplierID: SupplierID = (int?)value; break;
+					case Properties.CategoryID: CategoryID = (int?)value; break;
+					case Properties.QuantityPerUnit: QuantityPerUnit = (string)value; break;
+					case Properties.UnitPrice: UnitPrice = (decimal?)value; break;
+					case Properties.UnitsInStock: UnitsInStock = (short?)value; break;
+					case Properties.UnitsOnOrder: UnitsOnOrder = (short?)value; break;
+					case Properties.ReorderLevel: ReorderLevel = (short?)value; break;
+					case Properties.Discontinued: Discontinued = (bool)value; break;
+					default: base[propertyName] = value; break;
+				}
+			}
+		}
+		
+		#endregion
 	}
 	#endregion
 	
