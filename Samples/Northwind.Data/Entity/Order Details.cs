@@ -57,6 +57,37 @@ namespace Northwind.Data
 		public float Discount { get; set; }	
         
 		#endregion
+        
+        #region IIndexedProperty		
+		public override object this[string propertyName]
+		{
+			get
+			{
+				switch (propertyName)
+				{
+					case Properties.OrderID: return OrderID;
+					case Properties.ProductID: return ProductID;
+					case Properties.UnitPrice: return UnitPrice;
+					case Properties.Quantity: return Quantity;
+					case Properties.Discount: return Discount;
+					default: return base[propertyName];
+				}
+			}
+			set
+			{
+				switch (propertyName)
+				{
+					case Properties.OrderID: OrderID = (int)value; break;
+					case Properties.ProductID: ProductID = (int)value; break;
+					case Properties.UnitPrice: UnitPrice = (decimal)value; break;
+					case Properties.Quantity: Quantity = (short)value; break;
+					case Properties.Discount: Discount = (float)value; break;
+					default: base[propertyName] = value; break;
+				}
+			}
+		}
+		
+		#endregion
 	}
 	#endregion
 	
