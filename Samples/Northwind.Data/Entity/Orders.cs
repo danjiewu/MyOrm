@@ -121,6 +121,55 @@ namespace Northwind.Data
 		public string ShipCountry { get; set; }	
         
 		#endregion
+        
+        #region IIndexedProperty
+		public override object this[string propertyName]
+		{
+			get
+			{
+				switch (propertyName)
+				{
+					case Properties.OrderID: return OrderID;
+					case Properties.CustomerID: return CustomerID;
+					case Properties.EmployeeID: return EmployeeID;
+					case Properties.OrderDate: return OrderDate;
+					case Properties.RequiredDate: return RequiredDate;
+					case Properties.ShippedDate: return ShippedDate;
+					case Properties.ShipVia: return ShipVia;
+					case Properties.Freight: return Freight;
+					case Properties.ShipName: return ShipName;
+					case Properties.ShipAddress: return ShipAddress;
+					case Properties.ShipCity: return ShipCity;
+					case Properties.ShipRegion: return ShipRegion;
+					case Properties.ShipPostalCode: return ShipPostalCode;
+					case Properties.ShipCountry: return ShipCountry;
+					default: return base[propertyName];
+				}
+			}
+			set
+			{
+				switch (propertyName)
+				{
+					case Properties.OrderID: OrderID = (int)value; break;
+					case Properties.CustomerID: CustomerID = (string)value; break;
+					case Properties.EmployeeID: EmployeeID = (int?)value; break;
+					case Properties.OrderDate: OrderDate = (DateTime?)value; break;
+					case Properties.RequiredDate: RequiredDate = (DateTime?)value; break;
+					case Properties.ShippedDate: ShippedDate = (DateTime?)value; break;
+					case Properties.ShipVia: ShipVia = (int?)value; break;
+					case Properties.Freight: Freight = (decimal?)value; break;
+					case Properties.ShipName: ShipName = (string)value; break;
+					case Properties.ShipAddress: ShipAddress = (string)value; break;
+					case Properties.ShipCity: ShipCity = (string)value; break;
+					case Properties.ShipRegion: ShipRegion = (string)value; break;
+					case Properties.ShipPostalCode: ShipPostalCode = (string)value; break;
+					case Properties.ShipCountry: ShipCountry = (string)value; break;
+					default: base[propertyName] = value; break;
+				}
+			}
+		}
+		
+		#endregion
 	}
 	#endregion
 	

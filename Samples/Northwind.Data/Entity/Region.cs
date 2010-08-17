@@ -34,6 +34,31 @@ namespace Northwind.Data
 		public string RegionDescription { get; set; }	
         
 		#endregion
+        
+        #region IIndexedProperty
+		public override object this[string propertyName]
+		{
+			get
+			{
+				switch (propertyName)
+				{
+					case Properties.RegionID: return RegionID;
+					case Properties.RegionDescription: return RegionDescription;
+					default: return base[propertyName];
+				}
+			}
+			set
+			{
+				switch (propertyName)
+				{
+					case Properties.RegionID: RegionID = (int)value; break;
+					case Properties.RegionDescription: RegionDescription = (string)value; break;
+					default: base[propertyName] = value; break;
+				}
+			}
+		}
+		
+		#endregion
 	}
 	#endregion
 }

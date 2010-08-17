@@ -78,6 +78,18 @@
     <Compile Include="RemoteHttpHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Northwind.Business\Northwind.Business.csproj">
+      <Project>{99A20EE1-686D-41BD-95B8-0BB1DA41B265}</Project>
+      <Name>Northwind.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Northwind.Contract\Northwind.Contract.csproj">
+      <Project>{8B95CA4A-2081-4AEA-B563-632B015B2AAF}</Project>
+      <Name>Northwind.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Northwind.DAO\Northwind.DAO.csproj">
+      <Project>{DC0F00F7-91DF-4E22-9F83-D1BCD9BCFB66}</Project>
+      <Name>Northwind.DAO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Northwind.Data\Northwind.Data.csproj">
       <Project>{2248AF91-D547-4C9A-AA3C-E8C7613CE561}</Project>
       <Name>Northwind.Data</Name>

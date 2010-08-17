@@ -41,6 +41,33 @@ namespace Northwind.Data
 		public string Phone { get; set; }	
         
 		#endregion
+        
+        #region IIndexedProperty
+		public override object this[string propertyName]
+		{
+			get
+			{
+				switch (propertyName)
+				{
+					case Properties.ShipperID: return ShipperID;
+					case Properties.CompanyName: return CompanyName;
+					case Properties.Phone: return Phone;
+					default: return base[propertyName];
+				}
+			}
+			set
+			{
+				switch (propertyName)
+				{
+					case Properties.ShipperID: ShipperID = (int)value; break;
+					case Properties.CompanyName: CompanyName = (string)value; break;
+					case Properties.Phone: Phone = (string)value; break;
+					default: base[propertyName] = value; break;
+				}
+			}
+		}
+		
+		#endregion
 	}
 	#endregion
 }

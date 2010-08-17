@@ -147,6 +147,63 @@ namespace Northwind.Data
 		public string PhotoPath { get; set; }	
         
 		#endregion
+        
+        #region IIndexedProperty
+		public override object this[string propertyName]
+		{
+			get
+			{
+				switch (propertyName)
+				{
+					case Properties.EmployeeID: return EmployeeID;
+					case Properties.LastName: return LastName;
+					case Properties.FirstName: return FirstName;
+					case Properties.Title: return Title;
+					case Properties.TitleOfCourtesy: return TitleOfCourtesy;
+					case Properties.BirthDate: return BirthDate;
+					case Properties.HireDate: return HireDate;
+					case Properties.Address: return Address;
+					case Properties.City: return City;
+					case Properties.Region: return Region;
+					case Properties.PostalCode: return PostalCode;
+					case Properties.Country: return Country;
+					case Properties.HomePhone: return HomePhone;
+					case Properties.Extension: return Extension;
+					case Properties.Photo: return Photo;
+					case Properties.Notes: return Notes;
+					case Properties.ReportsTo: return ReportsTo;
+					case Properties.PhotoPath: return PhotoPath;
+					default: return base[propertyName];
+				}
+			}
+			set
+			{
+				switch (propertyName)
+				{
+					case Properties.EmployeeID: EmployeeID = (int)value; break;
+					case Properties.LastName: LastName = (string)value; break;
+					case Properties.FirstName: FirstName = (string)value; break;
+					case Properties.Title: Title = (string)value; break;
+					case Properties.TitleOfCourtesy: TitleOfCourtesy = (string)value; break;
+					case Properties.BirthDate: BirthDate = (DateTime?)value; break;
+					case Properties.HireDate: HireDate = (DateTime?)value; break;
+					case Properties.Address: Address = (string)value; break;
+					case Properties.City: City = (string)value; break;
+					case Properties.Region: Region = (string)value; break;
+					case Properties.PostalCode: PostalCode = (string)value; break;
+					case Properties.Country: Country = (string)value; break;
+					case Properties.HomePhone: HomePhone = (string)value; break;
+					case Properties.Extension: Extension = (string)value; break;
+					case Properties.Photo: Photo = (byte[])value; break;
+					case Properties.Notes: Notes = (string)value; break;
+					case Properties.ReportsTo: ReportsTo = (int?)value; break;
+					case Properties.PhotoPath: PhotoPath = (string)value; break;
+					default: base[propertyName] = value; break;
+				}
+			}
+		}
+		
+		#endregion
 	}
 	#endregion
 	

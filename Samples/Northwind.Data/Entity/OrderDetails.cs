@@ -58,7 +58,7 @@ namespace Northwind.Data
         
 		#endregion
         
-        #region IIndexedProperty		
+        #region IIndexedProperty
 		public override object this[string propertyName]
 		{
 			get

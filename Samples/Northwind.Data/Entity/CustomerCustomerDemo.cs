@@ -36,6 +36,31 @@ namespace Northwind.Data
 		public string CustomerTypeID { get; set; }	
         
 		#endregion
+        
+        #region IIndexedProperty
+		public override object this[string propertyName]
+		{
+			get
+			{
+				switch (propertyName)
+				{
+					case Properties.CustomerID: return CustomerID;
+					case Properties.CustomerTypeID: return CustomerTypeID;
+					default: return base[propertyName];
+				}
+			}
+			set
+			{
+				switch (propertyName)
+				{
+					case Properties.CustomerID: CustomerID = (string)value; break;
+					case Properties.CustomerTypeID: CustomerTypeID = (string)value; break;
+					default: base[propertyName] = value; break;
+				}
+			}
+		}
+		
+		#endregion
 	}
 	#endregion
 	

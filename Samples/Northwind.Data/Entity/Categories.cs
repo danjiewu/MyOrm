@@ -48,6 +48,35 @@ namespace Northwind.Data
 		public byte[] Picture { get; set; }	
         
 		#endregion
+        
+        #region IIndexedProperty
+		public override object this[string propertyName]
+		{
+			get
+			{
+				switch (propertyName)
+				{
+					case Properties.CategoryID: return CategoryID;
+					case Properties.CategoryName: return CategoryName;
+					case Properties.Description: return Description;
+					case Properties.Picture: return Picture;
+					default: return base[propertyName];
+				}
+			}
+			set
+			{
+				switch (propertyName)
+				{
+					case Properties.CategoryID: CategoryID = (int)value; break;
+					case Properties.CategoryName: CategoryName = (string)value; break;
+					case Properties.Description: Description = (string)value; break;
+					case Properties.Picture: Picture = (byte[])value; break;
+					default: base[propertyName] = value; break;
+				}
+			}
+		}
+		
+		#endregion
 	}
 	#endregion
 }

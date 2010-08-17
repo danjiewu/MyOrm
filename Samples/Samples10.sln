@@ -1,17 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample3", "Sample3\Sample3.csproj", "{1B9BB12E-5E90-4493-B6B1-08FFC89D9F77}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleService", "SampleService\SampleService.csproj", "{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Data", "Northwind.Data\Northwind.Data.csproj", "{2248AF91-D547-4C9A-AA3C-E8C7613CE561}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample2", "Sample2\Sample2.csproj", "{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample1", "Sample1\Sample1.csproj", "{C1AD6519-153A-4104-B8AE-3EA8265B9FCA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample4", "Sample4\Sample4.csproj", "{C904D997-1821-4EF2-BA14-F4A0F3B9C45A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleWeb1", "SampleWeb1\SampleWeb1.csproj", "{990E657F-5C0C-44DC-9AF8-609413521141}"
 EndProject
@@ -21,42 +15,38 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Business", "North
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Contract", "Northwind.Contract\Northwind.Contract.csproj", "{8B95CA4A-2081-4AEA-B563-632B015B2AAF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.RemoteAPI", "Northwind.RemoteAPI\Northwind.RemoteAPI.csproj", "{634F4F78-0190-4DAE-A834-306CEF49D6E3}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 11
+		SccNumberOfProjects = 9
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
 		SccLocalPath0 = .
-		SccProjectUniqueName1 = Sample3\\Sample3.csproj
-		SccProjectName1 = Sample3
-		SccLocalPath1 = Sample3
-		SccProjectUniqueName2 = SampleService\\SampleService.csproj
-		SccProjectName2 = SampleService
-		SccLocalPath2 = SampleService
-		SccProjectUniqueName3 = Northwind.Data\\Northwind.Data.csproj
-		SccProjectName3 = Northwind.Data
-		SccLocalPath3 = Northwind.Data
-		SccProjectUniqueName4 = Sample2\\Sample2.csproj
-		SccProjectName4 = Sample2
-		SccLocalPath4 = Sample2
-		SccProjectUniqueName5 = Sample1\\Sample1.csproj
-		SccProjectName5 = Sample1
-		SccLocalPath5 = Sample1
-		SccProjectUniqueName6 = Sample4\\Sample4.csproj
-		SccProjectName6 = Sample4
-		SccLocalPath6 = Sample4
-		SccProjectUniqueName7 = SampleWeb1\\SampleWeb1.csproj
-		SccProjectName7 = SampleWeb1
-		SccLocalPath7 = SampleWeb1
-		SccProjectUniqueName8 = Northwind.DAO\\Northwind.DAO.csproj
-		SccProjectName8 = Northwind.DAO
-		SccLocalPath8 = Northwind.DAO
-		SccProjectUniqueName9 = Northwind.Business\\Northwind.Business.csproj
-		SccProjectName9 = Northwind.Business
-		SccLocalPath9 = Northwind.Business
-		SccProjectUniqueName10 = Northwind.Contract\\Northwind.Contract.csproj
-		SccProjectName10 = Northwind.Contract
-		SccLocalPath10 = Northwind.Contract
+		SccProjectUniqueName1 = SampleService\\SampleService.csproj
+		SccProjectName1 = SampleService
+		SccLocalPath1 = SampleService
+		SccProjectUniqueName2 = Northwind.Data\\Northwind.Data.csproj
+		SccProjectName2 = Northwind.Data
+		SccLocalPath2 = Northwind.Data
+		SccProjectUniqueName3 = Sample1\\Sample1.csproj
+		SccProjectName3 = Sample1
+		SccLocalPath3 = Sample1
+		SccProjectUniqueName4 = SampleWeb1\\SampleWeb1.csproj
+		SccProjectName4 = SampleWeb1
+		SccLocalPath4 = SampleWeb1
+		SccProjectUniqueName5 = Northwind.DAO\\Northwind.DAO.csproj
+		SccProjectName5 = Northwind.DAO
+		SccLocalPath5 = Northwind.DAO
+		SccProjectUniqueName6 = Northwind.Business\\Northwind.Business.csproj
+		SccProjectName6 = Northwind.Business
+		SccLocalPath6 = Northwind.Business
+		SccProjectUniqueName7 = Northwind.Contract\\Northwind.Contract.csproj
+		SccProjectName7 = Northwind.Contract
+		SccLocalPath7 = Northwind.Contract
+		SccProjectUniqueName8 = Northwind.RemoteAPI\\Northwind.RemoteAPI.csproj
+		SccProjectName8 = Northwind.RemoteAPI
+		SccLocalPath8 = Northwind.RemoteAPI
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,16 +57,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{1B9BB12E-5E90-4493-B6B1-08FFC89D9F77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1B9BB12E-5E90-4493-B6B1-08FFC89D9F77}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1B9BB12E-5E90-4493-B6B1-08FFC89D9F77}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{1B9BB12E-5E90-4493-B6B1-08FFC89D9F77}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{1B9BB12E-5E90-4493-B6B1-08FFC89D9F77}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{1B9BB12E-5E90-4493-B6B1-08FFC89D9F77}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1B9BB12E-5E90-4493-B6B1-08FFC89D9F77}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1B9BB12E-5E90-4493-B6B1-08FFC89D9F77}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{1B9BB12E-5E90-4493-B6B1-08FFC89D9F77}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{1B9BB12E-5E90-4493-B6B1-08FFC89D9F77}.Release|x86.ActiveCfg = Release|Any CPU
 		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -97,16 +77,6 @@ Global
 		{2248AF91-D547-4C9A-AA3C-E8C7613CE561}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{2248AF91-D547-4C9A-AA3C-E8C7613CE561}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{2248AF91-D547-4C9A-AA3C-E8C7613CE561}.Release|x86.ActiveCfg = Release|Any CPU
-		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{D45E8BD6-374C-4A06-BACA-A4D38ED4AFFA}.Release|x86.ActiveCfg = Release|Any CPU
 		{C1AD6519-153A-4104-B8AE-3EA8265B9FCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C1AD6519-153A-4104-B8AE-3EA8265B9FCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C1AD6519-153A-4104-B8AE-3EA8265B9FCA}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -117,16 +87,6 @@ Global
 		{C1AD6519-153A-4104-B8AE-3EA8265B9FCA}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{C1AD6519-153A-4104-B8AE-3EA8265B9FCA}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{C1AD6519-153A-4104-B8AE-3EA8265B9FCA}.Release|x86.ActiveCfg = Release|Any CPU
-		{C904D997-1821-4EF2-BA14-F4A0F3B9C45A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C904D997-1821-4EF2-BA14-F4A0F3B9C45A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C904D997-1821-4EF2-BA14-F4A0F3B9C45A}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{C904D997-1821-4EF2-BA14-F4A0F3B9C45A}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{C904D997-1821-4EF2-BA14-F4A0F3B9C45A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{C904D997-1821-4EF2-BA14-F4A0F3B9C45A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C904D997-1821-4EF2-BA14-F4A0F3B9C45A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C904D997-1821-4EF2-BA14-F4A0F3B9C45A}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{C904D997-1821-4EF2-BA14-F4A0F3B9C45A}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{C904D997-1821-4EF2-BA14-F4A0F3B9C45A}.Release|x86.ActiveCfg = Release|Any CPU
 		{990E657F-5C0C-44DC-9AF8-609413521141}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{990E657F-5C0C-44DC-9AF8-609413521141}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{990E657F-5C0C-44DC-9AF8-609413521141}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
@@ -167,6 +127,16 @@ Global
 		{8B95CA4A-2081-4AEA-B563-632B015B2AAF}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
 		{8B95CA4A-2081-4AEA-B563-632B015B2AAF}.Release|Mixed Platforms.Build.0 = Release|Any CPU
 		{8B95CA4A-2081-4AEA-B563-632B015B2AAF}.Release|x86.ActiveCfg = Release|Any CPU
+		{634F4F78-0190-4DAE-A834-306CEF49D6E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{634F4F78-0190-4DAE-A834-306CEF49D6E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{634F4F78-0190-4DAE-A834-306CEF49D6E3}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
+		{634F4F78-0190-4DAE-A834-306CEF49D6E3}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
+		{634F4F78-0190-4DAE-A834-306CEF49D6E3}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{634F4F78-0190-4DAE-A834-306CEF49D6E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{634F4F78-0190-4DAE-A834-306CEF49D6E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{634F4F78-0190-4DAE-A834-306CEF49D6E3}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
+		{634F4F78-0190-4DAE-A834-306CEF49D6E3}.Release|Mixed Platforms.Build.0 = Release|Any CPU
+		{634F4F78-0190-4DAE-A834-306CEF49D6E3}.Release|x86.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
