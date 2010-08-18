@@ -4,32 +4,33 @@ using Northwind.Data;
 using System.ComponentModel;
 using MyOrm.Common;
 using System.Collections.Generic;
+using Northwind.Business;
 
-namespace Northwind
+namespace Northwind.Web
 {
     [DataObject]
-    public class ObjectSource<T>
+    public class ObjectSource<T> where T : new()
     {
-        private IObjectViewDAO<T> objectViewDAO;
-        public IObjectViewDAO<T> ObjectViewDAO
+        private IEntityViewService<T> entityViewService;
+        public IEntityViewService<T> EntityViewService
         {
             get
             {
-                if (objectViewDAO == null) objectViewDAO = (IObjectViewDAO<T>)NorthwindFactory.GetObjectViewDAO(typeof(T));
-                return objectViewDAO;
+                if (entityViewService == null) entityViewService = (IEntityViewService<T>)ServiceUtil.GetEntityViewService<T>(NorthwindFactory.ServiceFactory);
+                return entityViewService;
             }
         }
 
         [DataObjectMethod(DataObjectMethodType.Select, true)]
         public List<T> Select(Condition condition)
         {
-            return ObjectViewDAO.Search(condition);
+            return EntityViewService.Search(condition);
         }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
         public List<T> Select(Condition condition, int startRowIndex, int maximumRows)
         {
-            return ObjectViewDAO.SearchSection(condition, startRowIndex, maximumRows, null, ListSortDirection.Ascending);
+            return EntityViewService.SearchSection(condition, startRowIndex, maximumRows, null, ListSortDirection.Ascending);
         }
 
         [DataObjectMethod(DataObjectMethodType.Select, false)]
@@ -42,12 +43,12 @@ namespace Northwind
                 orderBy = args[0];
                 direction = args.Length > 1 && String.Compare(args[1], "desc", true) == 0 ? ListSortDirection.Descending : ListSortDirection.Ascending;
             }
-            return ObjectViewDAO.SearchSection(condition, startRowIndex, maximumRows, orderBy, direction);
+            return EntityViewService.SearchSection(condition, startRowIndex, maximumRows, orderBy, direction);
         }
 
         public int Count(Condition condition)
         {
-            return ObjectViewDAO.Count(condition);
+            return EntityViewService.Count(condition);
         }
     }
 

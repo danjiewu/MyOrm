@@ -8,8 +8,9 @@ using System.Windows.Forms;
 using Northwind.Data;
 using MyOrm.Common;
 using System.Reflection;
+using Northwind.Business;
 
-namespace Northwind
+namespace Northwind.Windows
 {
     public partial class Form1 : Form
     {
@@ -64,7 +65,7 @@ namespace Northwind
         {
             Condition condition = null;
             if (!String.IsNullOrEmpty(textBoxValue.Text)) condition = new SimpleCondition(SelectedProperty.Name, ConditionOperator.Contains, textBoxValue.Text);
-            dataGridView1.DataSource = NorthwindFactory.GetObjectViewDAO(SelectedType).Search(condition);
+            dataGridView1.DataSource = ServiceUtil.GetEntityViewService(NorthwindFactory.ServiceFactory, SelectedType).Search(condition);
         }
     }
 }

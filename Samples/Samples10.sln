@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleService", "SampleService\SampleService.csproj", "{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.Data", "Northwind.Data\Northwind.Data.csproj", "{2248AF91-D547-4C9A-AA3C-E8C7613CE561}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample1", "Sample1\Sample1.csproj", "{C1AD6519-153A-4104-B8AE-3EA8265B9FCA}"
@@ -19,34 +17,31 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Northwind.RemoteAPI", "Nort
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 9
+		SccNumberOfProjects = 8
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
 		SccLocalPath0 = .
-		SccProjectUniqueName1 = SampleService\\SampleService.csproj
-		SccProjectName1 = SampleService
-		SccLocalPath1 = SampleService
-		SccProjectUniqueName2 = Northwind.Data\\Northwind.Data.csproj
-		SccProjectName2 = Northwind.Data
-		SccLocalPath2 = Northwind.Data
-		SccProjectUniqueName3 = Sample1\\Sample1.csproj
-		SccProjectName3 = Sample1
-		SccLocalPath3 = Sample1
-		SccProjectUniqueName4 = SampleWeb1\\SampleWeb1.csproj
-		SccProjectName4 = SampleWeb1
-		SccLocalPath4 = SampleWeb1
-		SccProjectUniqueName5 = Northwind.DAO\\Northwind.DAO.csproj
-		SccProjectName5 = Northwind.DAO
-		SccLocalPath5 = Northwind.DAO
-		SccProjectUniqueName6 = Northwind.Business\\Northwind.Business.csproj
-		SccProjectName6 = Northwind.Business
-		SccLocalPath6 = Northwind.Business
-		SccProjectUniqueName7 = Northwind.Contract\\Northwind.Contract.csproj
-		SccProjectName7 = Northwind.Contract
-		SccLocalPath7 = Northwind.Contract
-		SccProjectUniqueName8 = Northwind.RemoteAPI\\Northwind.RemoteAPI.csproj
-		SccProjectName8 = Northwind.RemoteAPI
-		SccLocalPath8 = Northwind.RemoteAPI
+		SccProjectUniqueName1 = Northwind.Data\\Northwind.Data.csproj
+		SccProjectName1 = Northwind.Data
+		SccLocalPath1 = Northwind.Data
+		SccProjectUniqueName2 = Sample1\\Sample1.csproj
+		SccProjectName2 = Sample1
+		SccLocalPath2 = Sample1
+		SccProjectUniqueName3 = SampleWeb1\\SampleWeb1.csproj
+		SccProjectName3 = SampleWeb1
+		SccLocalPath3 = SampleWeb1
+		SccProjectUniqueName4 = Northwind.DAO\\Northwind.DAO.csproj
+		SccProjectName4 = Northwind.DAO
+		SccLocalPath4 = Northwind.DAO
+		SccProjectUniqueName5 = Northwind.Business\\Northwind.Business.csproj
+		SccProjectName5 = Northwind.Business
+		SccLocalPath5 = Northwind.Business
+		SccProjectUniqueName6 = Northwind.Contract\\Northwind.Contract.csproj
+		SccProjectName6 = Northwind.Contract
+		SccLocalPath6 = Northwind.Contract
+		SccProjectUniqueName7 = Northwind.RemoteAPI\\Northwind.RemoteAPI.csproj
+		SccProjectName7 = Northwind.RemoteAPI
+		SccLocalPath7 = Northwind.RemoteAPI
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,16 +52,6 @@ Global
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU
-		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Debug|Mixed Platforms.Build.0 = Debug|Any CPU
-		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Release|Mixed Platforms.ActiveCfg = Release|Any CPU
-		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Release|Mixed Platforms.Build.0 = Release|Any CPU
-		{4AFDAD3C-53C6-43C7-949F-8E4A0A7FB0A0}.Release|x86.ActiveCfg = Release|Any CPU
 		{2248AF91-D547-4C9A-AA3C-E8C7613CE561}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2248AF91-D547-4C9A-AA3C-E8C7613CE561}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2248AF91-D547-4C9A-AA3C-E8C7613CE561}.Debug|Mixed Platforms.ActiveCfg = Debug|Any CPU

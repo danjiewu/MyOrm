@@ -1,4 +1,4 @@
-﻿namespace Northwind
+﻿namespace Northwind.Windows
 {
     partial class Form1
     {

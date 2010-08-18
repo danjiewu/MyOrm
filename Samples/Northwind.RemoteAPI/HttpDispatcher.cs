@@ -9,11 +9,6 @@ using log4net;
 
 namespace Northwind.Protocal
 {
-    public interface IRemoteDispatcher
-    {
-        object RemoteInvoke(string serviceName, MethodInfo method, object[] args);
-    }
-
     public class HttpDispatcher : IRemoteDispatcher
     {
         private static ILog logger = LogManager.GetLogger("HttpDispatcher");
@@ -77,20 +72,6 @@ namespace Northwind.Protocal
                 }
             }
         }
-
         #endregion
-    }
-
-    public class WebServiceDispatcher : IRemoteDispatcher
-    {
-        private static ILog logger = LogManager.GetLogger("WebServiceDispatcher");
-        #region IRemoteDispatcher Members
-
-        public object RemoteInvoke(string serviceName, MethodInfo method, object[] args)
-        {
-            throw new NotImplementedException();
-        }
-
-        #endregion
-    }
+    }    
 }
