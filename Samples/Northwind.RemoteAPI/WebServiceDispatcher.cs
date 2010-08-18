@@ -23,7 +23,7 @@ namespace Northwind.Protocal
         }
 
         public object RemoteInvoke(string serviceName, MethodInfo method, object[] args)
-        {
+        {            
             return remoteService.InvokeService(serviceName, method.Name, args);
         }
 
