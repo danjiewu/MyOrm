@@ -54,7 +54,7 @@ namespace SampleService
         {
             PropertyInfo property = typeof(IServiceFactory).GetProperty(service);
             Type serviceType = property.PropertyType;
-            return serviceType.InvokeMember(method,BindingFlags.Instance| BindingFlags.InvokeMethod| BindingFlags.Public,null, property.GetValue(NorthwindFactory.ServiceFactory, null), args);
+            return serviceType.InvokeMember(method, BindingFlags.Instance | BindingFlags.InvokeMethod | BindingFlags.Public , null, property.GetValue(NorthwindFactory.ServiceFactory, null), args);
         }
     }
 }
