@@ -44,7 +44,8 @@
             </Columns>
         </asp:GridView>
         <asp:ObjectDataSource ID="ObjectDataSource1" runat="server" EnablePaging="True" OldValuesParameterFormatString="original_{0}"
-            SelectCountMethod="Count" SelectMethod="Select" SortParameterName="orderBy" TypeName="Northwind.ProductsViewSource">
+            SelectCountMethod="Count" SelectMethod="Select" 
+            SortParameterName="orderBy" TypeName="Northwind.Web.ProductsViewSource">
             <SelectParameters>
                 <asp:Parameter Name="condition" Type="Object" />
             </SelectParameters>

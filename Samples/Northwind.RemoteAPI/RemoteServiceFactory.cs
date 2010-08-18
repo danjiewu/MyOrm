@@ -15,9 +15,9 @@ namespace Northwind.Business
             return new ProxyGenerator().CreateInterfaceProxyWithoutTarget<IServiceFactory>(new FactoryInteceptor(new HttpDispatcher(serviceUrl)));
         }
 
-        public static IServiceFactory GenerateRemoteWebServiceFactory()
+        public static IServiceFactory GenerateRemoteWebServiceFactory(string serviceUrl)
         {
-            return new ProxyGenerator().CreateInterfaceProxyWithoutTarget<IServiceFactory>(new FactoryInteceptor(new WebServiceDispatcher()));
+            return new ProxyGenerator().CreateInterfaceProxyWithoutTarget<IServiceFactory>(new FactoryInteceptor(new WebServiceDispatcher(serviceUrl)));
         }
     }
 

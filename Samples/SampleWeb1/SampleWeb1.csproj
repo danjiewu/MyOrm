@@ -9,12 +9,14 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Northwind</RootNamespace>
+    <RootNamespace>Northwind.Web</RootNamespace>
     <AssemblyName>SampleWeb1</AssemblyName>
     <SccProjectName>SAK</SccProjectName>
     <SccLocalPath>SAK</SccLocalPath>
     <SccAuxPath>SAK</SccAuxPath>
     <SccProvider>SAK</SccProvider>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -54,10 +56,14 @@
     <Reference Include="System.Configuration" />
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
-    <Reference Include="System.Web.Mobile" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\NORTHWND.MDF" />
+    <Content Include="App_Data\NORTHWND_log.ldf">
+      <DependentUpon>NORTHWND.MDF</DependentUpon>
+    </Content>
     <Content Include="Default.aspx" />
+    <Content Include="Service\RemoteService.asmx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -71,8 +77,25 @@
     <Compile Include="NorthwindFactory.cs" />
     <Compile Include="ObjectSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service\RemoteService.asmx.cs">
+      <DependentUpon>RemoteService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Service\ServiceHttpHandler.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Northwind.Business\Northwind.Business.csproj">
+      <Project>{99A20EE1-686D-41BD-95B8-0BB1DA41B265}</Project>
+      <Name>Northwind.Business</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Northwind.Contract\Northwind.Contract.csproj">
+      <Project>{8B95CA4A-2081-4AEA-B563-632B015B2AAF}</Project>
+      <Name>Northwind.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Northwind.DAO\Northwind.DAO.csproj">
+      <Project>{DC0F00F7-91DF-4E22-9F83-D1BCD9BCFB66}</Project>
+      <Name>Northwind.DAO</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Northwind.Data\Northwind.Data.csproj">
       <Project>{F51FF5F7-4C99-49C1-95D6-88173B41C275}</Project>
       <Name>Northwind.Data</Name>

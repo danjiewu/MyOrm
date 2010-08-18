@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Forms;
 
-namespace Northwind
+namespace Northwind.Windows
 {
     static class Program
     {

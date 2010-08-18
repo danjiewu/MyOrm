@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="http://localhost:6710/Service/RemoteService.asmx?wsdl" docRef="http://localhost:6710/Service/RemoteService.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="http://localhost:6710/Service/RemoteService.asmx" xmlns:q1="http://northwind.sample/" binding="q1:RemoteServiceSoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="http://localhost:6710/Service/RemoteService.asmx" xmlns:q2="http://northwind.sample/" binding="q2:RemoteServiceSoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

@@ -11,22 +11,37 @@ namespace Northwind.Protocal
 {
     public class RemoteInteceptor : IInterceptor
     {
-        private string daoName;
+        public RemoteInteceptor(string serviceName, IRemoteDispatcher dispatcher)
+        {
+            this.serviceName = serviceName;
+            this.dispatcher = dispatcher;
+        }
+
+        private string serviceName;
         private IRemoteDispatcher dispatcher;
 
-        public RemoteInteceptor(string daoName, IRemoteDispatcher dispatcher)
+        public string ServiceName
         {
-            this.daoName = daoName;
-            this.dispatcher = dispatcher;
+            get { return serviceName; }
+        }       
+
+        public IRemoteDispatcher Dispatcher
+        {
+            get { return dispatcher; }
         }
 
         #region IInterceptor Members
 
         public void Intercept(IInvocation invocation)
         {
-            invocation.ReturnValue = dispatcher.RemoteInvoke(daoName, invocation.Method, invocation.Arguments);
+            invocation.ReturnValue = Dispatcher.RemoteInvoke(ServiceName, invocation.Method, invocation.Arguments);
         }
 
         #endregion
-    }    
+    }
+
+    public interface IRemoteDispatcher
+    {
+        object RemoteInvoke(string serviceName, MethodInfo method, object[] args);
+    }
 }
