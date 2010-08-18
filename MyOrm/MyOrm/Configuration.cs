@@ -57,7 +57,7 @@ namespace MyOrm
         {
             get
             {
-                if (configSection == null) configSection = ConfigurationManager.GetSection("MyOrm.Orm") as OrmConfigurationSection;
+                if (configSection == null) configSection = ConfigurationManager.GetSection("MyOrm") as OrmConfigurationSection;
                 return configSection;
             }
         }
@@ -69,7 +69,6 @@ namespace MyOrm
         {
             get
             {
-
                 if (defaultConnection == null)
                 {
                     ConnectionStringSettings connectionSetting = ConfigSection.DefaultConnection;

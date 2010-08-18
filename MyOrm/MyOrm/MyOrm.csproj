@@ -66,8 +66,6 @@
     <Compile Include="Configuration.cs" />
     <Compile Include="Extension.cs">
     </Compile>
-    <Compile Include="IObjectDAO.cs" />
-    <Compile Include="IObjectViewDAO.cs" />
     <Compile Include="ObjectDAO.cs" />
     <Compile Include="ObjectDAOBase.cs" />
     <Compile Include="ObjectViewDAO.cs" />
