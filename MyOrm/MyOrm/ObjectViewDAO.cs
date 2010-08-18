@@ -152,7 +152,10 @@ namespace MyOrm
                 param.Value = ConvertToDBValue(keys[i], Table.Definition.Keys[i]);
                 i++;
             }
-            return ReadOne(GetObjectCommand.ExecuteReader());
+            using (IDataReader reader = GetObjectCommand.ExecuteReader())
+            {
+                return ReadOne(reader);
+            }
         }
 
         /// <summary>
@@ -236,7 +239,10 @@ namespace MyOrm
         {
             using (IDbCommand command = MakeConditionCommand("select @AllFields from @FromTable" + (condition == null ? null : " where @Condition"), condition))
             {
-                return ReadAll(command.ExecuteReader());
+                using (IDataReader reader = command.ExecuteReader())
+                {
+                    return ReadAll(reader);
+                }
             }
         }
 
@@ -249,7 +255,10 @@ namespace MyOrm
         {
             using (IDbCommand command = MakeConditionCommand("select @AllFields from @FromTable where @Condition", condition))
             {
-                return ReadOne(command.ExecuteReader());
+                using (IDataReader reader = command.ExecuteReader())
+                {
+                    return ReadOne(reader);
+                }
             }
         }
 
@@ -324,7 +333,10 @@ namespace MyOrm
 #endif
             using (IDbCommand command = MakeConditionCommand(paramedSQL, condition))
             {
-                return ReadAll(command.ExecuteReader());
+                using (IDataReader reader = command.ExecuteReader())
+                {
+                    return ReadAll(reader);
+                }
             }
         }
         #endregion
@@ -373,7 +385,6 @@ namespace MyOrm
             {
                 results.Add(Read(reader));
             }
-            reader.Close();
             return results;
         }
 

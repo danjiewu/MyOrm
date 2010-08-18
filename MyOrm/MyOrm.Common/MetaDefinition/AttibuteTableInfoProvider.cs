@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using System.Data;
-using MyOrm.Common;
 
 namespace MyOrm.Common
 {
