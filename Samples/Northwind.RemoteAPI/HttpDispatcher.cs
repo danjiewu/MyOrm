@@ -35,14 +35,12 @@ namespace Northwind.Protocal
             using (MemoryStream ms = new MemoryStream())
             {
                 serializer.Serialize(ms, serviceName);
-                serializer.Serialize(ms, method);
+                serializer.Serialize(ms, method.Name);
+                serializer.Serialize(ms, method.MetadataToken);
                 serializer.Serialize(ms, args);
 
                 request.ReadWriteTimeout = 10000;
                 request.ContentLength = ms.Length;
-
-                string strArgs = String.Join(",", Array.ConvertAll<object, string>(args, delegate(object o) { return o == null ? "null" : Convert.ToString(o); }));
-                logger.DebugFormat("DAO:{{{0}}} Method:{{{1}}} invoked, Args:{{{2}}}. {3} bytes to send.", serviceName, method.Name, strArgs, ms.Length);
 
                 using (Stream inputStream = request.GetRequestStream())
                 {
@@ -54,24 +52,15 @@ namespace Northwind.Protocal
             {
                 using (Stream outputStream = response.GetResponseStream())
                 {
-
-                    bool success = (bool)serializer.Deserialize(outputStream);
-                    object ret = serializer.Deserialize(outputStream);
-                    try
-                    {
-                        if (success)
-                            return ret;
-                        else
-                            throw (Exception)ret;
-                    }
-                    finally
-                    {
-                        logger.DebugFormat("DAO:{{{0}}} Method:{{{1}}} finished. Returns:{{{2}}}. {3} bytes recieved.", serviceName, method.Name, ret, response.ContentLength);
-                    }
-
+                    object[] ret = (object[])serializer.Deserialize(outputStream);
+                    bool success = (bool)ret[0];
+                    if (success)
+                        return ret[1];
+                    else
+                        throw (Exception)ret[1];
                 }
             }
         }
         #endregion
-    }    
+    }
 }

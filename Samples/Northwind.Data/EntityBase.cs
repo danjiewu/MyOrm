@@ -6,6 +6,7 @@ using System.Reflection;
 
 namespace Northwind.Data
 {
+    [Serializable]
     public class EntityBase : ICloneable, ICopyable, IIndexedProperty
     {
         #region ICloneable 成员

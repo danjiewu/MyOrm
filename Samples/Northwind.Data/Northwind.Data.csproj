@@ -9,7 +9,7 @@
     <RootNamespace>Northwind.Data</RootNamespace>
     <AssemblyName>Northwind.Data</AssemblyName>
     <NoStandardLibraries>false</NoStandardLibraries>
-    <AssemblyName>ClassLibrary</AssemblyName>
+    <AssemblyName>Northwind.Data</AssemblyName>
     <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SccProjectName>SAK</SccProjectName>

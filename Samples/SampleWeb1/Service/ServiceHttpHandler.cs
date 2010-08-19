@@ -29,18 +29,41 @@ namespace Northwind.Protocal
             {
                 BinaryFormatter serializer = new BinaryFormatter();
                 string serviceName = (string)serializer.Deserialize(stream);
-                MethodInfo method = (MethodInfo)serializer.Deserialize(stream);
+                string methodName = (string)serializer.Deserialize(stream);
+                int metadataToken = (int)serializer.Deserialize(stream);
                 object[] args = (object[])serializer.Deserialize(stream);
+                MethodInfo method = (MethodInfo)typeof(IEntityService).Module.ResolveMethod(metadataToken);
                 try
                 {
                     object ret = method.Invoke(typeof(IServiceFactory).GetProperty(serviceName).GetValue(NorthwindFactory.ServiceFactory, null), args);
-                    serializer.Serialize(context.Response.OutputStream, true);
-                    serializer.Serialize(context.Response.OutputStream, ret);
+                    using (MemoryStream ms = new MemoryStream())
+                    {
+                        serializer.Serialize(ms, new object[] { true, ret });
+                        ms.WriteTo(context.Response.OutputStream);
+                    }
                 }
                 catch (Exception e)
                 {
-                    serializer.Serialize(context.Response.OutputStream, false);
-                    serializer.Serialize(context.Response.OutputStream, e);
+                    while (e is TargetInvocationException)
+                        e = e.InnerException;
+                    context.Response.ClearContent();
+                    try
+                    {
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            serializer.Serialize(ms, new object[] { false, e });
+                            ms.WriteTo(context.Response.OutputStream);
+                        }
+                    }
+                    catch
+                    {
+                        context.Response.ClearContent();
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            serializer.Serialize(ms, new object[] { false, new Exception(e.Message) });
+                            ms.WriteTo(context.Response.OutputStream);
+                        }
+                    }
                 }
             }
         }
