@@ -20,6 +20,9 @@ namespace Northwind.Protocal {
     using System.Web.Services.Protocols;
     using System.ComponentModel;
     using System.Xml.Serialization;
+    using Northwind.Data;
+    using MyOrm.Common;
+    using System.Collections.Generic;
     
     
     /// <remarks/>
@@ -27,6 +30,22 @@ namespace Northwind.Protocal {
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.ComponentModel.DesignerCategoryAttribute("code")]
     [System.Web.Services.WebServiceBindingAttribute(Name="RemoteServiceSoap", Namespace="http://northwind.sample/")]
+    [XmlInclude(typeof(SimpleCondition))]
+    [XmlInclude(typeof(ConditionSet))]
+    [XmlInclude(typeof(ForeignCondition))]
+    [XmlInclude(typeof(List<Categories>))]
+    [XmlInclude(typeof(List<CustomerCustomerDemoView>))]
+    [XmlInclude(typeof(List<CustomerDemographics>))]
+    [XmlInclude(typeof(List<Customers>))]
+    [XmlInclude(typeof(List<EmployeesView>))]
+    [XmlInclude(typeof(List<EmployeeTerritoriesView>))]
+    [XmlInclude(typeof(List<OrderDetailsView>))]
+    [XmlInclude(typeof(List<OrdersView>))]
+    [XmlInclude(typeof(List<ProductsView>))]
+    [XmlInclude(typeof(List<Region>))]
+    [XmlInclude(typeof(List<Shippers>))]
+    [XmlInclude(typeof(List<Suppliers>))]
+    [XmlInclude(typeof(List<TerritoriesView>))]
     public partial class RemoteService : System.Web.Services.Protocols.SoapHttpClientProtocol {
         
         private System.Threading.SendOrPostCallback TestOperationCompleted;
@@ -106,27 +125,27 @@ namespace Northwind.Protocal {
         
         /// <remarks/>
         [System.Web.Services.Protocols.SoapDocumentMethodAttribute("http://northwind.sample/InvokeService", RequestNamespace="http://northwind.sample/", ResponseNamespace="http://northwind.sample/", Use=System.Web.Services.Description.SoapBindingUse.Literal, ParameterStyle=System.Web.Services.Protocols.SoapParameterStyle.Wrapped)]
-        public object InvokeService(string service, string method, object[] args) {
+        public object InvokeService(string serviceName, string methodName, object[] args) {
             object[] results = this.Invoke("InvokeService", new object[] {
-                        service,
-                        method,
+                        serviceName,
+                        methodName,
                         args});
             return ((object)(results[0]));
         }
         
         /// <remarks/>
-        public void InvokeServiceAsync(string service, string method, object[] args) {
-            this.InvokeServiceAsync(service, method, args, null);
+        public void InvokeServiceAsync(string serviceName, string methodName, object[] args) {
+            this.InvokeServiceAsync(serviceName, methodName, args, null);
         }
         
         /// <remarks/>
-        public void InvokeServiceAsync(string service, string method, object[] args, object userState) {
+        public void InvokeServiceAsync(string serviceName, string methodName, object[] args, object userState) {
             if ((this.InvokeServiceOperationCompleted == null)) {
                 this.InvokeServiceOperationCompleted = new System.Threading.SendOrPostCallback(this.OnInvokeServiceOperationCompleted);
             }
             this.InvokeAsync("InvokeService", new object[] {
-                        service,
-                        method,
+                        serviceName,
+                        methodName,
                         args}, this.InvokeServiceOperationCompleted, userState);
         }
         
@@ -154,7 +173,7 @@ namespace Northwind.Protocal {
             }
             return false;
         }
-    }
+    }  
     
     /// <remarks/>
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Web.Services", "4.0.30319.1")]

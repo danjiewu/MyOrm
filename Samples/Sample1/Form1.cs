@@ -24,18 +24,12 @@ namespace Northwind.Windows
             comboBoxObjectType.DataSource =
                 new Type[]{
                 typeof(Categories),
-                typeof(CustomerCustomerDemo),
                 typeof(CustomerDemographics),
                 typeof(Customers),
-                typeof(Employees),
-                typeof(EmployeeTerritories),
-                typeof(OrderDetails),
-                typeof(Orders),
-                typeof(Products),
                 typeof(Northwind.Data.Region),
                 typeof(Shippers),
                 typeof(Suppliers),
-                typeof(Territories),
+                typeof(TerritoriesView),
                 typeof(CustomerCustomerDemoView),
                 typeof(EmployeesView),
                 typeof(EmployeeTerritoriesView),
@@ -64,7 +58,7 @@ namespace Northwind.Windows
         private void buttonSearch_Click(object sender, EventArgs e)
         {
             Condition condition = null;
-            if (!String.IsNullOrEmpty(textBoxValue.Text)) condition = new SimpleCondition(SelectedProperty.Name, ConditionOperator.Contains, textBoxValue.Text);
+            if (!String.IsNullOrEmpty(textBoxValue.Text)) condition = new SimpleCondition(SelectedProperty.Name,textBoxValue.Text);
             dataGridView1.DataSource = ServiceUtil.GetEntityViewService(NorthwindFactory.ServiceFactory, SelectedType).Search(condition);
         }
     }
