@@ -97,7 +97,7 @@
       <Name>Northwind.DAO</Name>
     </ProjectReference>
     <ProjectReference Include="..\Northwind.Data\Northwind.Data.csproj">
-      <Project>{F51FF5F7-4C99-49C1-95D6-88173B41C275}</Project>
+      <Project>{2248AF91-D547-4C9A-AA3C-E8C7613CE561}</Project>
       <Name>Northwind.Data</Name>
     </ProjectReference>
   </ItemGroup>
