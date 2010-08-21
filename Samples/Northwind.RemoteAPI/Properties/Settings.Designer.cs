@@ -22,15 +22,5 @@ namespace Northwind.Protocal.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.SpecialSettingAttribute(global::System.Configuration.SpecialSetting.WebServiceUrl)]
-        [global::System.Configuration.DefaultSettingValueAttribute("http://localhost:6710/Service/RemoteService.asmx")]
-        public string Northwind_RemoteAPI_localhost_RemoteService {
-            get {
-                return ((string)(this["Northwind_RemoteAPI_localhost_RemoteService"]));
-            }
-        }
     }
 }

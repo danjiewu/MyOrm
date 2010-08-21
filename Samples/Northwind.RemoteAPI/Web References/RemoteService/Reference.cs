@@ -56,7 +56,6 @@ namespace Northwind.Protocal {
         
         /// <remarks/>
         public RemoteService() {
-            this.Url = global::Northwind.Protocal.Properties.Settings.Default.Northwind_RemoteAPI_localhost_RemoteService;
             if ((this.IsLocalFileSystemWebService(this.Url) == true)) {
                 this.UseDefaultCredentials = true;
                 this.useDefaultCredentialsSetExplicitly = false;
