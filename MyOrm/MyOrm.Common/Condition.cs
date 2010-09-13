@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using System.Collections;
+using System.ComponentModel;
 
 namespace MyOrm.Common
 {
@@ -18,6 +19,7 @@ namespace MyOrm.Common
         /// <summary>
         /// 逻辑求反
         /// </summary>
+        [DefaultValue(false)]
         public bool Opposite { get; set; }
     }
 
@@ -108,6 +110,7 @@ namespace MyOrm.Common
         /// <summary>
         /// 条件比较符
         /// </summary>
+        [DefaultValue(ConditionOperator.Equals)]
         public ConditionOperator Operator { get; set; }
 
         public override string ToString()
@@ -209,6 +212,7 @@ namespace MyOrm.Common
         /// <summary>
         /// 连接类型，默认为ConditionJoinType.And
         /// </summary>
+        [DefaultValue(ConditionJoinType.And)]
         public ConditionJoinType JoinType
         {
             get { return joinType; }
