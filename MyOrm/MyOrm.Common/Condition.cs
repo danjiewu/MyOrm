@@ -4,6 +4,7 @@ using System.Text;
 using System.Reflection;
 using System.Collections;
 using System.ComponentModel;
+using System.Xml.Serialization;
 
 namespace MyOrm.Common
 {
@@ -20,6 +21,7 @@ namespace MyOrm.Common
         /// 逻辑求反
         /// </summary>
         [DefaultValue(false)]
+        [XmlAttribute]
         public bool Opposite { get; set; }
     }
 
@@ -95,11 +97,13 @@ namespace MyOrm.Common
         /// <summary>
         /// 属性名
         /// </summary>
+        [XmlAttribute]
         public string Property { get; set; }
 
         /// <summary>
         /// 格式化的表达式
         /// </summary>
+        [XmlAttribute]
         public string ExpressionFormat { get; set; }
 
         /// <summary>
@@ -111,6 +115,7 @@ namespace MyOrm.Common
         /// 条件比较符
         /// </summary>
         [DefaultValue(ConditionOperator.Equals)]
+        [XmlAttribute]
         public ConditionOperator Operator { get; set; }
 
         public override string ToString()
@@ -213,6 +218,7 @@ namespace MyOrm.Common
         /// 连接类型，默认为ConditionJoinType.And
         /// </summary>
         [DefaultValue(ConditionJoinType.And)]
+        [XmlAttribute]
         public ConditionJoinType JoinType
         {
             get { return joinType; }
@@ -232,6 +238,7 @@ namespace MyOrm.Common
         /// <summary>
         /// 子查询条件集合
         /// </summary>
+        [XmlArray]
         public List<Condition> SubConditions
         {
             get { return subConditions; }
@@ -359,16 +366,19 @@ namespace MyOrm.Common
         /// <summary>
         /// 关联对象类型
         /// </summary>
+        [XmlAttribute(typeof(string))]
         public Type ForeignType { get; set; }
 
         /// <summary>
         /// 关联外部对象的属性
         /// </summary>
+        [XmlAttribute]
         public string ForeignProperty { get; set; }
 
         /// <summary>
         /// 关联属性，与ForeignProperties对应
         /// </summary>
+        [XmlAttribute]
         public string JoinedProperty { get; set; }
         /// <summary>
         /// 外部对象的条件
