@@ -137,7 +137,7 @@ namespace MyOrm
                 {
                     IDataParameter param = command.CreateParameter();
                     param.ParameterName = ToParamName(Convert.ToString(paramIndex++));
-                    param.Value = paramValue;
+                    param.Value = paramValue ?? DBNull.Value;
                     command.Parameters.Add(param);
                 }
             command.CommandText = SQL;
