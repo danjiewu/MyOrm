@@ -54,6 +54,13 @@ namespace MyOrm.Common
                 case DbType.AnsiString:
                 case DbType.AnsiStringFixedLength:
                 case DbType.StringFixedLength: return 255;
+                case DbType.Byte: 
+                case DbType.Boolean: return 1;
+                case DbType.Single: 
+                case DbType.Int32: return 4;   
+                case DbType.Double: return 8;
+                case DbType.Xml: return 1 << 20;
+                case DbType.Binary: return Int32.MaxValue;
                 default: return 0;
             }
         }
