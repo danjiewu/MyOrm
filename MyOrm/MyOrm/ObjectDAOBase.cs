@@ -135,7 +135,7 @@ namespace MyOrm
             if (paramValues != null)
                 foreach (object paramValue in paramValues)
                 {
-                    IDataParameter param = command.CreateParameter();
+                    IDbDataParameter param = command.CreateParameter();
                     param.ParameterName = ToParamName(Convert.ToString(paramIndex++));
                     param.Value = paramValue ?? DBNull.Value;
                     command.Parameters.Add(param);
@@ -179,7 +179,8 @@ namespace MyOrm
                 strConditions.AppendFormat("{0}.{1} = {2}", ToSqlName(TableName), ToSqlName(key.Name), ToSqlParam(key.PropertyName));
                 if (!command.Parameters.Contains(key.PropertyName))
                 {
-                    IDataParameter param = command.CreateParameter();
+                    IDbDataParameter param = command.CreateParameter();
+                    param.Size = key.Length;
                     param.DbType = key.DbType;
                     param.ParameterName = ToParamName(key.PropertyName);
                     command.Parameters.Add(param);
