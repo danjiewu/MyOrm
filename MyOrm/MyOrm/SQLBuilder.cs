@@ -187,6 +187,7 @@ namespace MyOrm
                 case ConditionOperator.Equals: return String.Format(simpleCondition.Opposite ? "{0} <> {1}" : "{0} = {1}", expression, ToSqlParam(outputParams.Add(value).ToString()));
                 case ConditionOperator.LargerThan: return String.Format(simpleCondition.Opposite ? "{0} <= {1}" : "{0} > {1}", expression, ToSqlParam(outputParams.Add(value).ToString()));
                 case ConditionOperator.SmallerThan: return String.Format(simpleCondition.Opposite ? "{0} >= {1}" : "{0} < {1}", expression, ToSqlParam(outputParams.Add(value).ToString()));
+                case ConditionOperator.Like: return String.Format(@"{0} {1} like {2}", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()));
 #if MYSQL
                 case ConditionOperator.StartsWith: return String.Format(@"{0} {1} like CONCAT({2}, '%') escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
                 case ConditionOperator.EndsWith: return String.Format(@"{0} {1} like CONCAT('%', {2}) escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
@@ -199,7 +200,7 @@ namespace MyOrm
 #else
                 case ConditionOperator.StartsWith: return String.Format(@"{0} {1} like {2} + '%' escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
                 case ConditionOperator.EndsWith: return String.Format(@"{0} {1} like '%' + {2} escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
-                case ConditionOperator.Contains: return String.Format(@"{0} {1} like '%' + {2} + '%' escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
+                case ConditionOperator.Contains: return String.Format(@"{0} {1} like '%' + {2} + '%' escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);           
 #endif
                 case ConditionOperator.In:
                     List<string> paramNames = new List<string>();
