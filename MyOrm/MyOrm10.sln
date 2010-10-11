@@ -22,12 +22,12 @@ Global
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://tfs.codeplex.com/tfs/tfs08
 		SccLocalPath0 = .
-		SccProjectUniqueName1 = MyOrm.Common\\MyOrm.Common.csproj
-		SccProjectName1 = MyOrm.Common
-		SccLocalPath1 = MyOrm.Common
-		SccProjectUniqueName2 = MyOrm\\MyOrm.csproj
-		SccProjectName2 = MyOrm
-		SccLocalPath2 = MyOrm
+		SccProjectUniqueName1 = MyOrm\\MyOrm.csproj
+		SccProjectName1 = MyOrm
+		SccLocalPath1 = MyOrm
+		SccProjectUniqueName2 = MyOrm.Common\\MyOrm.Common.csproj
+		SccProjectName2 = MyOrm.Common
+		SccLocalPath2 = MyOrm.Common
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

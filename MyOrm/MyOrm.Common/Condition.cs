@@ -321,6 +321,10 @@ namespace MyOrm.Common
         /// </summary>
         Contains,
         /// <summary>
+        /// 匹配字符串格式（作为字符串比较）
+        /// </summary>
+        Like,
+        /// <summary>
         /// 包含
         /// </summary>
         In,

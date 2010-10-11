@@ -121,7 +121,17 @@ namespace MyOrm.Common
         public Type PropertyType
         {
             get { return property.PropertyType; }
-        }       
+        }
+
+        /// <summary>
+        /// 列对应的属性
+        /// </summary>
+        public PropertyInfo Property { get { return property; } }
+
+        /// <summary>
+        /// 关联的外部对象类型
+        /// </summary>
+        public Type ForeignType { get; internal set; }
 
         /// <summary>
         /// 赋值
@@ -217,10 +227,6 @@ namespace MyOrm.Common
         /// </summary>
         public ColumnMode Mode { get; internal set; }
 
-        /// <summary>
-        /// 关联的外部对象类型
-        /// </summary>
-        public Type ForeignType { get; internal set; }
     }
 
     /// <summary>
