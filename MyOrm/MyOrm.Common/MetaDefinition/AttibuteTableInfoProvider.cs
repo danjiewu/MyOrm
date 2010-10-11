@@ -138,48 +138,18 @@ namespace MyOrm.Common
             }
         }
 
-        private ForeignColumn GenerateForeignColumn(PropertyInfo property, Dictionary<string, JoinedTable> namedJoinedTables)
+        private ForeignColumn GenerateForeignColumn(PropertyInfo property)
         {
             if (property.GetIndexParameters().Length != 0) return null;
 
             ForeignColumnAttribute foreignColumnAttribute = Utility.GetAttribute<ForeignColumnAttribute>(property);
             if (foreignColumnAttribute != null)
             {
-                string foreignProperty = foreignColumnAttribute.Property;
-                if (String.IsNullOrEmpty(foreignProperty)) foreignProperty = property.Name;
-                Type foreignType = foreignColumnAttribute.Foreign as Type;
-                if (foreignType != null)
-                {
-                    ForeignColumn foreignColumn = null;
-                    foreach (JoinedTable joinedTable in namedJoinedTables.Values)
-                    {
-                        if (joinedTable.Table.ObjectType == foreignType)
-                        {
-                            if (foreignColumn != null)
-                                throw new ArgumentException(String.Format("Undeterminate table. More than one table of type {0} joined.", foreignType.Name));
-                            if (joinedTable.GetColumn(foreignProperty) == null)
-                                throw new ArgumentException(String.Format("Foreign property {0} not exist in type {1}.", foreignProperty, foreignType));
-                            foreignColumn = new ForeignColumn(property);
-                            foreignColumn.TargetColumn = joinedTable.GetColumn(foreignProperty);
+                Type foreignType = Utility.GetAttribute<ForeignTypeAttribute>(property) != null ? Utility.GetAttribute<ForeignTypeAttribute>(property).ObjectType : null;
 
-                        }
-                    }
-                    if (foreignColumn == null)
-                        throw new ArgumentException(String.Format("Foreign type {0} of property {1} not exist in joined tables.", foreignType, property.Name));
-                    return foreignColumn;
-                }
-                else
-                {
-                    string foreignTable = (string)foreignColumnAttribute.Foreign;
-                    if (!namedJoinedTables.ContainsKey(foreignTable))
-                        throw new ArgumentException(String.Format("Foreign table name {0} of property {1} not exist in joined tables.", foreignColumnAttribute.Foreign, property.Name));
-                    if (namedJoinedTables[foreignTable].GetColumn(foreignProperty) == null)
-                        throw new ArgumentException(String.Format("Foreign property {0} not exist in type {1}.", foreignProperty, namedJoinedTables[foreignTable].Table.ObjectType));
-
-                    ForeignColumn foreignColumn = new ForeignColumn(property);
-                    foreignColumn.TargetColumn = namedJoinedTables[foreignTable].GetColumn(foreignProperty);
-                    return foreignColumn;
-                }
+                ForeignColumn foreignColumn = new ForeignColumn(property);
+                foreignColumn.ForeignType = foreignType;
+                return foreignColumn;
             }
             else
             {
@@ -209,34 +179,76 @@ namespace MyOrm.Common
                 ColumnDefinition column = GenerateColumnDefinition(property);
                 if (column != null)
                 {
-                    if (column.ForeignType != null)
-                    {
-                        bool foreignTypeExists = false;
-                        foreach (JoinedTable joinedTable in joinedTables.Values)
-                        {
-                            if (joinedTable.Table.ObjectType == column.ForeignType)
-                            {
-                                foreignTypeExists = true;
-                                break;
-                            }
-                        }
-
-                        if (!foreignTypeExists)
-                        {
-                            TableDefinition foreignTable = GetTableDefinition(column.ForeignType);
-                            JoinedTable joinedTable = new JoinedTable(foreignTable);
-                            joinedTable.ForeignKey = new ColumnInfo(column);
-                            joinedTables.Add(joinedTable.Name, joinedTable);
-                        }
-                    }
                     columns.Add(column);
                 }
             }
 
             foreach (PropertyInfo property in objectType.GetProperties())
             {
-                ForeignColumn foreignColumn = GenerateForeignColumn(property, joinedTables);
+                ForeignColumn foreignColumn = GenerateForeignColumn(property);
                 if (foreignColumn != null) columns.Add(foreignColumn);
+            }
+
+            foreach (Column column in columns)
+            {
+                if (column.ForeignType != null)
+                {
+                    bool foreignTypeExists = false;
+                    foreach (JoinedTable joinedTable in joinedTables.Values)
+                    {
+                        if (joinedTable.Table.ObjectType == column.ForeignType)
+                        {
+                            foreignTypeExists = true;
+                            break;
+                        }
+                    }
+
+                    if (!foreignTypeExists)
+                    {
+                        TableDefinition foreignTable = GetTableDefinition(column.ForeignType);
+                        JoinedTable joinedTable = new JoinedTable(foreignTable);
+                        joinedTable.ForeignKey = new ColumnInfo(column);
+                        joinedTables.Add(joinedTable.Name, joinedTable);
+                    }
+                }
+            }
+
+            foreach (Column column in columns)
+            {
+                if (column is ForeignColumn)
+                {
+                    ForeignColumn foreignColumn = column as ForeignColumn;
+                    ForeignColumnAttribute foreignColumnAttribute = Utility.GetAttribute<ForeignColumnAttribute>(column.Property);
+                    string primeProperty = String.IsNullOrEmpty(foreignColumnAttribute.Property) ? column.PropertyName : foreignColumnAttribute.Property;
+                    Type primeType = foreignColumnAttribute.Foreign as Type;
+                    if (primeType != null)
+                    {
+                        foreach (JoinedTable joinedTable in joinedTables.Values)
+                        {
+                            if (joinedTable.Table.ObjectType == primeType)
+                            {
+                                if (foreignColumn.TargetColumn != null)
+                                    throw new ArgumentException(String.Format("Undeterminate table. More than one table of type {0} joined.", primeType.Name));
+                                if (joinedTable.GetColumn(primeProperty) == null)
+                                    throw new ArgumentException(String.Format("Foreign property {0} not exist in type {1}.", primeProperty, primeType));
+
+                                foreignColumn.TargetColumn = joinedTable.GetColumn(primeProperty);
+                            }
+                        }
+                        if (foreignColumn.TargetColumn == null)
+                            throw new ArgumentException(String.Format("Foreign type {0} of property {1} not exist in joined tables.", primeType, column.PropertyName));
+                    }
+                    else
+                    {
+                        string foreignTable = (string)foreignColumnAttribute.Foreign;
+                        if (!joinedTables.ContainsKey(foreignTable))
+                            throw new ArgumentException(String.Format("Foreign table name {0} of property {1} not exist in joined tables.", foreignColumnAttribute.Foreign, column.PropertyName));
+                        if (joinedTables[foreignTable].GetColumn(primeProperty) == null)
+                            throw new ArgumentException(String.Format("Foreign property {0} not exist in type {1}.", primeProperty, joinedTables[foreignTable].Table.ObjectType));
+
+                        foreignColumn.TargetColumn = joinedTables[foreignTable].GetColumn(primeProperty);
+                    }
+                }
             }
 
             TableView tableView = new TableView(GetTableDefinition(objectType), joinedTables.Values, columns) { Name = objectType.Name };

@@ -23,7 +23,6 @@ namespace MyOrm
         {
             Transaction = TransactionManager.CurrentTransaction(Connection);
             if (Connection.State == ConnectionState.Closed) Connection.Open();
-            CommandText = SQLBuilder.Default.ReplaceSqlName(CommandText);
             //Console.WriteLine(CommandText);//TODO: Add log here.
         }
 
@@ -107,6 +106,8 @@ namespace MyOrm
 
         public void Prepare()
         {
+            Transaction = TransactionManager.CurrentTransaction(Connection);
+            if (Connection.State == ConnectionState.Closed) Connection.Open();
             target.Prepare();
         }
 

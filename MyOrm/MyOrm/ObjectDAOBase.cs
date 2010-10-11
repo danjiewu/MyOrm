@@ -140,8 +140,8 @@ namespace MyOrm
                     param.Value = paramValue ?? DBNull.Value;
                     command.Parameters.Add(param);
                 }
-            command.CommandText = SQL;
-            //command.CommandText = ReplaceSqlName(SQL);
+            //command.CommandText = SQL;
+            command.CommandText = ReplaceSqlName(SQL);
             return command;
         }
 
