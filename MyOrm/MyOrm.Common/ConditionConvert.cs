@@ -26,7 +26,7 @@ namespace MyOrm.Common
                 return EnsureResult.Undetermined;
         }
 
-        public static EnsureResult Ensure(SimpleCondition condition, object target)
+        private static EnsureResult Ensure(SimpleCondition condition, object target)
         {
             if (!String.IsNullOrEmpty(condition.ExpressionFormat) || condition.Operator == ConditionOperator.Constant) return EnsureResult.Undetermined;
             object value = target is IIndexedProperty ? ((IIndexedProperty)target)[condition.Property] : target.GetType().GetProperty(condition.Property).GetValue(target, null);
@@ -54,7 +54,7 @@ namespace MyOrm.Common
             return result ? EnsureResult.True : EnsureResult.False;
         }
 
-        public static EnsureResult Ensure(ConditionSet condition, object target)
+        private static EnsureResult Ensure(ConditionSet condition, object target)
         {
             bool undetermined = false;
             bool opposite = condition.Opposite;
@@ -74,15 +74,17 @@ namespace MyOrm.Common
                 return opposite ? EnsureResult.False : EnsureResult.True;
         }
 
+
         /// <summary>
         /// 将属性和字符串转换为简单查询条件
         /// </summary>
         /// <param name="property">属性</param>
-        /// <param name="text">表示查询语句的字符串,可以为"=","<",">","!","%","<=",">="
+        /// <param name="text">表示查询语句的字符串,可以以"=","<",">","!","%","*","<=",">="为起始字符表示条件符号
         /// </list></param>
         /// <returns>简单查询条件</returns>
         public static SimpleCondition ParseCondition(PropertyDescriptor property, string text)
         {
+            if (text == null) return new SimpleCondition(property.Name, null);
             if (text.Length > 1)
             {
                 switch (text.Substring(0, 2))
@@ -100,7 +102,7 @@ namespace MyOrm.Common
                 text = text.Substring(1);
             }
 
-            if (text.Length > 0) 
+            if (text.Length > 0)
             {
                 switch (text[0])
                 {
@@ -111,7 +113,9 @@ namespace MyOrm.Common
                     case '<':
                         return new SimpleCondition(property.Name, ConditionOperator.SmallerThan, ParseValue(property, text.Substring(1)), opposite);
                     case '%':
-                        return new SimpleCondition(property.Name, ConditionOperator.Contains, text.Substring(1), opposite);
+                        return new SimpleCondition(property.Name, ConditionOperator.Contains, text.Substring(1).Trim(), opposite);
+                    case '*':
+                        return new SimpleCondition(property.Name, ConditionOperator.Like, text.Substring(1).Trim(), opposite);
                 }
             }
             if (text.IndexOf(',') >= 0)
@@ -127,23 +131,34 @@ namespace MyOrm.Common
         }
 
         /// <summary>
-        /// 
+        /// 字符串转化为对应属性类型的值
         /// </summary>
-        /// <param name="property"></param>
-        /// <param name="value"></param>
-        /// <returns></returns>
+        /// <param name="property">属性定义</param>
+        /// <param name="value">输入字符串</param>
+        /// <returns>可被属性接受的值</returns>
         public static object ParseValue(PropertyDescriptor property, string value)
         {
             if (String.IsNullOrEmpty(value)) return null;
-            return property.Converter.ConvertFromString(value);
+            value = value.Trim();
+            Type type = property.PropertyType;
+            if (Nullable.GetUnderlyingType(type) != null) type = Nullable.GetUnderlyingType(type);
+            int i;
+            if (type.IsEnum && Int32.TryParse(value, out i)) return Enum.ToObject(type, i);
+            else if (type == typeof(bool))
+            {
+                char h = char.ToUpper(value[0]);
+                if (h == 'Y' || h == 'T' || h == '1' || h == '是') return true;
+                else if (h == 'N' || h == 'F' || h == '0' || h == '否') return false;
+            }
+            return Convert.ChangeType(value, type);
         }
 
         /// <summary>
-        /// 
+        /// 根据条件生成用于解析的字符串
         /// </summary>
-        /// <param name="op"></param>
-        /// <param name="opposite"></param>
-        /// <param name="value"></param>
+        /// <param name="op">条件类型</param>
+        /// <param name="opposite">是否为非</param>
+        /// <param name="value">用于比较的值</param>
         /// <returns></returns>
         public static string ToText(ConditionOperator op, bool opposite, object value)
         {
@@ -153,15 +168,31 @@ namespace MyOrm.Common
                     List<string> values = new List<string>();
                     foreach (object o in value as IEnumerable)
                     {
-                        values.Add(Convert.ToString(o));
+                        values.Add(ToText(o));
                     }
-                    return (opposite ? "!" : "") + String.Join(",", values.ToArray());
-                case ConditionOperator.LargerThan: return (opposite ? "<=" : ">") + Convert.ToString(value);
-                case ConditionOperator.SmallerThan: return (opposite ? ">=" : "<") + Convert.ToString(value);
-                case ConditionOperator.Contains: return (opposite ? "!%" : "%") + Convert.ToString(value);
-                case ConditionOperator.Equals: return (opposite ? "!=" : "=") + Convert.ToString(value);
-                default: return Convert.ToString(value);
+                    string str = String.Join(",", values.ToArray());
+                    return opposite ? "!" + ToText(str, "<>=*%".ToCharArray()) : ToText(str, "!<>=*%".ToCharArray());
+                case ConditionOperator.LargerThan: return opposite ? "<=" + ToText(value) : ">" + ToText(value, '=');
+                case ConditionOperator.SmallerThan: return opposite ? ">=" + ToText(value) : "<" + ToText(value, '=');
+                case ConditionOperator.Like: return (opposite ? "!*" : "*") + ToText(value);
+                case ConditionOperator.Contains: return (opposite ? "!%" : "%") + ToText(value);
+                case ConditionOperator.Equals:
+                    str = ToText(value);
+                    if (!String.IsNullOrEmpty(str) && ("<>=*%".IndexOf(str[0]) >= 0 || (str[0] == '!' && !opposite) || str.IndexOf(',') >= 0))
+                        str = '=' + str;
+                    return (opposite ? "!" : "") + str;
+                default: return (opposite ? "!" : "") + ToText(value, "!<>=*%".ToCharArray());
             }
+        }
+
+        private static string ToText(object value, params char[] escapeChars)
+        {
+            if (value is Enum) return ((int)value).ToString();
+            else if (value is bool) return (bool)value ? "1" : "0";
+            string text = Convert.ToString(value);
+            if (String.IsNullOrEmpty(text)) return text;
+            if (Array.IndexOf(escapeChars, text[0]) >= 0) return ' ' + text;
+            else return text;
         }
     }
 
