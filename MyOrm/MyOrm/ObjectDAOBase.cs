@@ -119,7 +119,7 @@ namespace MyOrm
         /// <returns></returns>
         protected virtual IDbCommand NewCommand()
         {
-            return DefaultConfiguration.UseAutoCommand ? new AutoCommand(Connection.CreateCommand()) : Connection.CreateCommand();
+            return DefaultConfiguration.UseAutoCommand ? new AutoCommand(SqlBuilder, Connection.CreateCommand()) : Connection.CreateCommand();
         }
 
         /// <summary>
