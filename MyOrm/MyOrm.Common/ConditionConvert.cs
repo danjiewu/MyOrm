@@ -136,19 +136,21 @@ namespace MyOrm.Common
         /// <param name="property">属性定义</param>
         /// <param name="value">输入字符串</param>
         /// <returns>可被属性接受的值</returns>
-        public static object ParseValue(PropertyDescriptor property, string value)
+        private static object ParseValue(PropertyDescriptor property, string value)
         {
-            if (String.IsNullOrEmpty(value)) return null;
+            if (value == null) return null;
+            if (property.PropertyType == typeof(string)) return value;
             value = value.Trim();
+            if (value.Length == 0) return null;
             Type type = property.PropertyType;
             if (Nullable.GetUnderlyingType(type) != null) type = Nullable.GetUnderlyingType(type);
             int i;
             if (type.IsEnum && Int32.TryParse(value, out i)) return Enum.ToObject(type, i);
             else if (type == typeof(bool))
             {
-                char h = char.ToUpper(value[0]);
-                if (h == 'Y' || h == 'T' || h == '1' || h == '是') return true;
-                else if (h == 'N' || h == 'F' || h == '0' || h == '否') return false;
+                char ch = char.ToUpper(value[0]);
+                if (ch == 'Y' || ch == 'T' || ch == '1') return true;
+                else if (ch == 'N' || ch == 'F' || ch == '0') return false;
             }
             return Convert.ChangeType(value, type);
         }
