@@ -8,10 +8,14 @@ namespace MyOrm
 {
     public class AutoCommand : IDbCommand
     {
-        public AutoCommand(IDbCommand target)
+        public AutoCommand(SqlBuilder sqlBuilder, IDbCommand target)
         {
+            this.sqlBuilder = sqlBuilder;
             this.target = target;
         }
+
+        private SqlBuilder sqlBuilder;
+        public SqlBuilder SqlBuilder { get { return sqlBuilder; } }
 
         private IDbCommand target;
         public IDbCommand Target
@@ -38,10 +42,15 @@ namespace MyOrm
             target.Cancel();
         }
 
+        private string commandText;
         public string CommandText
         {
-            get { return target.CommandText; }
-            set { target.CommandText = value; }
+            get { return commandText; }
+            set
+            {
+                commandText = value;
+                target.CommandText = SqlBuilder.ReplaceSqlName(value);
+            }
         }
 
         public int CommandTimeout

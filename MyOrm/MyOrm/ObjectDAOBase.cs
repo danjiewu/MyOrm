@@ -81,9 +81,9 @@ namespace MyOrm
         /// <summary>
         /// 构建SQL语句的SQLBuilder
         /// </summary>
-        protected virtual SQLBuilder SqlBuilder
+        protected virtual SqlBuilder SqlBuilder
         {
-            get { return SQLBuilder.Default; }
+            get { return SqlBuilder.Default; }
         }
 
         protected SQLBuildContext CurrentContext
@@ -140,8 +140,7 @@ namespace MyOrm
                     param.Value = paramValue ?? DBNull.Value;
                     command.Parameters.Add(param);
                 }
-            //command.CommandText = SQL;
-            command.CommandText = ReplaceSqlName(SQL);
+            command.CommandText = SQL;
             return command;
         }
 
@@ -299,16 +298,6 @@ namespace MyOrm
         protected string ToNativeName(string paramName)
         {
             return SqlBuilder.ToNativeName(paramName);
-        }
-
-        /// <summary>
-        /// 将列名、表名等替换为数据库合法名称
-        /// </summary>
-        /// <param name="sql"></param>
-        /// <returns></returns>
-        protected string ReplaceSqlName(string sql)
-        {
-            return SqlBuilder.ReplaceSqlName(sql);
         }
         #endregion
     }
