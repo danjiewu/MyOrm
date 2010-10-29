@@ -14,11 +14,11 @@ namespace MyOrm
         /// <summary>
         /// 默认数据库连接配置
         /// </summary>
-        [ConfigurationProperty("DefaultConnection")]
-        public ConnectionStringSettings DefaultConnection
+        [ConfigurationProperty("ConnectionStringName")]
+        public string ConnectionStringName
         {
-            get { return (ConnectionStringSettings)this["DefaultConnection"]; }
-            set { this["DefaultConnection"] = value; }
+            get { return (string)this["ConnectionStringName"]; }
+            set { this["ConnectionStringName"] = value; }
         }
 
         /// <summary>
@@ -34,7 +34,7 @@ namespace MyOrm
         /// <summary>
         /// 是否使用自动管理的Command，包括打开关闭数据库、设置事务
         /// </summary>
-        [ConfigurationProperty("UseAutoCommand", DefaultValue = false)]
+        [ConfigurationProperty("UseAutoCommand", DefaultValue = true)]
         public bool UseAutoCommand
         {
             get { return (bool)this["UseAutoCommand"]; }
@@ -71,7 +71,7 @@ namespace MyOrm
             {
                 if (defaultConnection == null)
                 {
-                    ConnectionStringSettings connectionSetting = ConfigSection.DefaultConnection;
+                    ConnectionStringSettings connectionSetting = String.IsNullOrEmpty(ConfigSection.ConnectionStringName) ? ConfigurationManager.ConnectionStrings[0] : ConfigurationManager.ConnectionStrings[ConfigSection.ConnectionStringName];
                     defaultConnection = DbProviderFactories.GetFactory(connectionSetting.ProviderName).CreateConnection();
                     defaultConnection.ConnectionString = connectionSetting.ConnectionString;
                 }

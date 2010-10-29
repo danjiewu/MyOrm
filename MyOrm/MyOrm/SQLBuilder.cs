@@ -7,19 +7,19 @@ using System.Collections;
 
 namespace MyOrm
 {
-    public class SQLBuilder
+    public class SqlBuilder
     {
         #region 静态成员
-        public readonly static SQLBuilder Default = new SQLBuilder();
-        private static Dictionary<Type, SQLBuilder> sqlBuilderCache = new Dictionary<Type, SQLBuilder>();
+        public readonly static SqlBuilder Default = new SqlBuilder();
+        private static Dictionary<Type, SqlBuilder> sqlBuilderCache = new Dictionary<Type, SqlBuilder>();
 
-        public static SQLBuilder GetSqlBuilder(Type objectType)
+        public static SqlBuilder GetSqlBuilder(Type objectType)
         {
             if (sqlBuilderCache.ContainsKey(objectType)) return sqlBuilderCache[objectType];
             return Default;
         }
 
-        public static void RegisterSqlBuilder(Type objectType, SQLBuilder sqlBuilder)
+        public static void RegisterSqlBuilder(Type objectType, SqlBuilder sqlBuilder)
         {
             sqlBuilderCache[objectType] = sqlBuilder;
         }
@@ -134,7 +134,7 @@ namespace MyOrm
                 joinedColumn.PropertyName,
                 foreignTableAlias,
                 foreignColumn.Name,
-                SQLBuilder.GetSqlBuilder(foreignType).BuildConditionSql(new SQLBuildContext() { TableAliasName = foreignTableAlias, JoinIndex = context.JoinIndex + 1, Table = foreignTable }, condition.Condition, outputParams));
+                SqlBuilder.GetSqlBuilder(foreignType).BuildConditionSql(new SQLBuildContext() { TableAliasName = foreignTableAlias, JoinIndex = context.JoinIndex + 1, Table = foreignTable }, condition.Condition, outputParams));
         }
 
         /// <summary>
@@ -189,18 +189,18 @@ namespace MyOrm
                 case ConditionOperator.SmallerThan: return String.Format(simpleCondition.Opposite ? "{0} >= {1}" : "{0} < {1}", expression, ToSqlParam(outputParams.Add(value).ToString()));
                 case ConditionOperator.Like: return String.Format(@"{0} {1} like {2}", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()));
 #if MYSQL
-                case ConditionOperator.StartsWith: return String.Format(@"{0} {1} like CONCAT({2}, '%') escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
-                case ConditionOperator.EndsWith: return String.Format(@"{0} {1} like CONCAT('%', {2}) escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
-                case ConditionOperator.Contains: return String.Format(@"{0} {1} like CONCAT('%', {2}, '%') escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
+                case ConditionOperator.StartsWith: return String.Format(@"{0} {1} like CONCAT({2}, '%') escape '{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
+                case ConditionOperator.EndsWith: return String.Format(@"{0} {1} like CONCAT('%', {2}) escape '{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
+                case ConditionOperator.Contains: return String.Format(@"{0} {1} like CONCAT('%', {2}, '%') escape '{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
 #elif ORACLE
-                case ConditionOperator.StartsWith: return String.Format(@"{0} {1} like {2} || '%' escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
-                case ConditionOperator.EndsWith: return String.Format(@"{0} {1} like '%' || {2} escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
-                case ConditionOperator.Contains: return String.Format(@"{0} {1} like '%' || {2} || '%' escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
+                case ConditionOperator.StartsWith: return String.Format(@"{0} {1} like {2} || '%' escape '{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
+                case ConditionOperator.EndsWith: return String.Format(@"{0} {1} like '%' || {2} escape '{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
+                case ConditionOperator.Contains: return String.Format(@"{0} {1} like '%' || {2} || '%' escape '{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
 
 #else
-                case ConditionOperator.StartsWith: return String.Format(@"{0} {1} like {2} + '%' escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
-                case ConditionOperator.EndsWith: return String.Format(@"{0} {1} like '%' + {2} escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
-                case ConditionOperator.Contains: return String.Format(@"{0} {1} like '%' + {2} + '%' escape '\{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);           
+                case ConditionOperator.StartsWith: return String.Format(@"{0} {1} like {2} + '%' escape '{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
+                case ConditionOperator.EndsWith: return String.Format(@"{0} {1} like '%' + {2} escape '{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
+                case ConditionOperator.Contains: return String.Format(@"{0} {1} like '%' + {2} + '%' escape '{3}'", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()), LikeEscapeChar);
 #endif
                 case ConditionOperator.In:
                     List<string> paramNames = new List<string>();
@@ -282,10 +282,42 @@ namespace MyOrm
         public string ReplaceSqlName(string sql)
         {
 #if MYSQL
-            return sqlNameRegex.Replace(sql, "`$1`");
+            return ReplaceSqlName(sql, '`', '`');
+#elif ORACLE
+            return ReplaceSqlName(sql, '"', '"');
 #else
-            return sqlNameRegex.Replace(sql, "[$1]");
+            return sql;
 #endif
+        }
+
+        private static string ReplaceSqlName(string sql, char left, char right)
+        {
+            if (sql == null) return null;
+            StringBuilder sb = new StringBuilder();
+            bool passNext = false;
+            bool inSingleQuote = false;
+            bool inDoubleQuote = false;
+            foreach (char ch in sql)
+            {
+                if (passNext)
+                {
+                    sb.Append(ch);
+                    passNext = false;
+                }
+                else
+                {
+                    switch (ch)
+                    {
+                        case '[': sb.Append(inSingleQuote || inDoubleQuote ? ch : left); break;
+                        case ']': sb.Append(inSingleQuote || inDoubleQuote ? ch : right); break;
+                        case '"': inDoubleQuote = !inDoubleQuote; sb.Append(ch); break;
+                        case '\'': inSingleQuote = !inSingleQuote; sb.Append(ch); break;
+                        case '\\': sb.Append(ch); passNext = true; break;
+                        default: sb.Append(ch); break;
+                    }
+                }
+            }
+            return sb.ToString();
         }
     }
 

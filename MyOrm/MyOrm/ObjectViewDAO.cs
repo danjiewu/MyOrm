@@ -113,6 +113,7 @@ namespace MyOrm
         {
             IDbCommand command = NewCommand();
             command.CommandText = String.Format("select count(1) from {0} where {1}", ToSqlName(TableName), MakeIsKeyCondition(command));
+            command.Prepare();
             return command;
         }
 
@@ -133,6 +134,7 @@ namespace MyOrm
         {
             IDbCommand command = NewCommand();
             command.CommandText = String.Format("select {0} from {1} where {2}", AllFieldsSql, FromTable, MakeIsKeyCondition(command));
+            command.Prepare();
             return command;
         }
         #endregion
