@@ -138,14 +138,18 @@ namespace MyOrm.Common
         /// <returns>可被属性接受的值</returns>
         private static object ParseValue(PropertyDescriptor property, string value)
         {
-            if (value == null) return null;
-            if (property.PropertyType == typeof(string)) return value;
+            if (String.IsNullOrEmpty(value)) return null;            
             value = value.Trim();
+            if (property.PropertyType == typeof(string)) return value;
             if (value.Length == 0) return null;
             Type type = property.PropertyType;
             if (Nullable.GetUnderlyingType(type) != null) type = Nullable.GetUnderlyingType(type);
-            int i;
-            if (type.IsEnum && Int32.TryParse(value, out i)) return Enum.ToObject(type, i);
+            if (type.IsEnum)
+            {
+                int i;
+                if (Int32.TryParse(value, out i)) return Enum.ToObject(type, i);
+                else return Enum.Parse(type, value);
+            }
             else if (type == typeof(bool))
             {
                 char ch = char.ToUpper(value[0]);
