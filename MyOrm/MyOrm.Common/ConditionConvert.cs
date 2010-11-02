@@ -118,6 +118,10 @@ namespace MyOrm.Common
                         return new SimpleCondition(property.Name, ConditionOperator.Like, text.Substring(1).Trim(), opposite);
                 }
             }
+            else
+            {
+                return new SimpleCondition(property.Name, ConditionOperator.Equals, null, opposite);
+            }
             if (text.IndexOf(',') >= 0)
             {
                 List<object> values = new List<object>();
@@ -138,9 +142,9 @@ namespace MyOrm.Common
         /// <returns>可被属性接受的值</returns>
         private static object ParseValue(PropertyDescriptor property, string value)
         {
-            if (String.IsNullOrEmpty(value)) return null;            
-            value = value.Trim();
+            if (value == null) return null;
             if (property.PropertyType == typeof(string)) return value;
+            value = value.Trim();
             if (value.Length == 0) return null;
             Type type = property.PropertyType;
             if (Nullable.GetUnderlyingType(type) != null) type = Nullable.GetUnderlyingType(type);
@@ -184,7 +188,7 @@ namespace MyOrm.Common
                 case ConditionOperator.Contains: return (opposite ? "!%" : "%") + ToText(value);
                 case ConditionOperator.Equals:
                     str = ToText(value);
-                    if (!String.IsNullOrEmpty(str) && ("<>=*%".IndexOf(str[0]) >= 0 || (str[0] == '!' && !opposite) || str.IndexOf(',') >= 0))
+                    if (value != null && (str == String.Empty || "<>=*%".IndexOf(str[0]) >= 0 || (str[0] == '!' && !opposite) || str.IndexOf(',') >= 0))
                         str = '=' + str;
                     return (opposite ? "!" : "") + str;
                 default: return (opposite ? "!" : "") + ToText(value, "!<>=*%".ToCharArray());
