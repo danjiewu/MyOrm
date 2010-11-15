@@ -295,8 +295,7 @@ namespace MyOrm
             if (sql == null) return null;
             StringBuilder sb = new StringBuilder();
             bool passNext = false;
-            bool inSingleQuote = false;
-            bool inDoubleQuote = false;
+            Stack<char> stack = new Stack<char>();
             foreach (char ch in sql)
             {
                 if (passNext)
@@ -308,10 +307,16 @@ namespace MyOrm
                 {
                     switch (ch)
                     {
-                        case '[': sb.Append(inSingleQuote || inDoubleQuote ? ch : left); break;
-                        case ']': sb.Append(inSingleQuote || inDoubleQuote ? ch : right); break;
-                        case '"': inDoubleQuote = !inDoubleQuote; sb.Append(ch); break;
-                        case '\'': inSingleQuote = !inSingleQuote; sb.Append(ch); break;
+                        case '[': sb.Append(stack.Count == 0 ? left : ch); break;
+                        case ']': sb.Append(stack.Count == 0 ? right : ch); break;
+                        case '"':
+                            if (stack.Count > 0 && stack.Peek() == '"') stack.Pop();
+                            else stack.Push('"');
+                            sb.Append(ch); break;
+                        case '\'':
+                            if (stack.Count > 0 && stack.Peek() == '\'') stack.Pop();
+                            else stack.Push('\'');
+                            sb.Append(ch); break;
                         case '\\': sb.Append(ch); passNext = true; break;
                         default: sb.Append(ch); break;
                     }
