@@ -117,7 +117,7 @@ namespace MyOrm
             foreach (ColumnDefinition key in TableDefinition.Keys)
             {
                 if (strConditions.Length != 0) strConditions.Append(" and ");
-                strConditions.AppendFormat("{1} = {2}", ToSqlName(key.Name), ToSqlParam(key.PropertyName));
+                strConditions.AppendFormat("{0} = {1}", ToSqlName(key.Name), ToSqlParam(key.PropertyName));
                 if (!command.Parameters.Contains(key.PropertyName))
                 {
                     IDbDataParameter param = command.CreateParameter();
