@@ -112,7 +112,7 @@ namespace MyOrm
         private IDbCommand MakeObjectExistsCommand()
         {
             IDbCommand command = NewCommand();
-            command.CommandText = String.Format("select count(1) from {0} where {1}", ToSqlName(TableName), MakeIsKeyCondition(command));
+            command.CommandText = String.Format("select count(1) from {0} where {1}", ToSqlName(Table.Definition.Name), MakeIsKeyCondition(command));
             command.Prepare();
             return command;
         }
