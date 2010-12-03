@@ -111,8 +111,23 @@ namespace MyOrm
 
         private IDbCommand MakeObjectExistsCommand()
         {
+            ThrowExceptionIfNoKeys();
             IDbCommand command = NewCommand();
-            command.CommandText = String.Format("select count(1) from {0} where {1}", ToSqlName(Table.Definition.Name), MakeIsKeyCondition(command));
+            StringBuilder strConditions = new StringBuilder();
+            foreach (ColumnDefinition key in TableDefinition.Keys)
+            {
+                if (strConditions.Length != 0) strConditions.Append(" and ");
+                strConditions.AppendFormat("{1} = {2}", ToSqlName(key.Name), ToSqlParam(key.PropertyName));
+                if (!command.Parameters.Contains(key.PropertyName))
+                {
+                    IDbDataParameter param = command.CreateParameter();
+                    param.Size = key.Length;
+                    param.DbType = key.DbType;
+                    param.ParameterName = ToParamName(key.PropertyName);
+                    command.Parameters.Add(param);
+                }
+            }
+            command.CommandText = String.Format("select count(1) from {0} where {1}", ToSqlName(Table.Definition.Name), strConditions);
             command.Prepare();
             return command;
         }
