@@ -6,38 +6,61 @@ using System.Collections.ObjectModel;
 namespace MyOrm.Common
 {
     /// <summary>
-    /// 
+    /// 连接的表
     /// </summary>
-    public class JoinedTable : TableInfo
+    public class JoinedTable : TableRef
     {
         public JoinedTable(TableDefinition foreignTable)
             : base(foreignTable)
         {
             JoinType = TableJoinType.Left;
-            foreignPrimeKey = new ColumnInfo(this, foreignTable.Keys[0]);
+            List<ColumnRef> keys = new List<ColumnRef>();
+            foreach (ColumnDefinition key in foreignTable.Keys)
+            {
+                keys.Add(new ColumnRef(this, key));
+            }
+            foreignPrimeKeys = keys.AsReadOnly();
         }
 
-        private ColumnInfo foreignPrimeKey;
-
-        public ColumnInfo ForeignKey
+        private ReadOnlyCollection<ColumnRef> foreignPrimeKeys;
+        private ReadOnlyCollection<ColumnRef> foreignKeys;
+        public ReadOnlyCollection<ColumnRef> ForeignKeys
         {
-            get;
-            internal set;
+            get { return foreignKeys; }
+            internal set
+            {
+                if (foreignKeys.Count != foreignPrimeKeys.Count) throw new ArgumentException("Quantity of foreignKeys not same as foreignPrimeKeys.");
+                foreignKeys = value;
+            }
         }
 
+        /// <summary>
+        /// 表连接类型
+        /// </summary>
         public TableJoinType JoinType { get; set; }
 
-        public ColumnInfo ForeignPrimeKey
+        /// <summary>
+        /// 关联表的主键
+        /// </summary>
+        public ReadOnlyCollection<ColumnRef> ForeignPrimeKeys
         {
-            get { return foreignPrimeKey; }
+            get { return foreignPrimeKeys; }
         }
 
+        /// <summary>
+        /// 格式化的表达式
+        /// </summary>
         public override string FormattedExpression
         {
             get
             {
                 StringBuilder sb = new StringBuilder();
-                sb.AppendFormat(" {0} join {1} on {2} = {3}", JoinType, base.FormattedExpression, ForeignKey.FormattedExpression, ForeignPrimeKey.FormattedExpression);
+                sb.AppendFormat(" {0} join {1} on ", JoinType, base.FormattedExpression);
+                for (int i = 0; i < ForeignKeys.Count; i++)
+                {
+                    if (i > 0) sb.Append(" and ");
+                    sb.AppendFormat("{0} = {1}", ForeignKeys[i].FormattedExpression, ForeignPrimeKeys[i].FormattedExpression);
+                }
                 return sb.ToString();
             }
         }

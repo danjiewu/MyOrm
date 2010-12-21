@@ -25,14 +25,13 @@ namespace MyOrm
 
         protected virtual void PreExcuteCommand(ExcuteType excuteType)
         {
-            Transaction = TransactionManager.CurrentTransaction(Connection);
+            Transaction = DbConnectionManager.CurrentTransaction(Connection);
             if (Connection.State == ConnectionState.Closed) Connection.Open();
             //Console.WriteLine(CommandText);//TODO: Add log here.
         }
 
         protected virtual void PostExcuteCommand(ExcuteType excuteType)
         {
-            //if (Connection.State == ConnectionState.Open && excuteType != ExcuteType.ExecuteReader) Connection.Close();
         }
 
         #region IDbCommand Members
@@ -115,7 +114,7 @@ namespace MyOrm
 
         public void Prepare()
         {
-            Transaction = TransactionManager.CurrentTransaction(Connection);
+            Transaction = DbConnectionManager.CurrentTransaction(Connection);
             if (Connection.State == ConnectionState.Closed) Connection.Open();
             target.Prepare();
         }
@@ -151,7 +150,7 @@ namespace MyOrm
         ExecuteScalar
     }
 
-    public static class TransactionManager
+    public static class DbConnectionManager
     {
         private static Dictionary<IDbConnection, IDbTransaction> transactionCache = new Dictionary<IDbConnection, IDbTransaction>();
 
@@ -173,6 +172,15 @@ namespace MyOrm
         }
 
         /// <summary>
+        /// 在默认数据库链接开始事务
+        /// </summary>
+        /// <returns></returns>
+        public static IDbTransaction BeginDefaultTransaction()
+        {
+            return BeginTransaction(Configuration.DefaultConnection);
+        }
+
+        /// <summary>
         /// 获取指定数据库链接的当前事务
         /// </summary>
         /// <param name="connection">数据库链接</param>
@@ -181,6 +189,18 @@ namespace MyOrm
         {
             IDbTransaction transaction;
             transactionCache.TryGetValue(connection, out transaction);
+            return transaction;
+        }
+
+        /// <summary>
+        /// 获取默认数据库链接的当前事务
+        /// </summary>
+        /// <param name="connection">数据库链接</param>
+        /// <returns></returns>
+        public static IDbTransaction DefaultTransaction()
+        {
+            IDbTransaction transaction;
+            transactionCache.TryGetValue(Configuration.DefaultConnection, out transaction);
             return transaction;
         }
 
@@ -202,22 +222,11 @@ namespace MyOrm
         }
 
         /// <summary>
-        /// 提交所有事务
+        /// 提交默认数据库连接事务
         /// </summary>
-        public static void Commit()
+        public static void CommitDefault()
         {
-            lock (transactionCache)
-            {
-                foreach (IDbConnection connection in transactionCache.Keys)
-                {
-                    IDbTransaction transaction = CurrentTransaction(connection);
-                    if (transaction != null)
-                    {
-                        transaction.Commit();
-                    }
-                }
-                transactionCache.Clear();
-            }
+            Commit(Configuration.DefaultConnection);
         }
 
         /// <summary>
@@ -238,22 +247,11 @@ namespace MyOrm
         }
 
         /// <summary>
-        /// 回滚所有事务
+        /// 回滚默认数据库连接事务
         /// </summary>
-        public static void Rollback()
+        public static void RollbackDefault()
         {
-            lock (transactionCache)
-            {
-                foreach (IDbConnection connection in transactionCache.Keys)
-                {
-                    IDbTransaction transaction = CurrentTransaction(connection);
-                    if (transaction != null)
-                    {
-                        transaction.Rollback();
-                    }
-                }
-                transactionCache.Clear();
-            }
+            Rollback(Configuration.DefaultConnection);
         }
     }
 }

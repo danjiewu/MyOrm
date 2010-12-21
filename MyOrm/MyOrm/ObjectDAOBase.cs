@@ -5,6 +5,7 @@ using System.Text;
 using System.Data;
 using System.Text.RegularExpressions;
 using MyOrm.Common;
+using System.Data.Common;
 
 namespace MyOrm
 {
@@ -15,45 +16,22 @@ namespace MyOrm
     {
         #region 预定义变量
         /// <summary>
-        /// 表示SQL查询中所有字段的标记
+        /// 表示SQL查询中条件语句的标记
         /// </summary>
-        protected const string ParamAllFields = "@AllFields";
+        public const string ParamCondition = "@Condition@";
         /// <summary>
         /// 表示SQL查询中表名的标记
         /// </summary>
-        protected const string ParamTable = "@Table";
-        /// <summary>
-        /// 表示SQL查询中多表连接的标记
-        /// </summary>
-        protected const string ParamFromTable = "@FromTable";
-        /// <summary>
-        /// 表示SQL查询中条件语句的标记
-        /// </summary>
-        protected const string ParamCondition = "@Condition";
-
+        public const string ParamTable = "@Table@";
         #endregion
 
         #region 私有变量
-        private IDbConnection connection;
-
         private string tableName = null;
         private Exception ExceptionWrongKeys = null;
         private Exception ExceptionNoKeys = null;
         #endregion
 
         #region 属性
-        /// <summary>
-        /// 数据库连接
-        /// </summary>
-        internal virtual IDbConnection Connection
-        {
-            get
-            {
-                if (connection == null) connection = DefaultConfiguration.DefaultConnection;
-                return connection;
-            }
-        }
-
         /// <summary>
         /// 实体对象类型
         /// </summary>
@@ -83,12 +61,12 @@ namespace MyOrm
         /// </summary>
         protected virtual SqlBuilder SqlBuilder
         {
-            get { return SqlBuilder.Default; }
+            get { return null; }
         }
 
-        protected SQLBuildContext CurrentContext
+        protected SqlBuildContext CurrentContext
         {
-            get { return new SQLBuildContext() { Table = Table }; }
+            get { return new SqlBuildContext() { Table = Table }; }
         }
 
         /// <summary>
@@ -96,7 +74,7 @@ namespace MyOrm
         /// </summary>
         protected TableInfoProvider Provider
         {
-            get { return DefaultConfiguration.TableInfoProvider; }
+            get { return Configuration.DefaultProvider; }
         }
 
         /// <summary>
@@ -114,12 +92,21 @@ namespace MyOrm
 
         #region 方法
         /// <summary>
+        /// 数据库连接
+        /// </summary>
+        public IDbConnection Connection
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
         /// 创建IDbCommand
         /// </summary>
         /// <returns></returns>
-        protected virtual IDbCommand NewCommand()
+        public virtual IDbCommand NewCommand()
         {
-            return DefaultConfiguration.UseAutoCommand ? new AutoCommand(SqlBuilder, Connection.CreateCommand()) : Connection.CreateCommand();
+            return Connection.CreateCommand();
         }
 
         /// <summary>
@@ -128,7 +115,7 @@ namespace MyOrm
         /// <param name="SQL">SQL语句，SQL中可以包含参数信息，参数名为以0开始的递增整数，对应paramValues中值的下标</param>
         /// <param name="paramValues">参数值，需要与SQL中的参数一一对应，为空时表示没有参数</param>
         /// <returns>IDbCommand</returns>
-        protected IDbCommand MakeParamCommand(string SQL, IEnumerable paramValues)
+        public IDbCommand MakeParamCommand(string SQL, IEnumerable paramValues)
         {
             int paramIndex = 0;
             IDbCommand command = NewCommand();
@@ -148,19 +135,28 @@ namespace MyOrm
         /// 根据SQL语句和条件建立IDbCommand
         /// </summary>
         /// <param name="SQLWithParam">带参数的SQL语句
-        /// <example>"select @AllFields from @FromTable where @Condition"表示从表中查询所有符合条件的记录</example>
-        /// <example>"select count(*) from @FromTable "表示从表中所有记录的数量，condition参数需为空</example>
-        /// <example>"delete from @Table where @Condition"表示从表中删除所有符合条件的记录</example>
+        /// <example>"select @AllFields@ from @FromTable@ where @Condition@"表示从表中查询所有符合条件的记录</example>
+        /// <example>"select count(*) from @FromTable@ "表示从表中所有记录的数量，condition参数需为空</example>
+        /// <example>"delete from @Table@ where @Condition@"表示从表中删除所有符合条件的记录</example>
         /// </param>        
         /// <param name="condition">条件，为null时表示无条件</param>
         /// <returns>IDbCommand</returns>
-        protected virtual IDbCommand MakeConditionCommand(string SQLWithParam, Condition condition)
+        public IDbCommand MakeConditionCommand(string SQLWithParam, Condition condition)
         {
             List<object> paramList = new List<object>();
             string strCondition = SqlBuilder.BuildConditionSql(CurrentContext, condition, paramList);
             if (String.IsNullOrEmpty(strCondition)) strCondition = " 1 = 1 ";
-            string sql = SQLWithParam.Replace(ParamTable, TableName).Replace(ParamCondition, strCondition);
-            return MakeParamCommand(sql, paramList);
+            return MakeParamCommand(ReplaceParam(SQLWithParam.Replace(ParamCondition, strCondition)), paramList);
+        }
+
+        /// <summary>
+        /// 替换Sql中的标记为实际Sql
+        /// </summary>
+        /// <param name="SQLWithParam">包含标记的Sql语句</param>
+        /// <returns></returns>
+        protected virtual string ReplaceParam(string SQLWithParam)
+        {
+            return SQLWithParam.Replace(ParamTable, TableName);
         }
 
         /// <summary>
@@ -209,13 +205,19 @@ namespace MyOrm
         /// <param name="dbValue">数据库取得的值</param>
         /// <param name="column">列属性</param>
         /// <returns>对象属性类型所对应的值</returns>
-        protected object ConvertToObjectValue(object dbValue, ColumnDefinition column)//TODO: 
+        protected virtual object ConvertValue(object dbValue, Type objectType)
         {
-            if (Equals(dbValue, DBNull.Value)) dbValue = null;
-            if (column.PropertyType.IsValueType && dbValue == null)
-                return Activator.CreateInstance(column.PropertyType);
-            else
+            if (dbValue == null || dbValue == DBNull.Value)
+                return null;
+
+            objectType = Nullable.GetUnderlyingType(objectType) ?? objectType;
+
+            if (objectType.IsInstanceOfType(dbValue))
                 return dbValue;
+
+            if (objectType.IsEnum && dbValue.GetType().IsPrimitive) return dbValue;
+
+            return Convert.ChangeType(dbValue, objectType);
         }
 
         /// <summary>
@@ -224,7 +226,7 @@ namespace MyOrm
         /// <param name="value">值</param>
         /// <param name="column">列属性</param>
         /// <returns>数据库中的值</returns>
-        protected object ConvertToDBValue(object value, ColumnDefinition column)//TODO:
+        protected virtual object ConvertToDBValue(object value, ColumnDefinition column)//TODO:
         {
             if (value == null) return DBNull.Value;
             return value;

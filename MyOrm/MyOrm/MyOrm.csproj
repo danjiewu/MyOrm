@@ -64,13 +64,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
-    <Compile Include="Extension.cs">
-    </Compile>
+    <Compile Include="Extension.cs" />
+    <Compile Include="MySql\MySqlBuilder.cs" />
     <Compile Include="ObjectDAO.cs" />
     <Compile Include="ObjectDAOBase.cs" />
     <Compile Include="ObjectViewDAO.cs" />
+    <Compile Include="Oracle\OracleBuilder.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SQLBuilder.cs" />
+    <Compile Include="SqlBuilder.cs" />
+    <Compile Include="SqlServer\SqlServerBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyOrm.Common\MyOrm.Common.csproj">
@@ -95,6 +97,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

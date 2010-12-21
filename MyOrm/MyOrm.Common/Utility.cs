@@ -24,7 +24,7 @@ namespace MyOrm.Common
         /// <returns></returns>
         public static DbType GetDbType(Type type)
         {
-            if (Nullable.GetUnderlyingType(type) != null) type = Nullable.GetUnderlyingType(type);
+            type = Nullable.GetUnderlyingType(type) ?? type;
             if (type == typeof(Byte)) return DbType.Byte;
             else if (type == typeof(Byte[])) return DbType.Binary;
             else if (type == typeof(Boolean)) return DbType.Boolean;
@@ -50,14 +50,14 @@ namespace MyOrm.Common
         {
             switch (columnType)
             {
-                case DbType.String: 
+                case DbType.String:
                 case DbType.AnsiString:
                 case DbType.AnsiStringFixedLength:
                 case DbType.StringFixedLength: return 255;
-                case DbType.Byte: 
+                case DbType.Byte:
                 case DbType.Boolean: return 1;
-                case DbType.Single: 
-                case DbType.Int32: return 4;   
+                case DbType.Single:
+                case DbType.Int32: return 4;
                 case DbType.Double: return 8;
                 case DbType.Xml: return 1 << 20;
                 case DbType.Binary: return Int32.MaxValue;
