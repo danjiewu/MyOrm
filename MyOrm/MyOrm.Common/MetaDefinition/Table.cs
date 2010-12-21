@@ -32,7 +32,7 @@ namespace MyOrm.Common
         /// <summary>
         /// 对象类型
         /// </summary>
-        public Type ObjectType
+        public Type DefinitionType
         {
             get { return Definition.ObjectType; }
         }
@@ -126,7 +126,7 @@ namespace MyOrm.Common
         /// <summary>
         /// 对象类型
         /// </summary>
-        public new Type ObjectType
+        public Type ObjectType
         {
             get { return objectType; }
         }
@@ -174,7 +174,7 @@ namespace MyOrm.Common
     /// <summary>
     /// 数据库表的引用
     /// </summary>
-    public class TableRef : SqlStatement
+    public abstract class TableRef : SqlStatement
     {
         public TableRef(TableDefinition table)
         {
@@ -184,7 +184,7 @@ namespace MyOrm.Common
         }
 
         private TableDefinition tableDefinition;
-        public ReadOnlyCollection<ColumnRef> columns;
+        private ReadOnlyCollection<ColumnRef> columns;
         private Dictionary<string, ColumnRef> namedColumnCache = new Dictionary<string, ColumnRef>();
 
         /// <summary>

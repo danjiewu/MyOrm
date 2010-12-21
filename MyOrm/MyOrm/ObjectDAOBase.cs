@@ -6,6 +6,7 @@ using System.Data;
 using System.Text.RegularExpressions;
 using MyOrm.Common;
 using System.Data.Common;
+using System.Collections.ObjectModel;
 
 namespace MyOrm
 {
@@ -23,10 +24,22 @@ namespace MyOrm
         /// 表示SQL查询中表名的标记
         /// </summary>
         public const string ParamTable = "@Table@";
+        /// <summary>
+        /// 表示SQL查询中多表连接的标记
+        /// </summary>
+        public const string ParamFromTable = "@FromTable@";
+        /// <summary>
+        /// 表示SQL查询中所有字段的标记
+        /// </summary>
+        public const string ParamAllFields = "@AllFields@";
         #endregion
 
         #region 私有变量
+
+        private ReadOnlyCollection<Column> selectColumns;
+        private string allFieldsSql = null;
         private string tableName = null;
+        private string fromTable = null;
         private Exception ExceptionWrongKeys = null;
         private Exception ExceptionNoKeys = null;
         #endregion
@@ -88,6 +101,51 @@ namespace MyOrm
                 return tableName;
             }
         }
+
+        /// <summary>
+        /// 查询时使用的相关联的多个表
+        /// </summary>
+        protected string FromTable
+        {
+            get
+            {
+                if (fromTable == null)
+                {
+                    fromTable = Table.FormattedExpression;
+                }
+                return fromTable;
+            }
+        }
+
+        /// <summary>
+        /// 查询时需要获取的所有列
+        /// </summary>
+        protected ReadOnlyCollection<Column> SelectColumns
+        {
+            get
+            {
+                if (selectColumns == null)
+                {
+                    selectColumns = new List<Column>(Table.Columns).FindAll(column => !(column is ColumnDefinition && (((ColumnDefinition)column).Mode & ColumnMode.Read) != ColumnMode.Read)).AsReadOnly();
+                }
+                return selectColumns;
+            }
+        }
+
+        /// <summary>
+        /// 查询时需要获取的所有字段的Sql
+        /// </summary>
+        protected string AllFieldsSql
+        {
+            get
+            {
+                if (allFieldsSql == null)
+                {
+                    allFieldsSql = GetSelectFieldsSQL(SelectColumns);
+                }
+                return allFieldsSql;
+            }
+        }  
         #endregion
 
         #region 方法
@@ -107,6 +165,22 @@ namespace MyOrm
         public virtual IDbCommand NewCommand()
         {
             return Connection.CreateCommand();
+        }
+
+        /// <summary>
+        /// 生成select部分的sql
+        /// </summary>
+        /// <param name="selectColumns">需要select的列集合</param>
+        /// <returns>生成的sql</returns>
+        protected string GetSelectFieldsSQL(IEnumerable<Column> selectColumns)
+        {
+            StringBuilder strAllFields = new StringBuilder();
+            foreach (Column column in selectColumns)
+            {
+                if (strAllFields.Length != 0) strAllFields.Append(",");
+                strAllFields.Append(column.FormattedExpression + " as " + column.PropertyName);
+            }
+            return strAllFields.ToString();
         }
 
         /// <summary>
@@ -156,7 +230,7 @@ namespace MyOrm
         /// <returns></returns>
         protected virtual string ReplaceParam(string SQLWithParam)
         {
-            return SQLWithParam.Replace(ParamTable, TableName);
+            return SQLWithParam.Replace(ParamTable, TableName).Replace(ParamFromTable, FromTable);
         }
 
         /// <summary>
@@ -215,7 +289,7 @@ namespace MyOrm
             if (objectType.IsInstanceOfType(dbValue))
                 return dbValue;
 
-            if (objectType.IsEnum && dbValue.GetType().IsPrimitive) return dbValue;
+            if (objectType.IsEnum && dbValue.GetType().IsPrimitive) return Enum.ToObject(objectType, dbValue);
 
             return Convert.ChangeType(dbValue, objectType);
         }
@@ -224,7 +298,7 @@ namespace MyOrm
         /// 将对象的属性值转化为数据库中的值
         /// </summary>
         /// <param name="value">值</param>
-        /// <param name="column">列属性</param>
+        /// <param name="column">列定义</param>
         /// <returns>数据库中的值</returns>
         protected virtual object ConvertToDBValue(object value, ColumnDefinition column)//TODO:
         {
@@ -239,7 +313,7 @@ namespace MyOrm
         {
             if (TableDefinition.Keys.Count == 0)
             {
-                if (ExceptionNoKeys == null) ExceptionNoKeys = new Exception(String.Format("No key definition found in type \"{0}\", please set the value of property \"IsPrimaryKey\" of key column to true.", Table.ObjectType.FullName));
+                if (ExceptionNoKeys == null) ExceptionNoKeys = new Exception(String.Format("No key definition found in type \"{0}\", please set the value of property \"IsPrimaryKey\" of key column to true.", Table.DefinitionType.FullName));
                 throw ExceptionNoKeys;
             }
         }
@@ -256,7 +330,7 @@ namespace MyOrm
                 {
                     List<string> strKeys = new List<string>();
                     foreach (ColumnDefinition key in TableDefinition.Keys) strKeys.Add(key.Name);
-                    ExceptionWrongKeys = new ArgumentOutOfRangeException("keys", String.Format("Wrong keys' number. Type \"{0}\" has {1} key(s):'{2}'.", Table.ObjectType.FullName, strKeys.Count, String.Join("','", strKeys.ToArray())));
+                    ExceptionWrongKeys = new ArgumentOutOfRangeException("keys", String.Format("Wrong keys' number. Type \"{0}\" has {1} key(s):'{2}'.", Table.DefinitionType.FullName, strKeys.Count, String.Join("','", strKeys.ToArray())));
                 }
                 throw ExceptionWrongKeys;
             }

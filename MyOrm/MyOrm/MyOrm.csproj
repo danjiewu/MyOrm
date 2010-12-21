@@ -64,7 +64,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration.cs" />
-    <Compile Include="Extension.cs" />
+    <Compile Include="AutoCommand.cs" />
+    <Compile Include="DataDAO.cs" />
     <Compile Include="MySql\MySqlBuilder.cs" />
     <Compile Include="ObjectDAO.cs" />
     <Compile Include="ObjectDAOBase.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SqlBuilder.cs" />
     <Compile Include="SqlServer\SqlServerBuilder.cs" />
+    <Compile Include="TransactionManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MyOrm.Common\MyOrm.Common.csproj">

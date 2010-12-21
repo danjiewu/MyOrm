@@ -16,23 +16,7 @@ namespace MyOrm
     /// <typeparam name="T">实体类型</typeparam>
     public class ObjectViewDAO<T> : ObjectDAOBase, IObjectViewDAO<T>, IObjectViewDAO where T : new()
     {
-        #region 预定义变量
-        /// <summary>
-        /// 表示SQL查询中所有字段的标记
-        /// </summary>
-        public const string ParamAllFields = "@AllFields@";
-        /// <summary>
-        /// 表示SQL查询中多表连接的标记
-        /// </summary>
-        public const string ParamFromTable = "@FromTable@";
-        #endregion
-
         #region 私有变量
-        private string fromTable = null;
-        private string allFieldsSql = null;
-
-        private ReadOnlyCollection<Column> selectColumns;
-
         private IDbCommand getObjectCommand = null;
         private IDbCommand objectExistsCommand = null;
         #endregion
@@ -53,58 +37,6 @@ namespace MyOrm
         {
             get { return Provider.GetTableView(ObjectType); }
         }
-
-        /// <summary>
-        /// 查询时使用的相关联的多个表
-        /// </summary>
-        protected string FromTable
-        {
-            get
-            {
-                if (fromTable == null)
-                {
-                    fromTable = Table.FormattedExpression;
-                }
-                return fromTable;
-            }
-        }
-
-        /// <summary>
-        /// 查询时需要获取的所有列
-        /// </summary>
-        protected ReadOnlyCollection<Column> SelectColumns
-        {
-            get
-            {
-                if (selectColumns == null)
-                {
-                    selectColumns = new List<Column>(Table.Columns).FindAll(column => !(column is ColumnDefinition && (((ColumnDefinition)column).Mode & ColumnMode.Read) != ColumnMode.Read)).AsReadOnly();
-                }
-                return selectColumns;
-            }
-        }
-
-        /// <summary>
-        /// 查询时需要获取的所有字段的Sql
-        /// </summary>
-        protected string AllFieldsSql
-        {
-            get
-            {
-                if (allFieldsSql == null)
-                {
-                    StringBuilder strAllFields = new StringBuilder();
-                    foreach (Column column in SelectColumns)
-                    {
-                        if (strAllFields.Length != 0) strAllFields.Append(",");
-                        strAllFields.Append(column.FormattedExpression + " as " + column.PropertyName);
-                    }
-                    allFieldsSql = strAllFields.ToString();
-                }
-                return allFieldsSql;
-            }
-        }
-
         #endregion
 
         #region 预定义Command
@@ -262,10 +194,7 @@ namespace MyOrm
         {
             using (IDbCommand command = MakeConditionCommand("select @AllFields@ from @FromTable@" + (condition == null ? null : " where @Condition@"), condition))
             {
-                using (IDataReader reader = command.ExecuteReader())
-                {
-                    return ReadAll(reader);
-                }
+                return GetAll(command);
             }
         }
 
@@ -278,10 +207,7 @@ namespace MyOrm
         {
             using (IDbCommand command = MakeConditionCommand("select @AllFields@ from @FromTable@ where @Condition@", condition))
             {
-                using (IDataReader reader = command.ExecuteReader())
-                {
-                    return ReadOne(reader);
-                }
+                return GetOne(command);
             }
         }
 
@@ -352,10 +278,7 @@ namespace MyOrm
             string paramedSQL = SqlBuilder.GetSelectSectionSql(AllFieldsSql, FromTable, ParamCondition, orderby + (direction == ListSortDirection.Ascending ? " asc" : " desc"), startIndex, sectionSize);
             using (IDbCommand command = MakeConditionCommand(paramedSQL, condition))
             {
-                using (IDataReader reader = command.ExecuteReader())
-                {
-                    return ReadAll(reader);
-                }
+                return GetAll(command);
             }
         }
         #endregion
@@ -391,17 +314,17 @@ namespace MyOrm
         /// </summary>
         /// <param name="SQLWithParam">包含标记的Sql语句，标记可以为ParamAllFields，ParamFromTable</param>
         /// <returns></returns>
-        protected virtual string ReplaceParam(string SQLWithParam)
+        protected override string ReplaceParam(string SQLWithParam)
         {
-            return base.ReplaceParam(SQLWithParam).Replace(ParamAllFields, AllFieldsSql).Replace(ParamFromTable, FromTable);
+            return base.ReplaceParam(SQLWithParam).Replace(ParamAllFields, AllFieldsSql);
         }
 
         /// <summary>
-        /// 读取所有记录并转化为对象集合，查询得到AllFieldsSQL时可用
+        /// 读取所有记录并转化为对象集合，查询AllFieldsSQL时可用
         /// </summary>
         /// <param name="reader">只读结果集</param>
         /// <returns>对象列表</returns>
-        protected List<T> ReadAll(IDataReader reader)
+        private List<T> ReadAll(IDataReader reader)
         {
             List<T> results = new List<T>();
             while (reader.Read())
@@ -416,12 +339,9 @@ namespace MyOrm
         /// </summary>
         /// <param name="dataReader">IDataReader</param>
         /// <returns>对象，若无记录则返回null</returns>
-        protected T ReadOne(IDataReader dataReader)
+        private T ReadOne(IDataReader dataReader)
         {
-            using (IDataReader reader = dataReader)
-            {
-                return reader.Read() ? Read(reader) : default(T);
-            }
+            return dataReader.Read() ? Read(dataReader) : default(T);
         }
 
         /// <summary>
@@ -439,6 +359,32 @@ namespace MyOrm
                 i++;
             }
             return t;
+        }
+
+        /// <summary>
+        /// 执行IDbCommand，读取所有记录并转化为对象的集合，查询AllFieldsSQL时可用
+        /// </summary>
+        /// <param name="command">待执行的IDbCommand</param>
+        /// <returns></returns>
+        protected List<T> GetAll(IDbCommand command)
+        {
+            using (IDataReader reader = command.ExecuteReader())
+            {
+                return ReadAll(reader);
+            }
+        }
+
+        /// <summary>
+        /// 执行IDbCommand，读取一条记录并转化为单个对象，查询AllFieldsSQL时可用
+        /// </summary>
+        /// <param name="command">待执行的IDbCommand</param>
+        /// <returns></returns>
+        protected T GetOne(IDbCommand command)
+        {
+            using (IDataReader reader = command.ExecuteReader())
+            {
+                return ReadOne(reader);
+            }
         }
         #endregion
     }
