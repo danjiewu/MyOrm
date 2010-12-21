@@ -100,20 +100,20 @@ namespace MyOrm
                 {
                     if (column.ForeignType == foreignType)
                     {
-                        if (joinedColumn != null || foreignColumn != null) throw new ArgumentException(String.Format("Uncertain relation between Type {0} and Type {1}. Please specify the ForeignCondition.JoinedProperty.", context.Table.ObjectType.FullName, foreignTable.ObjectType.FullName), "condition");
+                        if (joinedColumn != null || foreignColumn != null) throw new ArgumentException(String.Format("Uncertain relation between Type {0} and Type {1}. Please specify the ForeignCondition.JoinedProperty.", context.Table.DefinitionType.FullName, foreignTable.ObjectType.FullName), "condition");
                         joinedColumn = column;
                     }
                 }
 
                 foreach (ColumnDefinition column in foreignTable.Columns)
                 {
-                    if (column.ForeignType == context.Table.ObjectType)
+                    if (column.ForeignType == context.Table.DefinitionType)
                     {
-                        if (joinedColumn != null || foreignColumn != null) throw new ArgumentException(String.Format("Uncertain relation between Type {0} and Type {1}. Please specify the ForeignCondition.JoinedProperty.", context.Table.ObjectType.FullName, foreignTable.ObjectType.FullName), "condition");
+                        if (joinedColumn != null || foreignColumn != null) throw new ArgumentException(String.Format("Uncertain relation between Type {0} and Type {1}. Please specify the ForeignCondition.JoinedProperty.", context.Table.DefinitionType.FullName, foreignTable.ObjectType.FullName), "condition");
                         foreignColumn = column;
                     }
                 }
-                if (joinedColumn == null && foreignColumn == null) throw new ArgumentException(String.Format("No relation between Type {0} and Type {1}", context.Table.ObjectType.FullName, foreignTable.ObjectType.FullName), "condition");
+                if (joinedColumn == null && foreignColumn == null) throw new ArgumentException(String.Format("No relation between Type {0} and Type {1}", context.Table.DefinitionType.FullName, foreignTable.ObjectType.FullName), "condition");
             }
 
             if (foreignColumn == null)
@@ -123,7 +123,7 @@ namespace MyOrm
             }
             else if (joinedColumn == null)
             {
-                if (context.Table.Definition.Keys.Count != 1) throw new ArgumentException(String.Format("Type \"{0}\" does not support foreign condition,which only take effect on type with one and only key column.", context.Table.ObjectType.FullName), "condition");
+                if (context.Table.Definition.Keys.Count != 1) throw new ArgumentException(String.Format("Type \"{0}\" does not support foreign condition,which only take effect on type with one and only key column.", context.Table.DefinitionType.FullName), "condition");
                 joinedColumn = context.Table.Definition.Keys[0];
             }
 
@@ -170,7 +170,7 @@ namespace MyOrm
         protected string BuildSimpleConditionSql(SqlBuildContext context, SimpleCondition simpleCondition, IList outputParams)
         {
             Column column = context.Table.GetColumn(simpleCondition.Property);
-            if (column == null) throw new Exception(String.Format("Property \"{0}\" does not exist in type \"{1}\".", simpleCondition.Property, context.Table.ObjectType.FullName));
+            if (column == null) throw new Exception(String.Format("Property \"{0}\" does not exist in type \"{1}\".", simpleCondition.Property, context.Table.DefinitionType.FullName));
 
             string tableAlias = context.TableAliasName;
             string columnName = tableAlias == null ? column.FormattedExpression : String.Format("[{0}].[{1}]", tableAlias, column.Name);

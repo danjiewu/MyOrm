@@ -24,6 +24,9 @@ namespace MyOrm.Common
 
         private ReadOnlyCollection<ColumnRef> foreignPrimeKeys;
         private ReadOnlyCollection<ColumnRef> foreignKeys;
+        /// <summary>
+        /// Íâ¼ü
+        /// </summary>
         public ReadOnlyCollection<ColumnRef> ForeignKeys
         {
             get { return foreignKeys; }
@@ -55,7 +58,7 @@ namespace MyOrm.Common
             get
             {
                 StringBuilder sb = new StringBuilder();
-                sb.AppendFormat(" {0} join {1} on ", JoinType, base.FormattedExpression);
+                sb.AppendFormat(" {0} join {1} {2} on ", JoinType, base.FormattedExpression, FormattedName);
                 for (int i = 0; i < ForeignKeys.Count; i++)
                 {
                     if (i > 0) sb.Append(" and ");
