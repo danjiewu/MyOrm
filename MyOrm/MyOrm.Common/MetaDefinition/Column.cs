@@ -8,40 +8,54 @@ using System.Reflection;
 namespace MyOrm.Common
 {
     /// <summary>
-    /// 列信息
+    /// 列的引用
     /// </summary>
-    public class ColumnInfo : SqlStatement
+    public class ColumnRef : SqlStatement
     {
         /// <summary>
-        /// 
+        /// 创建列的引用
         /// </summary>
-        /// <param name="column"></param>
-        public ColumnInfo(Column column)
+        /// <param name="column">列信息</param>
+        public ColumnRef(Column column)
         {
             Name = column.Name;
             this.column = column;
         }
 
-        public ColumnInfo(TableInfo table, Column column)
+        /// <summary>
+        /// 创建指定表的列引用
+        /// </summary>
+        /// <param name="table">表</param>
+        /// <param name="column">列引用</param>
+        public ColumnRef(TableRef table, Column column)
         {
             Name = column.Name;
             this.column = column;
             this.table = table;
         }
 
-        private TableInfo table;
-        public TableInfo Table
+        private TableRef table;
+        /// <summary>
+        /// 列所在的表
+        /// </summary>
+        public TableRef Table
         {
             get { return table; }
             internal set { table = value; }
         }
 
         private Column column;
+        /// <summary>
+        /// 列信息
+        /// </summary>
         public Column Column
         {
             get { return column; }
         }
 
+        /// <summary>
+        /// 格式化的表达式
+        /// </summary>
         public override string FormattedExpression
         {
             get
@@ -67,7 +81,7 @@ namespace MyOrm.Common
         /// <summary>
         /// 指向的列
         /// </summary>
-        public ColumnInfo TargetColumn { get; internal set; }
+        public ColumnRef TargetColumn { get; internal set; }
 
         /// <summary>
         /// 格式化的表达式
@@ -155,14 +169,9 @@ namespace MyOrm.Common
             return getValueHandle(target, null);
         }
 
-        public virtual string SelectExpression
-        {
-            get
-            {
-                return String.Format("{0} as {1}",FormattedExpression, FormattedPropertyName );
-            }
-        }
-
+        /// <summary>
+        /// 格式化的表达式
+        /// </summary>
         public override string FormattedExpression
         {
             get
@@ -226,7 +235,6 @@ namespace MyOrm.Common
         /// 列操作模式
         /// </summary>
         public ColumnMode Mode { get; internal set; }
-
     }
 
     /// <summary>
@@ -248,11 +256,11 @@ namespace MyOrm.Common
         /// </summary>
         Read = 1,
         /// <summary>
-        /// 往数据库更新
+        /// 向数据库更新
         /// </summary>
         Update = 2,
         /// <summary>
-        /// 往数据库添加
+        /// 向数据库添加
         /// </summary>
         Insert = 4,
         /// <summary>

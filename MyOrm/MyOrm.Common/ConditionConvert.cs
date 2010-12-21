@@ -28,7 +28,6 @@ namespace MyOrm.Common
 
         private static EnsureResult Ensure(SimpleCondition condition, object target)
         {
-            if (!String.IsNullOrEmpty(condition.ExpressionFormat) || condition.Operator == ConditionOperator.Constant) return EnsureResult.Undetermined;
             object value = target is IIndexedProperty ? ((IIndexedProperty)target)[condition.Property] : target.GetType().GetProperty(condition.Property).GetValue(target, null);
             bool result = false;
             switch (condition.Operator)

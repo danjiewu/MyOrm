@@ -82,10 +82,6 @@ namespace MyOrm.Common
             namedColumnCache.Clear();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             return Name;
@@ -176,33 +172,33 @@ namespace MyOrm.Common
     }
 
     /// <summary>
-    /// 数据库表的信息
+    /// 数据库表的引用
     /// </summary>
-    public class TableInfo : SqlStatement
+    public class TableRef : SqlStatement
     {
-        public TableInfo(TableDefinition table)
+        public TableRef(TableDefinition table)
         {
-            this.table = table;
+            this.tableDefinition = table;
             Name = table.Name;
-            columns = new List<ColumnDefinition>(table.Columns).ConvertAll(delegate(ColumnDefinition column) { return new ColumnInfo(this, column); }).AsReadOnly();
+            columns = new List<ColumnDefinition>(table.Columns).ConvertAll(delegate(ColumnDefinition column) { return new ColumnRef(this, column); }).AsReadOnly();
         }
 
-        private TableDefinition table;
-        public ReadOnlyCollection<ColumnInfo> columns;
-        private Dictionary<string, ColumnInfo> namedColumnCache = new Dictionary<string, ColumnInfo>();
+        private TableDefinition tableDefinition;
+        public ReadOnlyCollection<ColumnRef> columns;
+        private Dictionary<string, ColumnRef> namedColumnCache = new Dictionary<string, ColumnRef>();
 
         /// <summary>
         /// 对应数据库表的定义
         /// </summary>
-        public TableDefinition Table
+        public TableDefinition TableDefinition
         {
-            get { return table; }
+            get { return tableDefinition; }
         }
 
         /// <summary>
         /// 数据库表的列信息
         /// </summary>
-        public ReadOnlyCollection<ColumnInfo> Columns
+        public ReadOnlyCollection<ColumnRef> Columns
         {
             get { return columns; }
         }
@@ -210,13 +206,13 @@ namespace MyOrm.Common
         /// <summary>
         /// 属性名对应列的缓存
         /// </summary>
-        protected Dictionary<string, ColumnInfo> NamedColumnCache
+        protected Dictionary<string, ColumnRef> NamedColumnCache
         {
             get
             {
                 if (namedColumnCache.Count == 0)
                 {
-                    foreach (ColumnInfo column in Columns)
+                    foreach (ColumnRef column in Columns)
                         namedColumnCache.Add(column.Name, column);
                 }
                 return namedColumnCache;
@@ -228,19 +224,22 @@ namespace MyOrm.Common
         /// </summary>
         /// <param name="propertyName">属性名</param>
         /// <returns>列定义，列名不存在则返回null</returns>
-        public virtual ColumnInfo GetColumn(string propertyName)
+        public virtual ColumnRef GetColumn(string propertyName)
         {
             if (String.IsNullOrEmpty(propertyName)) return null;
-            ColumnInfo column;
+            ColumnRef column;
             NamedColumnCache.TryGetValue(propertyName, out column);
             return column;
         }
 
+        /// <summary>
+        /// 格式化的表达式
+        /// </summary>
         public override string FormattedExpression
         {
             get
             {
-                return String.Format("{0} {1}", table.FormattedExpression, FormattedName);
+                return String.Format("{0} {1}", tableDefinition.FormattedExpression, FormattedName);
             }
         }
     }

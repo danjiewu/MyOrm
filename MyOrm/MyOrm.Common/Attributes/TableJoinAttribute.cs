@@ -11,7 +11,7 @@ namespace MyOrm.Common
     public class TableJoinAttribute : System.Attribute
     {
         private Type targetType;
-        private string foreignKey;
+        private string foreignKeys;
         private string aliasName;
         private TableJoinType joinType = TableJoinType.Left;
         private object sourceTable;
@@ -26,7 +26,7 @@ namespace MyOrm.Common
         {
             this.sourceTable = sourceTable;
             this.targetType = targetType;
-            this.foreignKey = foreignKey;
+            this.foreignKeys = foreignKey;
         }
 
 
@@ -40,7 +40,7 @@ namespace MyOrm.Common
         {
             this.sourceTable = sourceTable;
             this.targetType = targetType;
-            this.foreignKey = foreignKey;
+            this.foreignKeys = foreignKey;
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace MyOrm.Common
         public TableJoinAttribute(Type targetType, string foreignKey)
         {
             this.targetType = targetType;
-            this.foreignKey = foreignKey;
+            this.foreignKeys = foreignKey;
         }
 
         /// <summary>
@@ -89,11 +89,11 @@ namespace MyOrm.Common
         }
 
         /// <summary>
-        /// 外键
+        /// 外键，多个外键以","分隔，按照主键顺序排列
         /// </summary>
-        public string ForeignKey
+        public string ForeignKeys
         {
-            get { return foreignKey; }
+            get { return foreignKeys; }
         }
     }
 

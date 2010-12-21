@@ -9,7 +9,7 @@ namespace MyOrm
     /// <summary>
     /// MyOrm配置项
     /// </summary>
-    public class OrmConfigurationSection : ConfigurationSection
+    public class MyOrmSection : ConfigurationSection
     {
         /// <summary>
         /// 默认数据库连接配置
@@ -41,27 +41,21 @@ namespace MyOrm
             set { this["UseAutoCommand"] = value; }
         }
     }
-    /// <summary>
-    /// 配置
-    /// </summary>
-    public static class DefaultConfiguration
-    {
-        private static IDbConnection defaultConnection;
-        private static TableInfoProvider tableInfoProvider;
-        private static OrmConfigurationSection configSection;
 
+    public static class Configuration
+    {
         /// <summary>
         /// 配置项
         /// </summary>
-        public static OrmConfigurationSection ConfigSection
+        public static MyOrmSection ConfigSection
         {
             get
             {
-                if (configSection == null) configSection = ConfigurationManager.GetSection("MyOrm") as OrmConfigurationSection;
-                return configSection;
+                return ConfigurationManager.GetSection("MyOrm") as MyOrmSection;
             }
         }
 
+        private static IDbConnection defaultConnection;
         /// <summary>
         /// 默认数据库连接
         /// </summary>
@@ -71,27 +65,31 @@ namespace MyOrm
             {
                 if (defaultConnection == null)
                 {
-                    ConnectionStringSettings connectionSetting = String.IsNullOrEmpty(ConfigSection.ConnectionStringName) ? ConfigurationManager.ConnectionStrings[0] : ConfigurationManager.ConnectionStrings[ConfigSection.ConnectionStringName];
+                    string connectionStringName = ConfigSection.ConnectionStringName;
+                    ConnectionStringSettings connectionSetting = String.IsNullOrEmpty(connectionStringName) ? ConfigurationManager.ConnectionStrings[0] : ConfigurationManager.ConnectionStrings[connectionStringName];
                     defaultConnection = DbProviderFactories.GetFactory(connectionSetting.ProviderName).CreateConnection();
                     defaultConnection.ConnectionString = connectionSetting.ConnectionString;
                 }
                 return defaultConnection;
             }
+            set { defaultConnection = value; }
         }
 
+        private static TableInfoProvider defaultProvider;
         /// <summary>
-        /// 表信息提供者
+        /// 默认的表信息提供者
         /// </summary>
-        public static TableInfoProvider TableInfoProvider
+        public static TableInfoProvider DefaultProvider
         {
             get
             {
-                if (tableInfoProvider == null)
+                if (defaultProvider == null)
                 {
-                    tableInfoProvider = Activator.CreateInstance(Type.GetType(ConfigSection.TableInfoProvider, true)) as TableInfoProvider;
+                    defaultProvider = (TableInfoProvider)Activator.CreateInstance(Type.GetType(ConfigSection.TableInfoProvider, true, true));
                 }
-                return tableInfoProvider;
+                return defaultProvider;
             }
+            set { defaultProvider = value; }
         }
 
         /// <summary>
@@ -99,10 +97,7 @@ namespace MyOrm
         /// </summary>
         public static bool UseAutoCommand
         {
-            get
-            {
-                return ConfigSection.UseAutoCommand;
-            }
+            get { return ConfigSection.UseAutoCommand; }
         }
     }
 }

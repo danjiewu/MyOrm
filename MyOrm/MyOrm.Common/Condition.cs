@@ -77,34 +77,10 @@ namespace MyOrm.Common
         }
 
         /// <summary>
-        /// 生成简单查询条件
-        /// </summary>
-        /// <param name="propertyName">属性名</param>
-        /// <param name="expressionFormat">格式化的表达式</param>
-        /// <param name="op">条件比较符</param>
-        /// <param name="value">条件值</param>
-        /// <param name="expressionType">表达式类型</param>
-        /// <param name="opposite">是否为非</param>
-        public SimpleCondition(string propertyName, string expressionFormat, ConditionOperator op, object value, bool opposite)
-        {
-            Property = propertyName;
-            ExpressionFormat = expressionFormat;
-            Operator = op;
-            Value = value;
-            Opposite = opposite;
-        }
-
-        /// <summary>
         /// 属性名
         /// </summary>
         [XmlAttribute]
         public string Property { get; set; }
-
-        /// <summary>
-        /// 格式化的表达式
-        /// </summary>
-        [XmlAttribute]
-        public string ExpressionFormat { get; set; }
 
         /// <summary>
         /// 条件值
@@ -132,21 +108,20 @@ namespace MyOrm.Common
             }
             else
                 str = Convert.ToString(Value);
-            return String.Format("{0} {1}{2} {3}", ExpressionFormat == null ? Property : String.Format(ExpressionFormat, Property), Opposite ? "Not " : null, Operator, str);
+            return String.Format("{0} {1} {2} {3}", Property , Opposite ? "Not " : null, Operator, str);
         }
 
         public override bool Equals(object obj)
         {
             if (obj == null || obj.GetType() != typeof(SimpleCondition)) return false;
             SimpleCondition condition = (SimpleCondition)obj;
-            return condition.Property == Property && condition.Operator == Operator && Equals(condition.Value, Value) && condition.ExpressionFormat == ExpressionFormat;
+            return condition.Property == Property && condition.Operator == Operator && Equals(condition.Value, Value);
         }
 
         public override int GetHashCode()
         {
             int hash = (int)Operator;
             if (Property != null) hash += Property.GetHashCode();
-            if (ExpressionFormat != null) hash += ExpressionFormat.GetHashCode();
             if (Value != null) hash += Value.GetHashCode();
             return hash;
         }
@@ -327,11 +302,7 @@ namespace MyOrm.Common
         /// <summary>
         /// 包含
         /// </summary>
-        In,
-        /// <summary>
-        /// 固定表达式，忽略value值
-        /// </summary>
-        Constant
+        In
     }
 
     /// <summary>

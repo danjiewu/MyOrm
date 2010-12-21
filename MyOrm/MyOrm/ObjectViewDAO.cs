@@ -6,6 +6,7 @@ using System.Collections;
 using MyOrm.Common;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using System.Data.Common;
 
 namespace MyOrm
 {
@@ -15,6 +16,17 @@ namespace MyOrm
     /// <typeparam name="T">实体类型</typeparam>
     public class ObjectViewDAO<T> : ObjectDAOBase, IObjectViewDAO<T>, IObjectViewDAO where T : new()
     {
+        #region 预定义变量
+        /// <summary>
+        /// 表示SQL查询中所有字段的标记
+        /// </summary>
+        public const string ParamAllFields = "@AllFields@";
+        /// <summary>
+        /// 表示SQL查询中多表连接的标记
+        /// </summary>
+        public const string ParamFromTable = "@FromTable@";
+        #endregion
+
         #region 私有变量
         private string fromTable = null;
         private string allFieldsSql = null;
@@ -85,7 +97,7 @@ namespace MyOrm
                     foreach (Column column in SelectColumns)
                     {
                         if (strAllFields.Length != 0) strAllFields.Append(",");
-                        strAllFields.Append(column.SelectExpression);
+                        strAllFields.Append(column.FormattedExpression + " as " + column.PropertyName);
                     }
                     allFieldsSql = strAllFields.ToString();
                 }
@@ -199,7 +211,7 @@ namespace MyOrm
         /// <returns>符合条件的对象个数</returns>
         public virtual int Count(Condition condition)
         {
-            using (IDbCommand command = MakeConditionCommand("select count(*) from @FromTable where @Condition", condition))
+            using (IDbCommand command = MakeConditionCommand("select count(*) from @FromTable@ where @Condition@", condition))
             {
                 return Convert.ToInt32(command.ExecuteScalar());
             }
@@ -212,13 +224,7 @@ namespace MyOrm
         /// <returns>是否存在</returns>
         public virtual bool Exists(Condition condition)
         {
-#if MYSQL
-            using (IDbCommand command = MakeConditionCommand("select 1 from @FromTable where @Condition limit 1", condition))
-#elif ORACLE
-            using (IDbCommand command = MakeConditionCommand("select 1 from @FromTable where rownumber = 1 and @Condition", condition))
-#else
-            using (IDbCommand command = MakeConditionCommand("select top 1 1 from @FromTable where @Condition", condition))
-#endif
+            using (IDbCommand command = MakeConditionCommand("select 1 from @FromTable@ where @Condition@", condition))
             {
                 return command.ExecuteScalar() != null;
             }
@@ -254,7 +260,7 @@ namespace MyOrm
         /// <returns>符合条件的对象列表</returns>
         public virtual List<T> Search(Condition condition)
         {
-            using (IDbCommand command = MakeConditionCommand("select @AllFields from @FromTable" + (condition == null ? null : " where @Condition"), condition))
+            using (IDbCommand command = MakeConditionCommand("select @AllFields@ from @FromTable@" + (condition == null ? null : " where @Condition@"), condition))
             {
                 using (IDataReader reader = command.ExecuteReader())
                 {
@@ -270,7 +276,7 @@ namespace MyOrm
         /// <returns>第一个符合条件的对象，若不存在则返回null</returns>
         public virtual T SearchOne(Condition condition)
         {
-            using (IDbCommand command = MakeConditionCommand("select @AllFields from @FromTable where @Condition", condition))
+            using (IDbCommand command = MakeConditionCommand("select @AllFields@ from @FromTable@ where @Condition@", condition))
             {
                 using (IDataReader reader = command.ExecuteReader())
                 {
@@ -343,11 +349,7 @@ namespace MyOrm
                     //TODO: The orderby is not a safe sql string. Throw exception or not?
                 }
             }
-#if MYSQL
-            string paramedSQL = String.Format("select @AllFieldsfrom @FromTable where @Condition Order by {0} {1} limit {2},{3} ", orderby, direction == ListSortDirection.Ascending ? "asc" : "desc", startIndex, sectionSize);
-#else
-            string paramedSQL = String.Format("select * from (select @AllFields, Row_Number() over (Order by {0} {1}) as Row_Number from @FromTable where @Condition) as TempTable where Row_Number > {2} and Row_Number <= {3}", orderby, direction == ListSortDirection.Ascending ? "asc" : "desc", startIndex, startIndex + sectionSize);
-#endif
+            string paramedSQL = SqlBuilder.GetSelectSectionSql(AllFieldsSql, FromTable, ParamCondition, orderby + (direction == ListSortDirection.Ascending ? " asc" : " desc"), startIndex, sectionSize);
             using (IDbCommand command = MakeConditionCommand(paramedSQL, condition))
             {
                 using (IDataReader reader = command.ExecuteReader())
@@ -384,10 +386,14 @@ namespace MyOrm
 
         #region 常用方法
 
-        protected override IDbCommand MakeConditionCommand(string SQLWithParam, Condition condition)
+        /// <summary>
+        /// 替换Sql中的标记为实际Sql
+        /// </summary>
+        /// <param name="SQLWithParam">包含标记的Sql语句，标记可以为ParamAllFields，ParamFromTable</param>
+        /// <returns></returns>
+        protected virtual string ReplaceParam(string SQLWithParam)
         {
-            SQLWithParam = SQLWithParam.Replace(ParamAllFields, AllFieldsSql).Replace(ParamFromTable, FromTable);
-            return base.MakeConditionCommand(SQLWithParam, condition);
+            return base.ReplaceParam(SQLWithParam).Replace(ParamAllFields, AllFieldsSql).Replace(ParamFromTable, FromTable);
         }
 
         /// <summary>
@@ -433,22 +439,6 @@ namespace MyOrm
                 i++;
             }
             return t;
-        }
-
-        protected object ConvertValue(object dbValue, Type objectType)
-        {
-            if (dbValue == null || dbValue == DBNull.Value)
-                return null;
-
-            if (objectType.IsGenericType && objectType.GetGenericTypeDefinition().Equals(typeof(Nullable<>)))
-                objectType = Nullable.GetUnderlyingType(objectType);
-
-            if (objectType.IsInstanceOfType(dbValue))
-                return dbValue;
-
-            if (objectType.IsEnum) return dbValue;
-
-            return Convert.ChangeType(dbValue, objectType);
         }
         #endregion
     }

@@ -4,6 +4,7 @@ using System.Text;
 using System.Data;
 using MyOrm.Common;
 using System.Data.SqlClient;
+using System.Data.Common;
 
 namespace MyOrm
 {
@@ -285,7 +286,7 @@ namespace MyOrm
         /// <returns>删除对象数量</returns>
         public virtual int Delete(Condition condition)
         {
-            using (IDbCommand command = MakeConditionCommand("delete from @Table" + (condition == null ? null : " where @Condition"), condition))
+            using (IDbCommand command = MakeConditionCommand("delete from @Table@" + (condition == null ? null : " where @Condition@"), condition))
             {
                 return command.ExecuteNonQuery();
             }

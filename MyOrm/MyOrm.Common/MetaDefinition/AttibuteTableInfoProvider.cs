@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using System.Data;
+using System.Collections.ObjectModel;
 
 namespace MyOrm.Common
 {
@@ -55,7 +56,7 @@ namespace MyOrm.Common
         }
 
         /// <summary>
-        /// 根据对象类型得到表信息
+        /// 根据对象类型得到表以及关联信息
         /// </summary>
         /// <param name="objectType">对象类型</param>
         /// <returns>表信息</returns>
@@ -196,7 +197,7 @@ namespace MyOrm.Common
                     bool foreignTypeExists = false;
                     foreach (JoinedTable joinedTable in joinedTables.Values)
                     {
-                        if (joinedTable.Table.ObjectType == column.ForeignType)
+                        if (joinedTable.TableDefinition.ObjectType == column.ForeignType)
                         {
                             foreignTypeExists = true;
                             break;
@@ -207,7 +208,9 @@ namespace MyOrm.Common
                     {
                         TableDefinition foreignTable = GetTableDefinition(column.ForeignType);
                         JoinedTable joinedTable = new JoinedTable(foreignTable);
-                        joinedTable.ForeignKey = new ColumnInfo(column);
+                        List<ColumnRef> foreignKeys = new List<ColumnRef>();
+                        foreignKeys.Add(new ColumnRef(column));
+                        joinedTable.ForeignKeys = foreignKeys.AsReadOnly();
                         joinedTables.Add(joinedTable.Name, joinedTable);
                     }
                 }
@@ -225,7 +228,7 @@ namespace MyOrm.Common
                     {
                         foreach (JoinedTable joinedTable in joinedTables.Values)
                         {
-                            if (joinedTable.Table.ObjectType == primeType)
+                            if (joinedTable.TableDefinition.ObjectType == primeType)
                             {
                                 if (foreignColumn.TargetColumn != null)
                                     throw new ArgumentException(String.Format("Undeterminate table. More than one table of type {0} joined.", primeType.Name));
@@ -244,7 +247,7 @@ namespace MyOrm.Common
                         if (!joinedTables.ContainsKey(foreignTable))
                             throw new ArgumentException(String.Format("Foreign table name {0} of property {1} not exist in joined tables.", foreignColumnAttribute.Foreign, column.PropertyName));
                         if (joinedTables[foreignTable].GetColumn(primeProperty) == null)
-                            throw new ArgumentException(String.Format("Foreign property {0} not exist in type {1}.", primeProperty, joinedTables[foreignTable].Table.ObjectType));
+                            throw new ArgumentException(String.Format("Foreign property {0} not exist in type {1}.", primeProperty, joinedTables[foreignTable].TableDefinition.ObjectType));
 
                         foreignColumn.TargetColumn = joinedTables[foreignTable].GetColumn(primeProperty);
                     }
@@ -257,7 +260,12 @@ namespace MyOrm.Common
             {
                 if (tableJoin.Source == null)
                 {
-                    joinedTables[tableJoin.AliasName].ForeignKey = new ColumnInfo(tableView.GetColumn(tableJoin.ForeignKey));
+                    List<ColumnRef> foreignKeys = new List<ColumnRef>();
+                    foreach (string keyName in tableJoin.ForeignKeys.Split(','))
+                    {
+                        foreignKeys.Add(new ColumnRef(tableView.GetColumn(keyName)));
+                    }
+                    joinedTables[tableJoin.AliasName].ForeignKeys = foreignKeys.AsReadOnly();
                 }
                 else
                 {
@@ -274,7 +282,7 @@ namespace MyOrm.Common
                         Type sourceType = (Type)tableJoin.Source;
                         foreach (JoinedTable joinedTable in joinedTables.Values)
                         {
-                            if (joinedTable.Table.ObjectType == sourceType)
+                            if (joinedTable.TableDefinition.ObjectType == sourceType)
                             {
                                 if (sourceTable == null)
                                     sourceTable = joinedTable;
@@ -285,7 +293,12 @@ namespace MyOrm.Common
                         if (sourceTable == null)
                             throw new ArgumentException(String.Format("Source table type {0} not exist in joined tables.", sourceType));
                     }
-                    joinedTables[tableJoin.AliasName].ForeignKey = sourceTable.GetColumn(tableJoin.ForeignKey);
+                    List<ColumnRef> foreignKeys = new List<ColumnRef>();
+                    foreach (string keyName in tableJoin.ForeignKeys.Split(','))
+                    {
+                        foreignKeys.Add(sourceTable.GetColumn(keyName));
+                    }
+                    joinedTables[tableJoin.AliasName].ForeignKeys = foreignKeys.AsReadOnly();
                 }
             }
 
