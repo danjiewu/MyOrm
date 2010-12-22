@@ -47,40 +47,43 @@ namespace MyOrm
             get { return table; }
         }
 
+        /// <summary>
+        /// 查询所有列的数据
+        /// </summary>
+        /// <param name="condition">查询条件</param>
+        /// <returns></returns>
         public DataTable Select(Condition condition)
         {
-            using (IDbCommand command = MakeConditionCommand("select @AllFields from @FromTable@ where @Condition@", condition))
+            using (IDbCommand command = MakeConditionCommand("select @AllFields@ from @FromTable@ where @Condition@", condition))
             {
                 return GetAll(command, SelectColumns);
             }
         }
 
         /// <summary>
-        /// 
+        /// 查询指定列的数据
         /// </summary>
         /// <param name="condition">查询条件</param>
-        /// <param name="selectProperties">需要读取数据的属性集合</param>
+        /// <param name="selectProperties">需要得到数据的属性集合</param>
         /// <returns></returns>
-        public DataTable Select(Condition condition, params string[] selectProperties)
+        public DataTable Select( string[] selectProperties,Condition condition)
         {
-            StringBuilder strSelectFields = new StringBuilder();
             List<Column> columns = new List<Column>();
             foreach (string property in selectProperties)
             {
                 Column column = Table.GetColumn(property);
                 if (column == null) throw new ArgumentException(String.Format("Type \"{0}\" does not have property \"{1}\"", ObjectType.Name, property), "properties");
-                if (strSelectFields.Length != 0) strSelectFields.Append(",");
-                strSelectFields.Append(column.FormattedExpression + " as " + column.PropertyName);
                 columns.Add(column);
             }
-            using (IDbCommand command = MakeConditionCommand("select " + strSelectFields + "from @FromTable@ where @Condition@", condition))
+            
+            using (IDbCommand command = MakeConditionCommand("select " + GetSelectFieldsSQL(columns) + "from @FromTable@ where @Condition@", condition))
             {
                 return GetAll(command, columns.ToArray());
             }
         }
 
         /// <summary>
-        /// 读取所选择列的数据生成DataTable
+        /// 读取所选择列的数据生成DataTable，将数据库数据转化为实际类型
         /// </summary>
         /// <param name="command">要执行的IDbCommand</param>
         /// <param name="selectColumns">需要读取的列</param>
