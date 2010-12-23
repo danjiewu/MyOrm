@@ -105,7 +105,7 @@ namespace MyOrm
         /// <summary>
         /// 查询时使用的相关联的多个表
         /// </summary>
-        protected string FromTable
+        protected string From
         {
             get
             {
@@ -230,7 +230,7 @@ namespace MyOrm
         /// <returns></returns>
         protected virtual string ReplaceParam(string SQLWithParam)
         {
-            return SQLWithParam.Replace(ParamTable, TableName).Replace(ParamFromTable, FromTable);
+            return SQLWithParam.Replace(ParamTable, TableName).Replace(ParamFromTable, From);
         }
 
         /// <summary>
