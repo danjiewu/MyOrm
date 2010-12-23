@@ -79,6 +79,7 @@
     <Compile Include="MetaDefinition\TableInfoProvider.cs" />
     <Compile Include="MetaDefinition\TableView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SectionSet.cs" />
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -92,7 +92,7 @@ namespace MyOrm
         private IDbCommand MakeGetObjectCommand()
         {
             IDbCommand command = NewCommand();
-            command.CommandText = String.Format("select {0} from {1} where {2}", AllFieldsSql, FromTable, MakeIsKeyCondition(command));
+            command.CommandText = String.Format("select {0} from {1} where {2}", AllFieldsSql, From, MakeIsKeyCondition(command));
             command.Prepare();
             return command;
         }
@@ -174,18 +174,6 @@ namespace MyOrm
         }
 
         /// <summary>
-        /// 根据单个条件查询
-        /// </summary>
-        /// <param name="name">属性名</param>
-        /// <param name="op">条件判断操作符</param>
-        /// <param name="value">值</param>
-        /// <returns>符合条件的对象列表</returns>
-        public List<T> Search(string name, ConditionOperator op, object value)
-        {
-            return Search(new SimpleCondition(name, op, value));
-        }
-
-        /// <summary>
         /// 根据条件查询，多个条件以逻辑与连接
         /// </summary>
         /// <param name="condition">属性名与值的列表，若为null则表示没有条件</param>
@@ -261,7 +249,7 @@ namespace MyOrm
                 }
                 else
                 {
-                    //TODO: Add one column or all columns?
+                    //TODO: OrderBy one column or all columns?
                     throw new Exception("No columns or keys to sort by.");
                 }
             }
@@ -275,7 +263,7 @@ namespace MyOrm
                     //TODO: The orderby is not a safe sql string. Throw exception or not?
                 }
             }
-            string paramedSQL = SqlBuilder.GetSelectSectionSql(AllFieldsSql, FromTable, ParamCondition, orderby + (direction == ListSortDirection.Ascending ? " asc" : " desc"), startIndex, sectionSize);
+            string paramedSQL = SqlBuilder.GetSelectSectionSql(AllFieldsSql, From, ParamCondition, orderby + (direction == ListSortDirection.Ascending ? " asc" : " desc"), startIndex, sectionSize);
             using (IDbCommand command = MakeConditionCommand(paramedSQL, condition))
             {
                 return GetAll(command);
