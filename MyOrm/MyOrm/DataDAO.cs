@@ -63,8 +63,8 @@ namespace MyOrm
         /// <summary>
         /// 查询指定列的数据
         /// </summary>
-        /// <param name="condition">查询条件</param>
         /// <param name="selectProperties">需要得到数据的属性集合</param>
+        /// <param name="condition">查询条件</param>
         /// <returns></returns>
         public DataTable Select(string[] selectProperties, Condition condition)
         {
@@ -72,7 +72,7 @@ namespace MyOrm
             foreach (string property in selectProperties)
             {
                 Column column = Table.GetColumn(property);
-                if (column == null) throw new ArgumentException(String.Format("Type \"{0}\" does not have property \"{1}\"", ObjectType.Name, property), "properties");
+                if (column == null) throw new ArgumentException(String.Format("Type \"{0}\" does not have property \"{1}\"", ObjectType.Name, property), "selectProperties");
                 columns.Add(column);
             }
 
@@ -82,23 +82,34 @@ namespace MyOrm
             }
         }
 
+        /// <summary>
+        /// 分页查询结果
+        /// </summary>
+        /// <param name="selectProperties">需要得到数据的属性集合</param>
+        /// <param name="condition">查询条件</param>
+        /// <param name="section">分页设定</param>
+        /// <returns></returns>
         public DataTable SelectSection(string[] selectProperties, Condition condition, SectionSet section)
         {
             List<Column> columns = new List<Column>();
             foreach (string property in selectProperties)
             {
                 Column column = Table.GetColumn(property);
-                if (column == null) throw new ArgumentException(String.Format("Type \"{0}\" does not have property \"{1}\"", ObjectType.Name, property), "properties");
+                if (column == null) throw new ArgumentException(String.Format("Type \"{0}\" does not have property \"{1}\"", ObjectType.Name, property), "selectProperties");
                 columns.Add(column);
             }
-            SqlBuilder.GetSelectSectionSql(GetSelectFieldsSQL(columns),From,
-            return GetAll(null);
-        }
+
+            string sql = SqlBuilder.GetSelectSectionSql(GetSelectFieldsSQL(columns), From, ParamCondition, GetOrderBySQL(section.Orders), section.StartIndex, section.SectionSize);
+            using (IDbCommand command = MakeConditionCommand(sql, condition))
+            {
+                return GetAll(command, columns);
+            }
+        }        
 
         /// <summary>
         /// 根据主键更新字段值
         /// </summary>
-        /// <param name="updateValues">需要更新的字段名称以及值集合</param>
+        /// <param name="updateValues">需要更新的属性名称以及值集合</param>
         /// <param name="keys">主键，多个主键需按主键名排序</param>
         /// <returns>更新是否成功</returns>
         public bool Update(IEnumerable<KeyValuePair<string, object>> updateValues, params object[] keys)
@@ -116,7 +127,7 @@ namespace MyOrm
         /// <summary>
         /// 根据条件更新字段值
         /// </summary>
-        /// <param name="updateValues">需要更新的字段名称以及值集合</param>
+        /// <param name="updateValues">需要更新的属性名称以及值集合</param>
         /// <param name="condition">条件</param>
         /// <returns>更新的记录个数</returns>
         public int Update(IEnumerable<KeyValuePair<string, object>> updateValues, Condition condition)
