@@ -200,31 +200,6 @@ namespace MyOrm
         }
 
         /// <summary>
-        /// 按默认排序分页查询
-        /// </summary>
-        /// <param name="condition">查询条件</param>
-        /// <param name="startIndex">起始位置</param>
-        /// <param name="sectionSize">最大记录数</param>
-        /// <returns>符合条件的分页对象列表</returns>
-        public virtual List<T> SearchSection(Condition condition, int startIndex, int sectionSize)
-        {
-            return SearchSection(condition, startIndex, sectionSize, null);
-        }
-
-        /// <summary>
-        /// 以升序进行分页查询
-        /// </summary>
-        /// <param name="condition">查询条件</param>
-        /// <param name="startIndex">起始位置</param>
-        /// <param name="sectionSize">最大记录数</param>
-        /// <param name="orderby">排序字段</param>
-        /// <returns>符合条件的分页对象列表</returns>
-        public virtual List<T> SearchSection(Condition condition, int startIndex, int sectionSize, string orderby)
-        {
-            return SearchSection(condition, startIndex, sectionSize, orderby, ListSortDirection.Ascending);
-        }
-
-        /// <summary>
         /// 分页查询
         /// </summary>
         /// <param name="condition">查询条件</param>
@@ -232,44 +207,29 @@ namespace MyOrm
         /// <param name="sectionSize">最大记录数</param>
         /// <param name="orderby">排序字段</param>
         /// <param name="direction">排列顺序</param>
-        /// <returns>符合条件的分页对象列表</returns>
+        /// <returns></returns>
         public virtual List<T> SearchSection(Condition condition, int startIndex, int sectionSize, string orderby, ListSortDirection direction)
         {
-            if (string.IsNullOrEmpty(orderby))
-            {
-                if (Table.Definition.Keys.Count != 0)
-                {
-                    StringBuilder strKeys = new StringBuilder();
-                    foreach (ColumnDefinition key in Table.Definition.Keys)
-                    {
-                        if (strKeys.Length != 0) strKeys.Append(",");
-                        strKeys.Append(String.Format("{0}.{1}", Table.FormattedName, key.FormattedName));
-                    }
-                    orderby = strKeys.ToString();
-                }
-                else
-                {
-                    //TODO: OrderBy one column or all columns?
-                    throw new Exception("No columns or keys to sort by.");
-                }
-            }
-            else
-            {
-                Column column = Table.GetColumn(orderby);
-                if (column != null)
-                    orderby = column.FormattedExpression;
-                else
-                {
-                    //TODO: The orderby is not a safe sql string. Throw exception or not?
-                }
-            }
-            string paramedSQL = SqlBuilder.GetSelectSectionSql(AllFieldsSql, From, ParamCondition, orderby + (direction == ListSortDirection.Ascending ? " asc" : " desc"), startIndex, sectionSize);
-            using (IDbCommand command = MakeConditionCommand(paramedSQL, condition))
+            SectionSet section = new SectionSet() { StartIndex = startIndex, SectionSize = sectionSize };
+            if (!String.IsNullOrEmpty(orderby)) section.Orders = new Sorting[] { new Sorting() { PropertyName = orderby, Direction = direction } };
+            return SearchSection(condition, section);
+        }
+        #endregion
+
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <param name="condition">查询条件</param>
+        /// <param name="section">分页设定</param>
+        /// <returns></returns>
+        public virtual List<T> SearchSection(Condition condition, SectionSet section)
+        {
+            string sql = SqlBuilder.GetSelectSectionSql(AllFieldsSql, From, ParamCondition, GetOrderBySQL(section.Orders), section.StartIndex, section.SectionSize);
+            using (IDbCommand command = MakeConditionCommand(sql, condition))
             {
                 return GetAll(command);
             }
         }
-        #endregion
 
         #region IObjectViewDAO Members
 
@@ -288,9 +248,9 @@ namespace MyOrm
             return Search(condition);
         }
 
-        IList IObjectViewDAO.SearchSection(Condition condition, int startIndex, int sectionSize, string orderby, ListSortDirection direction)
+        IList IObjectViewDAO.SearchSection(Condition condition, SectionSet section)
         {
-            return SearchSection(condition, startIndex, sectionSize, orderby, direction);
+            return SearchSection(condition, section);
         }
 
         #endregion

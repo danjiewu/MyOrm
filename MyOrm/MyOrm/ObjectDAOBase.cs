@@ -7,6 +7,7 @@ using System.Text.RegularExpressions;
 using MyOrm.Common;
 using System.Data.Common;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 
 namespace MyOrm
 {
@@ -181,6 +182,44 @@ namespace MyOrm
                 strAllFields.Append(column.FormattedExpression + " as " + column.PropertyName);
             }
             return strAllFields.ToString();
+        }
+
+        /// <summary>
+        /// 生成orderby部分的sql
+        /// </summary>
+        /// <param name="orders">排序项的集合，按优先级顺序排列</param>
+        /// <returns></returns>
+        protected string GetOrderBySQL(Sorting[] orders)
+        {
+            StringBuilder orderBy = new StringBuilder();
+            if (orders == null || orders.Length == 0)
+            {
+                if (TableDefinition.Keys.Count != 0)
+                {
+                    foreach (ColumnDefinition key in TableDefinition.Keys)
+                    {
+                        if (orderBy.Length != 0) orderBy.Append(",");
+                        orderBy.AppendFormat("{0}.{1}", Table.FormattedName, key.FormattedName);
+                    }
+                }
+                else
+                {
+                    //TODO: OrderBy one column or all columns?
+                    throw new Exception("No columns or keys to sort by.");
+                }
+            }
+            else
+            {
+                foreach (Sorting sorting in orders)
+                {
+                    Column column = Table.GetColumn(sorting.PropertyName);
+                    if (column == null) throw new ArgumentException(String.Format("Type \"{0}\" does not have property \"{1}\"", ObjectType.Name, sorting.PropertyName), "section");
+                    if (orderBy.Length > 0) orderBy.Append(",");
+                    orderBy.Append(column.FormattedExpression);
+                    orderBy.Append(sorting.Direction == ListSortDirection.Ascending ? " asc" : " desc");
+                }
+            }
+            return orderBy.ToString();
         }
 
         /// <summary>

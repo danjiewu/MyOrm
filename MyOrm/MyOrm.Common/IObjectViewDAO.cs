@@ -39,12 +39,9 @@ namespace MyOrm.Common
         /// 分页查询
         /// </summary>
         /// <param name="condition">查询条件</param>
-        /// <param name="startIndex">起始位置</param>
-        /// <param name="sectionSize">最大记录数</param>
-        /// <param name="orderby">排序字段</param>
-        /// <param name="direction">排列顺序</param>
-        /// <returns>符合条件的分页对象列表</returns>
-        new List<T> SearchSection(Condition condition, int startIndex, int sectionSize, string orderby, ListSortDirection direction);
+        /// <param name="section">分页设定</param>
+        /// <returns></returns>
+        new List<T> SearchSection(Condition condition, SectionSet section);
     }
     #endregion
 
@@ -100,12 +97,9 @@ namespace MyOrm.Common
         /// 分页查询
         /// </summary>
         /// <param name="condition">查询条件</param>
-        /// <param name="startIndex">起始位置</param>
-        /// <param name="sectionSize">最大记录数</param>
-        /// <param name="orderby">排序字段</param>
-        /// <param name="direction">排列顺序</param>
-        /// <returns>符合条件的分页对象列表</returns>
-        IList SearchSection(Condition condition, int startIndex, int sectionSize, string orderby, ListSortDirection direction);
+        /// <param name="section">分页设定</param>
+        /// <returns></returns>
+        IList SearchSection(Condition condition, SectionSet section);
     }
     #endregion
 }

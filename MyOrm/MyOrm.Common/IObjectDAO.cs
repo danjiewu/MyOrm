@@ -24,15 +24,7 @@ namespace MyOrm.Common
         /// </summary>
         /// <param name="o">待更新的对象</param>
         /// <returns>是否成功更新</returns>
-        bool Update(T o);
-
-        /// <summary>
-        /// 将对象更新到数据库，检查数据库冲突
-        /// </summary>
-        /// <param name="current">待更新的对象</param>
-        /// <param name="original">原始的对象</param>
-        /// <returns>是否成功更新</returns>
-        bool Update(T current, T original);
+        bool Update(T o);        
 
         /// <summary>
         /// 更新或添加对象，若存在则更新，若不存在则添加
@@ -69,15 +61,6 @@ namespace MyOrm.Common
         /// <param name="o">待更新的对象</param>
         /// <returns>是否成功更新</returns>
         bool Update(Object o);
-
-
-        /// <summary>
-        /// 将对象更新到数据库，检查数据库冲突
-        /// </summary>
-        /// <param name="current">待更新的对象</param>
-        /// <param name="original">原始的对象</param>
-        /// <returns>是否成功更新</returns>
-        bool Update(Object current, Object original);
 
         /// <summary>
         /// 更新或添加对象，若存在则更新，若不存在则添加

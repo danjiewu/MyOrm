@@ -232,16 +232,6 @@ namespace MyOrm
             return UpdateCommand.ExecuteNonQuery() > 0;
         }
 
-        /// <summary>
-        /// 将对象更新到数据库，检查数据库冲突
-        /// </summary>
-        /// <param name="current">待更新的对象</param>
-        /// <param name="original">原始的对象</param>
-        /// <returns>是否成功更新</returns>
-        public bool Update(T current, T original)
-        {
-            throw new NotImplementedException();
-        }
 
         /// <summary>
         /// 更新或添加对象，若存在则更新，若不存在则添加
@@ -320,11 +310,6 @@ namespace MyOrm
         bool IObjectDAO.Update(object o)
         {
             return Update((T)o);
-        }
-
-        bool IObjectDAO.Update(object current, object original)
-        {
-            return Update((T)current, (T)original);
         }
 
         UpdateOrInsertResult IObjectDAO.UpdateOrInsert(object o)
