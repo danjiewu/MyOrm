@@ -37,6 +37,7 @@ namespace MyOrm
 
         #region 私有变量
 
+        private IDbConnection dbConnection;
         private ReadOnlyCollection<Column> selectColumns;
         private string allFieldsSql = null;
         private string tableName = null;
@@ -78,6 +79,9 @@ namespace MyOrm
             get { return null; }
         }
 
+        /// <summary>
+        /// 当前生成sql的上下文
+        /// </summary>
         protected SqlBuildContext CurrentContext
         {
             get { return new SqlBuildContext() { Table = Table }; }
@@ -146,7 +150,7 @@ namespace MyOrm
                 }
                 return allFieldsSql;
             }
-        }  
+        }
         #endregion
 
         #region 方法
@@ -155,8 +159,12 @@ namespace MyOrm
         /// </summary>
         public IDbConnection Connection
         {
-            get;
-            set;
+            get
+            {
+                if (dbConnection == null) dbConnection = Configuration.DefaultConnection;
+                return dbConnection;
+            }
+            set { dbConnection = value; }
         }
 
         /// <summary>
@@ -316,7 +324,7 @@ namespace MyOrm
         /// 将数据库取得的值转化为对象属性类型所对应的值
         /// </summary>
         /// <param name="dbValue">数据库取得的值</param>
-        /// <param name="column">列属性</param>
+        /// <param name="objectType">对象属性的类型</param>
         /// <returns>对象属性类型所对应的值</returns>
         protected virtual object ConvertValue(object dbValue, Type objectType)
         {

@@ -6,11 +6,17 @@ using System.Reflection.Emit;
 
 namespace FastMethodInvoker
 {
+    /// <summary>
+    /// FastInvoke生成的方法委托
+    /// </summary>
+    /// <param name="target">调用目标</param>
+    /// <param name="paramters">调用参数</param>
+    /// <returns></returns>
     public delegate object FastInvokeHandler(object target, object[] paramters);
 
     /// <summary> 
     /// 引用自CodeProject的FastInvoke项目
-    /// <see cref="http://www.codeproject.com/KB/cs/FastMethodInvoker.aspx"/>
+    /// http://www.codeproject.com/KB/cs/FastMethodInvoker.aspx
     /// </summary>
     public class FastInvoke
     { 
@@ -19,6 +25,11 @@ namespace FastMethodInvoker
             return invoke(null, paramters);
         }
 
+        /// <summary>
+        /// 获取FastInvokeHandler
+        /// </summary>
+        /// <param name="methodInfo">目标方法的MethodInfo定义</param>
+        /// <returns></returns>
         public static FastInvokeHandler GetMethodInvoker(MethodInfo methodInfo)
         {
             DynamicMethod dynamicMethod = new DynamicMethod(string.Empty, typeof(object), new Type[] { typeof(object), typeof(object[]) }, methodInfo.DeclaringType.Module);

@@ -6,8 +6,16 @@ using System.Data.Common;
 
 namespace MyOrm
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class AutoCommand : IDbCommand
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sqlBuilder"></param>
+        /// <param name="target"></param>
         public AutoCommand(SqlBuilder sqlBuilder, IDbCommand target)
         {
             this.sqlBuilder = sqlBuilder;
@@ -15,9 +23,15 @@ namespace MyOrm
         }
 
         private SqlBuilder sqlBuilder;
+        /// <summary>
+        /// 生成Sql语句的辅助类
+        /// </summary>
         public SqlBuilder SqlBuilder { get { return sqlBuilder; } }
 
         private IDbCommand target;
+        /// <summary>
+        /// 目标Command
+        /// </summary>
         public IDbCommand Target
         {
             get { return target; }

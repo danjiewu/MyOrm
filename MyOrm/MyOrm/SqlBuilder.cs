@@ -9,6 +9,9 @@ using System.Data.Common;
 
 namespace MyOrm
 {
+    /// <summary>
+    /// 生成Sql语句的辅助类
+    /// </summary>
     public class SqlBuilder
     {
         #region 预定义变量
@@ -25,7 +28,7 @@ namespace MyOrm
         /// </summary>
         protected static Regex sqlNameRegex = new Regex(@"\[([^\]]+)\]");
 
-        private Dictionary<Type, IConditionBuilder> extCondtionBuilders = new Dictionary<Type, IConditionBuilder>();
+        private Dictionary<Type, IConditionSqlBuilder> extCondtionBuilders = new Dictionary<Type, IConditionSqlBuilder>();
         #endregion
 
         /// <summary>
@@ -41,7 +44,7 @@ namespace MyOrm
         /// </summary>
         /// <param name="conditionType">自定义条件类型</param>
         /// <param name="conditionBuilder">自定义条件生成类</param>
-        public void RegisterConditionBuilder(Type conditionType, IConditionBuilder conditionBuilder)
+        public void RegisterConditionBuilder(Type conditionType, IConditionSqlBuilder conditionBuilder)
         {
             extCondtionBuilders[conditionType] = conditionBuilder;
         }
@@ -222,6 +225,7 @@ namespace MyOrm
         /// <param name="select">select内容</param>
         /// <param name="from">from块</param>
         /// <param name="where">where条件</param>
+        /// <param name="orderBy">排序</param>
         /// <param name="startIndex">起始位置，从1开始</param>
         /// <param name="sectionSize">查询条数</param>
         /// <returns></returns>
@@ -323,8 +327,18 @@ namespace MyOrm
         }
     }
 
-    public interface IConditionBuilder
+    /// <summary>
+    /// 自定义Condition转换为sql语句的接口
+    /// </summary>
+    public interface IConditionSqlBuilder
     {
+        /// <summary>
+        /// 生成sql语句
+        /// </summary>
+        /// <param name="context">生成sql的上下文</param>
+        /// <param name="customConditon">自定义Condition</param>
+        /// <param name="outputParams">存放参数的集合</param>
+        /// <returns>生成的sql字符串</returns>
         string BuildConditionSql(SqlBuildContext context, Condition customConditon, IList outputParams);
     }
 
@@ -333,8 +347,17 @@ namespace MyOrm
     /// </summary>
     public class SqlBuildContext
     {
+        /// <summary>
+        /// 表别名
+        /// </summary>
         public string TableAliasName { get; set; }
+        /// <summary>
+        /// 表信息
+        /// </summary>
         public Table Table { get; set; }
+        /// <summary>
+        /// 序列，用来生成表别名
+        /// </summary>
         public int Sequence { get; set; }
     }
 }

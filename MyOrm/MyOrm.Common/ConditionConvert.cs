@@ -7,6 +7,9 @@ using System.Collections;
 
 namespace MyOrm.Common
 {
+    /// <summary>
+    /// 从字符串生成条件，条件转换为字符串，以及判定对象是否符合条件等操作的静态类
+    /// </summary>
     public static class ConditionConvert
     {
         /// <summary>
@@ -78,8 +81,7 @@ namespace MyOrm.Common
         /// 将属性和字符串转换为简单查询条件
         /// </summary>
         /// <param name="property">属性</param>
-        /// <param name="text">表示查询语句的字符串,可以以"=","<",">","!","%","*","<=",">="为起始字符表示条件符号
-        /// </list></param>
+        /// <param name="text">表示查询语句的字符串,可以使用"=","&lt;","&gt;","!","%","*","&lt;=","&gt;="为起始字符表示条件符号 </param>
         /// <returns>简单查询条件</returns>
         public static SimpleCondition ParseCondition(PropertyDescriptor property, string text)
         {
@@ -206,12 +208,21 @@ namespace MyOrm.Common
     }
 
     /// <summary>
-    /// 
+    /// 条件判定结果
     /// </summary>
     public enum EnsureResult
     {
+        /// <summary>
+        /// 不满足条件
+        /// </summary>
         False,
+        /// <summary>
+        /// 满足条件
+        /// </summary>
         True,
+        /// <summary>
+        /// 无法确定
+        /// </summary>
         Undetermined
     }
 }

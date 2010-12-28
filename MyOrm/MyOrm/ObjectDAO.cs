@@ -21,16 +21,25 @@ namespace MyOrm
         private IDbCommand updateOrInsertCommand;
         #endregion
 
+        /// <summary>
+        /// 实体类的类型
+        /// </summary>
         public override Type ObjectType
         {
             get { return typeof(T); }
         }
 
+        /// <summary>
+        /// 表信息
+        /// </summary>
         protected override Table Table
         {
             get { return Provider.GetTableDefinition(typeof(T)); }
         }
 
+        /// <summary>
+        /// 标识列
+        /// </summary>
         protected ColumnDefinition IdentityColumn
         {
             get

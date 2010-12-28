@@ -11,6 +11,12 @@ namespace MyOrm.Common
     /// </summary>
     public static class Utility
     {
+        /// <summary>
+        /// 获取自定义Attribute
+        /// </summary>
+        /// <typeparam name="T">自定义Attribute的类型</typeparam>
+        /// <param name="memberInfo">需要获取自定义Attribute的MemberInfo</param>
+        /// <returns></returns>
         public static T GetAttribute<T>(MemberInfo memberInfo) where T : System.Attribute
         {
             object[] atts = memberInfo.GetCustomAttributes(typeof(T), true);
@@ -46,6 +52,11 @@ namespace MyOrm.Common
             else return DbType.Object;
         }
 
+        /// <summary>
+        /// 获取指定数据类型的默认长度
+        /// </summary>
+        /// <param name="columnType">数据库列的数据类型</param>
+        /// <returns></returns>
         public static int GetDefaultLength(DbType columnType)
         {
             switch (columnType)
