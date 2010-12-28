@@ -36,7 +36,8 @@ namespace MyOrm.Common
             get { return foreignKeys; }
             internal set
             {
-                if (foreignKeys.Count != foreignPrimeKeys.Count) throw new ArgumentException("Quantity of foreignKeys not same as foreignPrimeKeys.");
+                if (value == null) throw new ArgumentNullException("value");
+                if (value.Count != foreignPrimeKeys.Count) throw new ArgumentException("Quantity of foreignKeys not same as foreignPrimeKeys.");
                 foreignKeys = value;
             }
         }
