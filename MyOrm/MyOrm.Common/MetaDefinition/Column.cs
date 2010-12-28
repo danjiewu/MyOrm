@@ -94,6 +94,9 @@ namespace MyOrm.Common
             }
         }
 
+        /// <summary>
+        /// Ãû³Æ
+        /// </summary>
         public override string Name
         {
             get
