@@ -76,7 +76,7 @@ namespace MyOrm
         /// </summary>
         protected virtual SqlBuilder SqlBuilder
         {
-            get { return null; }
+            get { return Configuration.DefaultSqlBuilder; }
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace MyOrm
         /// <summary>
         /// 表信息提供者
         /// </summary>
-        protected TableInfoProvider Provider
+        protected virtual TableInfoProvider Provider
         {
             get { return Configuration.DefaultProvider; }
         }
@@ -110,7 +110,7 @@ namespace MyOrm
         /// <summary>
         /// 查询时使用的相关联的多个表
         /// </summary>
-        protected string From
+        protected virtual string From
         {
             get
             {
@@ -125,7 +125,7 @@ namespace MyOrm
         /// <summary>
         /// 查询时需要获取的所有列
         /// </summary>
-        protected ReadOnlyCollection<Column> SelectColumns
+        protected virtual ReadOnlyCollection<Column> SelectColumns
         {
             get
             {
@@ -173,7 +173,7 @@ namespace MyOrm
         /// <returns></returns>
         public virtual IDbCommand NewCommand()
         {
-            return Connection.CreateCommand();
+            return Configuration.UseAutoCommand ? new AutoCommand(SqlBuilder, Connection.CreateCommand()) : Connection.CreateCommand();
         }
 
         /// <summary>
