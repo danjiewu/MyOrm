@@ -9,6 +9,9 @@ namespace MyOrm.Common
     /// </summary>
     public abstract class SqlStatement
     {
+        /// <summary>
+        /// Sql名称的格式
+        /// </summary>
         public const string SqlNameFormat = "[{0}]";
 
         private string name;
@@ -35,6 +38,11 @@ namespace MyOrm.Common
         /// </summary>
         public abstract string FormattedExpression { get; }
 
+
+        /// <summary>
+        /// 得到名称的字符串
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return FormattedName;

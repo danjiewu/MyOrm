@@ -82,6 +82,10 @@ namespace MyOrm.Common
             namedColumnCache.Clear();
         }
 
+        /// <summary>
+        /// 重写ToString方法
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return Name;
@@ -176,6 +180,10 @@ namespace MyOrm.Common
     /// </summary>
     public abstract class TableRef : SqlStatement
     {
+        /// <summary>
+        /// 创建数据库表的引用
+        /// </summary>
+        /// <param name="table">引用的数据库表定义</param>
         public TableRef(TableDefinition table)
         {
             this.tableDefinition = table;

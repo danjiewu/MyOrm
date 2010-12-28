@@ -42,6 +42,9 @@ namespace MyOrm
         }
     }
 
+    /// <summary>
+    /// ª∑æ≥…Ë÷√
+    /// </summary>
     public static class Configuration
     {
         /// <summary>

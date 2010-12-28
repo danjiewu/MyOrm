@@ -6,10 +6,14 @@ using System.Collections.ObjectModel;
 namespace MyOrm.Common
 {
     /// <summary>
-    /// 连接的表
+    /// 关联的外部表
     /// </summary>
     public class JoinedTable : TableRef
     {
+        /// <summary>
+        /// 创建关联表
+        /// </summary>
+        /// <param name="foreignTable">外部表的表定义</param>
         public JoinedTable(TableDefinition foreignTable)
             : base(foreignTable)
         {
@@ -25,7 +29,7 @@ namespace MyOrm.Common
         private ReadOnlyCollection<ColumnRef> foreignPrimeKeys;
         private ReadOnlyCollection<ColumnRef> foreignKeys;
         /// <summary>
-        /// 外键
+        /// 用来连接的外键
         /// </summary>
         public ReadOnlyCollection<ColumnRef> ForeignKeys
         {

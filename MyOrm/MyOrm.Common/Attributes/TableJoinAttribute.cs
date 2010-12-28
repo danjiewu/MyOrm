@@ -22,11 +22,11 @@ namespace MyOrm.Common
         /// <param name="sourceTable">关联的源表</param>
         /// <param name="targetType">关联的对象类型</param>
         /// <param name="foreignKeys">外键</param>
-        public TableJoinAttribute(string sourceTable, Type targetType, string foreignKey)
+        public TableJoinAttribute(string sourceTable, Type targetType, string foreignKeys)
         {
             this.sourceTable = sourceTable;
             this.targetType = targetType;
-            this.foreignKeys = foreignKey;
+            this.foreignKeys = foreignKeys;
         }
 
 
@@ -36,11 +36,11 @@ namespace MyOrm.Common
         /// <param name="sourceTable">关联的源表</param>
         /// <param name="targetType">关联的对象类型</param>
         /// <param name="foreignKeys">外键</param>
-        public TableJoinAttribute(Type sourceTable, Type targetType, string foreignKey)
+        public TableJoinAttribute(Type sourceTable, Type targetType, string foreignKeys)
         {
             this.sourceTable = sourceTable;
             this.targetType = targetType;
-            this.foreignKeys = foreignKey;
+            this.foreignKeys = foreignKeys;
         }
 
         /// <summary>

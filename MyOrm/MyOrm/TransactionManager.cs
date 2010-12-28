@@ -5,6 +5,9 @@ using System.Data;
 
 namespace MyOrm
 {
+    /// <summary>
+    /// 事务管理类
+    /// </summary>
     public static class TransactionManager
     {
         private static Dictionary<IDbConnection, IDbTransaction> transactionCache = new Dictionary<IDbConnection, IDbTransaction>();
@@ -50,7 +53,6 @@ namespace MyOrm
         /// <summary>
         /// 获取默认数据库链接的当前事务
         /// </summary>
-        /// <param name="connection">数据库链接</param>
         /// <returns></returns>
         public static IDbTransaction DefaultTransaction()
         {

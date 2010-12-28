@@ -92,10 +92,22 @@ namespace MyOrm.Common
     }
     #endregion
 
+    /// <summary>
+    /// 插入或更新操作的返回结果
+    /// </summary>
     public enum UpdateOrInsertResult
     {
+        /// <summary>
+        /// 插入成功
+        /// </summary>
         Inserted,
+        /// <summary>
+        /// 更新成功
+        /// </summary>
         Updated,
+        /// <summary>
+        /// 失败
+        /// </summary>
         Failed
     }
 }

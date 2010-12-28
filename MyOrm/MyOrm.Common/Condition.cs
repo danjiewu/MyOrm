@@ -94,6 +94,10 @@ namespace MyOrm.Common
         [XmlAttribute]
         public ConditionOperator Operator { get; set; }
 
+        /// <summary>
+        /// 重写ToString方法
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             string str;
@@ -108,9 +112,14 @@ namespace MyOrm.Common
             }
             else
                 str = Convert.ToString(Value);
-            return String.Format("{0} {1} {2} {3}", Property , Opposite ? "Not " : null, Operator, str);
+            return String.Format("{0} {1} {2} {3}", Property, Opposite ? "Not " : null, Operator, str);
         }
 
+        /// <summary>
+        /// 重写Equals方法
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <returns></returns>
         public override bool Equals(object obj)
         {
             if (obj == null || obj.GetType() != typeof(SimpleCondition)) return false;
@@ -118,6 +127,10 @@ namespace MyOrm.Common
             return condition.Property == Property && condition.Operator == Operator && Equals(condition.Value, Value);
         }
 
+        /// <summary>
+        /// 重写GetHashCode方法
+        /// </summary>
+        /// <returns></returns>
         public override int GetHashCode()
         {
             int hash = (int)Operator;
@@ -219,6 +232,10 @@ namespace MyOrm.Common
             get { return subConditions; }
         }
 
+        /// <summary>
+        /// 重写ToString方法
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -234,7 +251,7 @@ namespace MyOrm.Common
 
         #region IEnumerable<Condition> 成员
 
-        public IEnumerator<Condition> GetEnumerator()
+        IEnumerator<Condition> IEnumerable<Condition>.GetEnumerator()
         {
             return (IEnumerator<Condition>)SubConditions;
         }

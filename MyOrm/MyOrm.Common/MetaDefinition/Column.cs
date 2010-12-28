@@ -95,6 +95,9 @@ namespace MyOrm.Common
         }
     }
 
+    /// <summary>
+    /// 基本列信息
+    /// </summary>
     public abstract class Column : SqlStatement
     {
         private PropertyInfo property;
