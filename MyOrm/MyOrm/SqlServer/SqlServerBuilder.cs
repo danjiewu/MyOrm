@@ -16,7 +16,7 @@ namespace MyOrm.SqlServer
         /// <param name="from">from块</param>
         /// <param name="where">where条件</param>
         /// <param name="orderBy">排序</param>
-        /// <param name="startIndex">起始位置，从1开始</param>
+        /// <param name="startIndex">起始位置，从0开始</param>
         /// <param name="sectionSize">查询条数</param>
         /// <returns></returns>
         public override string GetSelectSectionSql(string select, string from, string where, string orderBy, int startIndex, int sectionSize)
