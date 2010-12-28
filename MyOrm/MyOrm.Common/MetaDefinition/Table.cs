@@ -247,7 +247,7 @@ namespace MyOrm.Common
         {
             get
             {
-                return String.Format("{0} {1}", tableDefinition.FormattedExpression, FormattedName);
+                return String.Format("{0}", tableDefinition.FormattedExpression);
             }
         }
     }

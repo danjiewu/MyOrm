@@ -93,6 +93,17 @@ namespace MyOrm.Common
                 return TargetColumn.FormattedExpression;
             }
         }
+
+        public override string Name
+        {
+            get
+            {
+                return TargetColumn == null ? null : TargetColumn.Name;
+            }
+            internal set
+            {
+            }
+        }
     }
 
     /// <summary>
@@ -125,7 +136,7 @@ namespace MyOrm.Common
         /// <summary>
         /// 属性名
         /// </summary>
-        public string PropertyName { get ; private set; }
+        public string PropertyName { get; private set; }
 
         /// <summary>
         /// 格式化的属性名

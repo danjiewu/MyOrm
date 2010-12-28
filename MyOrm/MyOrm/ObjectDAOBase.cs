@@ -187,7 +187,8 @@ namespace MyOrm
             foreach (Column column in selectColumns)
             {
                 if (strAllFields.Length != 0) strAllFields.Append(",");
-                strAllFields.Append(column.FormattedExpression + " as " + column.PropertyName);
+                strAllFields.Append(column.FormattedExpression);
+                if (!String.Equals(column.Name, column.PropertyName, StringComparison.OrdinalIgnoreCase)) strAllFields.Append(" as " + column.FormattedPropertyName);
             }
             return strAllFields.ToString();
         }

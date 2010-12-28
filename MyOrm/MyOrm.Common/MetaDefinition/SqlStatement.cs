@@ -18,7 +18,7 @@ namespace MyOrm.Common
         /// <summary>
         /// 名称
         /// </summary>
-        public string Name
+        public virtual string Name
         {
             get { return name; }
             internal set
