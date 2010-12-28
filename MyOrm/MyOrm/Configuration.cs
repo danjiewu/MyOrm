@@ -40,6 +40,12 @@ namespace MyOrm
             get { return (bool)this["UseAutoCommand"]; }
             set { this["UseAutoCommand"] = value; }
         }
+
+        /// <summary>
+        /// Sql语句生成工具
+        /// </summary>
+        [ConfigurationProperty("SqlBuilder", DefaultValue = "MyOrm.SqlBuilder, MyOrm")]
+        public string SqlBuilder { get { return (string)this["SqlBuilder"]; } set { this["SqlBuilder"] = value; } }
     }
 
     /// <summary>
@@ -93,6 +99,23 @@ namespace MyOrm
                 return defaultProvider;
             }
             set { defaultProvider = value; }
+        }
+
+        private static SqlBuilder defaultSqlBuilder;
+        /// <summary>
+        /// 默认的Sql语句生成工具
+        /// </summary>
+        public static SqlBuilder DefaultSqlBuilder
+        {
+            get
+            {
+                if (defaultSqlBuilder == null)
+                {
+                    defaultSqlBuilder = (SqlBuilder)Activator.CreateInstance(Type.GetType(ConfigSection.SqlBuilder, true, true));
+                }
+                return defaultSqlBuilder;
+            }
+            set { defaultSqlBuilder = value; }
         }
 
         /// <summary>
