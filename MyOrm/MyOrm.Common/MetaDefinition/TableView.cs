@@ -89,10 +89,11 @@ namespace MyOrm.Common
             : base(columns)
         {
             this.table = table;
-            this.joinedTables = new List<JoinedTable>(joinedTables).AsReadOnly();
+            tables = new List<JoinedTable>(joinedTables);
         }
 
         private TableDefinition table;
+        private List<JoinedTable> tables;
         private ReadOnlyCollection<JoinedTable> joinedTables;
 
         /// <summary>
@@ -100,7 +101,28 @@ namespace MyOrm.Common
         /// </summary>
         public ReadOnlyCollection<JoinedTable> JoinedTables
         {
-            get { return joinedTables; }
+            get
+            {
+                if (joinedTables == null)
+                {
+                    tables.Sort(delegate(JoinedTable t1, JoinedTable t2)
+                    {
+                        foreach (ColumnRef column in t1.ForeignKeys)
+                        {
+                            if (column.Table != null && String.Equals(column.Table.Name, t2.Name, StringComparison.OrdinalIgnoreCase))
+                                return 1;
+                        }
+                        foreach (ColumnRef column in t2.ForeignKeys)
+                        {
+                            if (column.Table != null && String.Equals(column.Table.Name, t1.Name, StringComparison.OrdinalIgnoreCase))
+                                return -1;
+                        }
+                        return 0;
+                    });
+                    joinedTables = tables.AsReadOnly();
+                }
+                return joinedTables;
+            }
         }
 
         /// <summary>
@@ -111,7 +133,7 @@ namespace MyOrm.Common
             get
             {
                 StringBuilder sb = new StringBuilder(table.FormattedName + " " + FormattedName);
-                foreach (JoinedTable joinedTable in joinedTables)
+                foreach (JoinedTable joinedTable in JoinedTables)
                 {
                     sb.Append(joinedTable.FormattedExpression);
                 }

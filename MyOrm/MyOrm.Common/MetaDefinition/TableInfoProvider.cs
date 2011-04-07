@@ -21,12 +21,5 @@ namespace MyOrm.Common
         /// <param name="objectType">对象类型</param>
         /// <returns></returns>
         public abstract TableView GetTableView(Type objectType);
-
-        /// <summary>
-        /// 获取属性所对应的列定义
-        /// </summary>
-        /// <param name="property">属性</param>
-        /// <returns>对应的列定义</returns>
-        public abstract ColumnDefinition GetColumnDefinition(PropertyInfo property);
     }
 }
