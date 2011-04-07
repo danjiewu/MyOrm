@@ -30,5 +30,10 @@ namespace MyOrm.Oracle
         {
             return ReplaceSqlName(sql, '"', '"');
         }
+
+        public override string ToSqlParam(string nativeName)
+        {
+            return ":" + nativeName;
+        }
     }
 }

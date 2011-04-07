@@ -231,7 +231,7 @@ namespace MyOrm
         /// <returns></returns>
         public virtual string GetSelectSectionSql(string select, string from, string where, string orderBy, int startIndex, int sectionSize)
         {
-            return String.Format("select * from (select {0}, Row_Number() over (Order by {1}) as Row_Number from {2} where {3}) as TempTable where Row_Number > {4} and Row_Number <= {5}", select, orderBy, from, where, startIndex, startIndex + sectionSize);
+            return String.Format("select * from (select {0}, Row_Number() over (Order by {1}) as Row_Number from {2} where {3}) TempTable where Row_Number > {4} and Row_Number <= {5}", select, orderBy, from, where, startIndex, startIndex + sectionSize);
         }
 
         /// <summary>

@@ -221,7 +221,7 @@ namespace MyOrm.Common
                 if (namedColumnCache.Count == 0)
                 {
                     foreach (ColumnRef column in Columns)
-                        namedColumnCache.Add(column.Name, column);
+                        namedColumnCache.Add(column.Column.PropertyName, column);
                 }
                 return namedColumnCache;
             }

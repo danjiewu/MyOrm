@@ -37,25 +37,6 @@ namespace MyOrm.Common
         }
 
         /// <summary>
-        /// 根据属性得到对应字段的数据库列定义
-        /// </summary>
-        /// <param name="property">对象的属性</param>
-        /// <returns>数据库列定义</returns>
-        public override ColumnDefinition GetColumnDefinition(PropertyInfo property)
-        {
-            if (property == null) return null;
-            if (!columnCache.ContainsKey(property))
-            {
-                lock (SyncLock)
-                {
-                    if (!columnCache.ContainsKey(property))
-                        columnCache[property] = GenerateColumnDefinition(property);
-                }
-            }
-            return columnCache[property];
-        }
-
-        /// <summary>
         /// 根据对象类型得到表以及关联信息
         /// </summary>
         /// <param name="objectType">对象类型</param>
@@ -75,6 +56,25 @@ namespace MyOrm.Common
         }
 
         #region
+
+        /// <summary>
+        /// 根据属性得到对应字段的数据库列定义
+        /// </summary>
+        /// <param name="property">对象的属性</param>
+        /// <returns>数据库列定义</returns>
+        private ColumnDefinition GetColumnDefinition(PropertyInfo property)
+        {
+            if (property == null) return null;
+            if (!columnCache.ContainsKey(property))
+            {
+                lock (SyncLock)
+                {
+                    if (!columnCache.ContainsKey(property))
+                        columnCache[property] = GenerateColumnDefinition(property);
+                }
+            }
+            return columnCache[property];
+        }
 
         private TableDefinition GenerateTableDefinition(Type objectType)
         {
@@ -177,7 +177,7 @@ namespace MyOrm.Common
             List<Column> columns = new List<Column>();
             foreach (PropertyInfo property in objectType.GetProperties())
             {
-                ColumnDefinition column = GenerateColumnDefinition(property);
+                ColumnDefinition column = GetColumnDefinition(property);
                 if (column != null)
                 {
                     columns.Add(column);
