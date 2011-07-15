@@ -107,22 +107,29 @@ namespace MyOrm.Common
                 {
                     tables.Sort(delegate(JoinedTable t1, JoinedTable t2)
                     {
-                        foreach (ColumnRef column in t1.ForeignKeys)
-                        {
-                            if (column.Table != null && String.Equals(column.Table.Name, t2.Name, StringComparison.OrdinalIgnoreCase))
-                                return 1;
-                        }
-                        foreach (ColumnRef column in t2.ForeignKeys)
-                        {
-                            if (column.Table != null && String.Equals(column.Table.Name, t1.Name, StringComparison.OrdinalIgnoreCase))
-                                return -1;
-                        }
-                        return 0;
+                        if (CheckDependOn(t1, t2)) return 1;
+                        else if (CheckDependOn(t2, t1)) return -1;
+                        else return 0;
                     });
                     joinedTables = tables.AsReadOnly();
                 }
                 return joinedTables;
             }
+        }
+
+        private bool CheckDependOn(JoinedTable t1, JoinedTable t2)
+        {
+            foreach (ColumnRef column in t1.ForeignKeys)
+            {
+                ColumnRef columnRef = column;
+                while (columnRef.Column is ForeignColumn)
+                {
+                    columnRef = ((ForeignColumn)columnRef.Column).TargetColumn;
+                }
+                if (columnRef.Table != null && String.Equals(columnRef.Table.Name, t2.Name, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+            return false;
         }
 
         /// <summary>
