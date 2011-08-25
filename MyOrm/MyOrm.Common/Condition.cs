@@ -112,7 +112,7 @@ namespace MyOrm.Common
             }
             else
                 str = Convert.ToString(Value);
-            return String.Format("{0} {1} {2} {3}", Property, Opposite ? "Not " : null, Operator, str);
+            return String.Format("{0} {1}{2} {3}", Property, Opposite ? "Not " : null, Operator, str);
         }
 
         /// <summary>
@@ -242,9 +242,9 @@ namespace MyOrm.Common
             foreach (Condition condition in subConditions)
             {
                 if (sb.Length != 0) sb.Append(" " + joinType.ToString() + " ");
-                sb.Append("(");
+                sb.Append("{");
                 if (condition != null) sb.Append(condition.ToString());
-                sb.Append(")");
+                sb.Append("}");
             }
             return sb.ToString();
         }
@@ -376,6 +376,10 @@ namespace MyOrm.Common
         /// 外部对象的条件
         /// </summary>
         public Condition Condition { get; set; }
-    }
 
+        public override string ToString()
+        {
+            return String.Format("{0}{1}{2}{3}{{{4}}}", Opposite ? "Not " : null, JoinedProperty == null ? null : JoinedProperty + "=", ForeignType, ForeignProperty == null ? null : "." + ForeignProperty, Condition);
+        }
+    }
 }
