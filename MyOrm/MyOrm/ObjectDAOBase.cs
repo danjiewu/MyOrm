@@ -240,13 +240,42 @@ namespace MyOrm
         public IDbCommand MakeParamCommand(string SQL, IEnumerable paramValues)
         {
             int paramIndex = 0;
-            IDbCommand command = NewCommand();
+            SortedList<string, object> paramList = new SortedList<string, object>();
             if (paramValues != null)
                 foreach (object paramValue in paramValues)
                 {
+                    paramList.Add(Convert.ToString(paramIndex++), paramValue);
+
+                }
+            return MakeNamedParamCommand(SQL, paramList);
+        }
+
+        /// <summary>
+        /// 根据SQL语句和参数建立IDbCommand
+        /// </summary>
+        /// <param name="SQL">SQL语句，SQL中可以包含参数信息，参数名为以0开始的递增整数，对应paramValues中值的下标</param>
+        /// <param name="paramValues">参数值，需要与SQL中的参数一一对应，为空时表示没有参数</param>
+        /// <returns>IDbCommand</returns>
+        public IDbCommand MakeParamCommand(string SQL, params object[] paramValues)
+        {
+            return MakeParamCommand(SQL, (IEnumerable)paramValues);
+        }
+
+        /// <summary>
+        /// 根据SQL语句和参数建立IDbCommand
+        /// </summary>
+        /// <param name="SQL">SQL语句，SQL中可以包含已命名的参数</param>
+        /// <param name="paramValues">参数列表，为空时表示没有参数。Key需要与SQL中的参数名称对应</param>
+        /// <returns>IDbCommand</returns>
+        public IDbCommand MakeNamedParamCommand(string SQL, IEnumerable<KeyValuePair<string,object>> paramValues)
+        {
+            IDbCommand command = NewCommand();
+            if (paramValues != null)
+                foreach (KeyValuePair<string, object> paramSet in paramValues)
+                {
                     IDbDataParameter param = command.CreateParameter();
-                    param.ParameterName = ToParamName(Convert.ToString(paramIndex++));
-                    param.Value = paramValue ?? DBNull.Value;
+                    param.ParameterName = ToParamName(paramSet.Key);
+                    param.Value = paramSet.Value ?? DBNull.Value;
                     command.Parameters.Add(param);
                 }
             command.CommandText = SQL;
