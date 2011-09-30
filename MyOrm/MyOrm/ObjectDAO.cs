@@ -85,7 +85,7 @@ namespace MyOrm
                 }
             }
             command.CommandText = String.Format("insert into {0} ({1}) values ({2}); {3}", ToSqlName(TableName), strColumns, strValues, IdentityColumn == null ? null : "select @@IDENTITY as [ID];");
-            command.Prepare();
+            if (PrepareCommand) command.Prepare();
             return command;
         }
 
@@ -120,7 +120,7 @@ namespace MyOrm
                 }
             }
             command.CommandText = String.Format("update {0} set {1} where {2}", ToSqlName(TableName), strColumns, MakeIsKeyCondition(command));
-            command.Prepare();
+            if (PrepareCommand) command.Prepare();
             return command;
         }
 
@@ -141,7 +141,7 @@ namespace MyOrm
         {
             IDbCommand command = NewCommand();
             command.CommandText = String.Format("delete from {0} where {1}", ToSqlName(TableName), MakeIsKeyCondition(command));
-            command.Prepare();
+            if (PrepareCommand) command.Prepare();
             return command;
         }
 
@@ -196,7 +196,7 @@ namespace MyOrm
             string updateCommandText = String.Format("update {0} set {1} where {2};", ToSqlName(TableName), strUpdateColumns, MakeIsKeyCondition(command));
 
             command.CommandText = String.Format("if exists(select 1 from {0} where {1}) begin {2} select -1; end else begin {3} end", ToSqlName(TableName), MakeIsKeyCondition(command), updateCommandText, insertCommandText);
-            command.Prepare();
+            if (PrepareCommand) command.Prepare();
             return command;
         }
 
