@@ -262,14 +262,26 @@ namespace MyOrm
         }
 
         /// <summary>
-        /// 根据SQL语句和参数建立IDbCommand
+        /// 根据SQL语句和命名的参数建立IDbCommand
         /// </summary>
         /// <param name="SQL">SQL语句，SQL中可以包含已命名的参数</param>
         /// <param name="paramValues">参数列表，为空时表示没有参数。Key需要与SQL中的参数名称对应</param>
         /// <returns>IDbCommand</returns>
-        public IDbCommand MakeNamedParamCommand(string SQL, IEnumerable<KeyValuePair<string,object>> paramValues)
+        public IDbCommand MakeNamedParamCommand(string SQL, IEnumerable<KeyValuePair<string, object>> paramValues)
         {
-            IDbCommand command = NewCommand();
+            IDbCommand command = NewCommand();            
+            command.CommandText = SQL;
+            AddParamsToCommand(command, paramValues);
+            return command;
+        }
+
+        /// <summary>
+        /// 将参数添加到IDbCommand中
+        /// </summary>
+        /// <param name="command">需要添加参数的IDbCommand</param>
+        /// <param name="paramValues">参数列表，包括参数名称和值，为空时表示没有参数</param>
+        public void AddParamsToCommand(IDbCommand command, IEnumerable<KeyValuePair<string, object>> paramValues)
+        {
             if (paramValues != null)
                 foreach (KeyValuePair<string, object> paramSet in paramValues)
                 {
@@ -278,8 +290,6 @@ namespace MyOrm
                     param.Value = paramSet.Value ?? DBNull.Value;
                     command.Parameters.Add(param);
                 }
-            command.CommandText = SQL;
-            return command;
         }
 
         /// <summary>
