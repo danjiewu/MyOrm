@@ -168,6 +168,14 @@ namespace MyOrm
         }
 
         /// <summary>
+        /// 预定义Command是否使用Prepare方法
+        /// </summary>
+        protected virtual bool PrepareCommand
+        {
+            get { return true; }
+        }
+
+        /// <summary>
         /// 创建IDbCommand
         /// </summary>
         /// <returns></returns>

@@ -72,7 +72,7 @@ namespace MyOrm
                 }
             }
             command.CommandText = String.Format("select count(1) from {0} where {1}", ToSqlName(Table.Definition.Name), strConditions);
-            command.Prepare();
+            if (PrepareCommand) command.Prepare();
             return command;
         }
 
@@ -93,7 +93,7 @@ namespace MyOrm
         {
             IDbCommand command = NewCommand();
             command.CommandText = String.Format("select {0} from {1} where {2}", AllFieldsSql, From, MakeIsKeyCondition(command));
-            command.Prepare();
+            if (PrepareCommand) command.Prepare();
             return command;
         }
         #endregion
