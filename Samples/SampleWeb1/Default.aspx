@@ -19,7 +19,7 @@
         <asp:GridView ID="GridView1" runat="server" AllowPaging="True" AllowSorting="True" AutoGenerateColumns="False" DataSourceID="ObjectDataSource1">
             <Columns>
                 <asp:BoundField DataField="Category_CategoryName" HeaderText="Category_CategoryName" SortExpression="Category_CategoryName" />
-                <asp:BoundField DataField="Category_Description" HeaderText="Category_Description" SortExpression="Category_Description" />
+                <asp:BoundField DataField="Category_Description" HeaderText="Category_Description"/>
                 <asp:BoundField DataField="Supplier_CompanyName" HeaderText="Supplier_CompanyName" SortExpression="Supplier_CompanyName" />
                 <asp:BoundField DataField="Supplier_ContactName" HeaderText="Supplier_ContactName" SortExpression="Supplier_ContactName" />
                 <asp:BoundField DataField="Supplier_ContactTitle" HeaderText="Supplier_ContactTitle" SortExpression="Supplier_ContactTitle" />

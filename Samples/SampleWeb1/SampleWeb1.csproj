@@ -50,6 +50,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Data.SQLite, Version=1.0.66.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
@@ -64,7 +65,9 @@
     </Content>
     <Content Include="Default.aspx" />
     <Content Include="Service\RemoteService.asmx" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Default.aspx.cs">
@@ -81,7 +84,10 @@
       <DependentUpon>RemoteService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Service\ServiceHttpHandler.cs" />
+    <Compile Include="Service\ServiceHttpHandler.ashx.cs">
+      <DependentUpon>ServiceHttpHandler.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="SqliteBuilder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Northwind.Business\Northwind.Business.csproj">
@@ -100,6 +106,10 @@
       <Project>{2248AF91-D547-4C9A-AA3C-E8C7613CE561}</Project>
       <Name>Northwind.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App_Data\Northwind.sl3" />
+    <Content Include="Service\ServiceHttpHandler.ashx" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

@@ -38,11 +38,6 @@ namespace Northwind.Business
             return ObjectDAO.Update(entity);
         }
 
-        public bool Update(T newEntity, T oldEntity)
-        {
-            return ObjectDAO.Update(newEntity, oldEntity);
-        }
-
         public UpdateOrInsertResult UpdateOrInsert(T entity)
         {
             try
@@ -153,7 +148,14 @@ namespace Northwind.Business
 
         public virtual List<TView> SearchSection(Condition condition, int startIndex, int sectionSize, string orderby, ListSortDirection direction)
         {
-            return ObjectViewDAO.SearchSection(condition, startIndex, sectionSize, orderby, direction);
+            SectionSet section = new SectionSet() { StartIndex = startIndex, SectionSize = sectionSize };
+            if (!String.IsNullOrEmpty(orderby)) section.Orders = new Sorting[] { new Sorting() { PropertyName = orderby, Direction = direction } };
+            return SearchSection(condition, section);
+        }
+
+        public virtual List<TView> SearchSection(Condition condition, SectionSet section)
+        {
+            return ObjectViewDAO.SearchSection(condition, section);
         }
 
         #endregion
@@ -168,11 +170,6 @@ namespace Northwind.Business
         bool IEntityService.Update(object entity)
         {
             return Update((T)entity);
-        }
-
-        bool IEntityService.Update(object newEntity, object oldEntity)
-        {
-            return Update((T)newEntity, (T)oldEntity);
         }
 
         UpdateOrInsertResult IEntityService.UpdateOrInsert(object entity)
