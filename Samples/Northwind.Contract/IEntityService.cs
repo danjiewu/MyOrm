@@ -13,8 +13,6 @@ namespace Northwind.Business
 
         bool Update(T entity);
 
-        bool Update(T newEntity, T oldEntity);
-
         UpdateOrInsertResult UpdateOrInsert(T entity);
 
         void BatchInsert(IEnumerable<T> entities);
@@ -33,8 +31,6 @@ namespace Northwind.Business
         bool Insert(Object entity);
 
         bool Update(Object entity);
-
-        bool Update(Object newEntity, Object oldEntity);
 
         UpdateOrInsertResult UpdateOrInsert(Object entity);
 

@@ -34,7 +34,7 @@ namespace Northwind.Business
         {
             lock (syncLock)
             {
-                if (MyOrm.DefaultConfiguration.DefaultConnection.State == ConnectionState.Closed) MyOrm.DefaultConfiguration.DefaultConnection.Open();
+                if (MyOrm.Configuration.DefaultConnection.State == ConnectionState.Closed) MyOrm.Configuration.DefaultConnection.Open();
                 return invocation.Proceed(args);
             }
         }

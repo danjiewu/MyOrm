@@ -68,8 +68,6 @@ namespace Northwind.Data
 	/// <summary>
 	/// EmployeeTerritoriesView.
 	/// </summary>
-	[TableJoin(typeof(Employees), EmployeeTerritories.Properties.EmployeeID, AliasName = "Employee")]
-	[TableJoin(typeof(Territories), EmployeeTerritories.Properties.TerritoryID, AliasName = "Territory")]
 	[Serializable]
 	public partial class EmployeeTerritoriesView : EmployeeTerritories
 	{
