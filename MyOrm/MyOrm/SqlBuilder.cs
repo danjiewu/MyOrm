@@ -12,7 +12,7 @@ namespace MyOrm
     /// <summary>
     /// 生成Sql语句的辅助类
     /// </summary>
-    public class SqlBuilder
+    public class SqlBuilder : IConditionSqlBuilder
     {
         #region 预定义变量
         /// <summary>
@@ -40,10 +40,10 @@ namespace MyOrm
         }
 
         /// <summary>
-        /// 注册自定义条件生成
+        /// 注册自定义条件SQL生成类
         /// </summary>
         /// <param name="conditionType">自定义条件类型</param>
-        /// <param name="conditionBuilder">自定义条件生成类</param>
+        /// <param name="conditionBuilder">自定义条件SQL生成类</param>
         public void RegisterConditionBuilder(Type conditionType, IConditionSqlBuilder conditionBuilder)
         {
             extCondtionBuilders[conditionType] = conditionBuilder;
@@ -133,8 +133,8 @@ namespace MyOrm
             string tableAlias = context.TableAliasName ?? context.Table.Name;
             string foreignTableAlias = "T" + context.Sequence;
 
-            return String.Format("{0} exists (select 1 from [{1}] [{2}] where [{3}].[{4}] = [{5}].[{6}] and ({7}))",
-                condition.Opposite ? "not" : null,
+            return String.Format("{0}exists (select 1 from [{1}] [{2}] where [{3}].[{4}] = [{5}].[{6}] and ({7}))",
+                condition.Opposite ? "not " : null,
                 foreignTable.Name,
                 foreignTableAlias,
                 tableAlias,
@@ -194,9 +194,9 @@ namespace MyOrm
                 case ConditionOperator.LargerThan: return String.Format(simpleCondition.Opposite ? "{0} <= {1}" : "{0} > {1}", expression, ToSqlParam(outputParams.Add(value).ToString()));
                 case ConditionOperator.SmallerThan: return String.Format(simpleCondition.Opposite ? "{0} >= {1}" : "{0} < {1}", expression, ToSqlParam(outputParams.Add(value).ToString()));
                 case ConditionOperator.Like: return String.Format(@"{0} {1} like {2}", expression, strOpposite, ToSqlParam(outputParams.Add(value).ToString()));
-                case ConditionOperator.StartsWith: return String.Format(@"{0} {1} like " + ConcatSql(ToSqlParam(outputParams.Add(value).ToString()), "'%'") + " escape '{2}'", expression, strOpposite, LikeEscapeChar);
-                case ConditionOperator.EndsWith: return String.Format(@"{0} {1} like " + ConcatSql("'%'", ToSqlParam(outputParams.Add(value).ToString())) + " escape '{2}'", expression, strOpposite, LikeEscapeChar);
-                case ConditionOperator.Contains: return String.Format(@"{0} {1} like " + ConcatSql("'%'", ToSqlParam(outputParams.Add(value).ToString()), "'%'") + " escape '{2}'", expression, strOpposite, LikeEscapeChar);
+                case ConditionOperator.StartsWith: return String.Format(@"{0} {1} like {2} escape '{3}'", expression, strOpposite, ConcatSql(ToSqlParam(outputParams.Add(value).ToString()), "'%'"), LikeEscapeChar);
+                case ConditionOperator.EndsWith: return String.Format(@"{0} {1} like {2} escape '{3}'", expression, strOpposite, ConcatSql("'%'", ToSqlParam(outputParams.Add(value).ToString())), LikeEscapeChar);
+                case ConditionOperator.Contains: return String.Format(@"{0} {1} like {2} escape '{3}'", expression, strOpposite, ConcatSql("'%'", ToSqlParam(outputParams.Add(value).ToString()), "'%'"), LikeEscapeChar);
                 case ConditionOperator.In:
                     List<string> paramNames = new List<string>();
                     foreach (object item in value as IEnumerable)
