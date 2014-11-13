@@ -36,6 +36,14 @@ namespace MyOrm.Common
         new List<T> Search(Condition condition);
 
         /// <summary>
+        /// 根据条件查询
+        /// </summary>
+        /// <param name="condition">查询条件，若为null则表示没有条件</param>
+        /// <param name="orderBy">排列顺序，若为null则表示不指定顺序</param>
+        /// <returns>符合条件的对象列表</returns>
+        new List<T> Search(Condition condition,Sorting[] orderBy);
+
+        /// <summary>
         /// 分页查询
         /// </summary>
         /// <param name="condition">查询条件</param>
@@ -66,6 +74,13 @@ namespace MyOrm.Common
         bool Exists(params object[] keys);
 
         /// <summary>
+        /// 检查对象是否存在
+        /// </summary>
+        /// <param name="o">对象</param>
+        /// <returns>是否存在</returns>
+        bool Exists(object o);
+
+        /// <summary>
         /// 根据条件检查对象是否存在
         /// </summary>
         /// <param name="condition">查询条件，若为null则表示没有条件</param>
@@ -92,6 +107,14 @@ namespace MyOrm.Common
         /// <param name="condition">查询条件，若为null则表示没有条件</param>
         /// <returns>符合条件的对象列表</returns>
         IList Search(Condition condition);
+
+        /// <summary>
+        /// 根据条件查询
+        /// </summary>
+        /// <param name="condition">查询条件，若为null则表示没有条件</param>
+        /// <param name="orderBy">排列顺序，若为null则表示不指定顺序</param>
+        /// <returns>符合条件的对象列表</returns>
+        IList Search(Condition condition, Sorting[] orderBy);
 
         /// <summary>
         /// 分页查询

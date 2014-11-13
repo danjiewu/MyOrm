@@ -39,7 +39,29 @@ namespace MyOrm
         }
         #endregion
 
-        #region 预定义Command
+
+        #region 预定义Command        
+        /// <summary>
+        /// 实现获取对象操作的IDbCommand
+        /// </summary>
+        protected IDbCommand GetObjectCommand
+        {
+            get
+            {
+                if (getObjectCommand == null)
+                    getObjectCommand = MakeGetObjectCommand();
+                return getObjectCommand;
+            }
+        }
+
+        private IDbCommand MakeGetObjectCommand()
+        {
+            IDbCommand command = NewCommand();
+            command.CommandText = String.Format("select {0} from {1} where {2}", AllFieldsSql, From, MakeIsKeyCondition(command));
+            if (PrepareCommand) command.Prepare();
+            return command;
+        }
+
         /// <summary>
         /// 实现检查对象是否存在操作的IDbCommand
         /// </summary>
@@ -75,27 +97,6 @@ namespace MyOrm
             if (PrepareCommand) command.Prepare();
             return command;
         }
-
-        /// <summary>
-        /// 实现获取对象操作的IDbCommand
-        /// </summary>
-        protected IDbCommand GetObjectCommand
-        {
-            get
-            {
-                if (getObjectCommand == null)
-                    getObjectCommand = MakeGetObjectCommand();
-                return getObjectCommand;
-            }
-        }
-
-        private IDbCommand MakeGetObjectCommand()
-        {
-            IDbCommand command = NewCommand();
-            command.CommandText = String.Format("select {0} from {1} where {2}", AllFieldsSql, From, MakeIsKeyCondition(command));
-            if (PrepareCommand) command.Prepare();
-            return command;
-        }
         #endregion
 
         #region 方法
@@ -120,6 +121,30 @@ namespace MyOrm
         }
 
         /// <summary>
+        /// 获取符合条件的对象个数
+        /// </summary>
+        /// <param name="condition">属性名与值的列表，若为null则表示没有条件</param>
+        /// <returns>符合条件的对象个数</returns>
+        public virtual int Count(Condition condition)
+        {
+            using (IDbCommand command = MakeConditionCommand("select count(*) from @FromTable@ where @Condition@", condition))
+            {
+                return Convert.ToInt32(command.ExecuteScalar());
+            }
+        }
+
+        /// <summary>
+        /// 判断对象是否存在
+        /// </summary>
+        /// <param name="o">对象</param>
+        /// <returns>是否存在</returns>
+        public virtual bool Exists(object o)
+        {
+            if (o == null) return false;
+            return Exists(GetKeyValues(o));
+        }
+
+        /// <summary>
         /// 判断主键对应的对象是否存在
         /// </summary>
         /// <param name="keys">主键，多个主键按照名称顺序排列</param>
@@ -134,19 +159,6 @@ namespace MyOrm
                 i++;
             }
             return Convert.ToInt32(ObjectExistsCommand.ExecuteScalar()) > 0;
-        }
-
-        /// <summary>
-        /// 获取符合条件的对象个数
-        /// </summary>
-        /// <param name="condition">属性名与值的列表，若为null则表示没有条件</param>
-        /// <returns>符合条件的对象个数</returns>
-        public virtual int Count(Condition condition)
-        {
-            using (IDbCommand command = MakeConditionCommand("select count(*) from @FromTable@ where @Condition@", condition))
-            {
-                return Convert.ToInt32(command.ExecuteScalar());
-            }
         }
 
         /// <summary>
@@ -184,6 +196,22 @@ namespace MyOrm
             {
                 return GetAll(command);
             }
+        }
+
+        /// <summary>
+        /// 根据条件查询，多个条件以逻辑与连接
+        /// </summary>
+        /// <param name="condition">属性名与值的列表，若为null则表示没有条件</param>
+        /// <param name="orderBy">排列顺序，若为null则表示不指定顺序</param>
+        /// <returns>符合条件的对象列表</returns>
+        public virtual List<T> Search(Condition condition, Sorting[] orderBy)
+        {
+            if (orderBy == null || orderBy.Length == 0) return Search(condition);
+            else
+                using (IDbCommand command = MakeConditionCommand("select @AllFields@ from @FromTable@" + (condition == null ? null : " where @Condition@") + " order by " + GetOrderBySQL(orderBy), condition))
+                {
+                    return GetAll(command);
+                }
         }
 
         /// <summary>
@@ -246,6 +274,11 @@ namespace MyOrm
         IList IObjectViewDAO.Search(Condition condition)
         {
             return Search(condition);
+        }
+
+        IList IObjectViewDAO.Search(Condition condition, Sorting[] orderBy)
+        {
+            return Search(condition, orderBy);
         }
 
         IList IObjectViewDAO.SearchSection(Condition condition, SectionSet section)

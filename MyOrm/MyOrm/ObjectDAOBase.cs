@@ -42,8 +42,7 @@ namespace MyOrm
         private string allFieldsSql = null;
         private string tableName = null;
         private string fromTable = null;
-        private Exception ExceptionWrongKeys = null;
-        private Exception ExceptionNoKeys = null;
+        private ArgumentOutOfRangeException ExceptionWrongKeys;
         #endregion
 
         #region 属性
@@ -408,8 +407,18 @@ namespace MyOrm
         {
             if (TableDefinition.Keys.Count == 0)
             {
-                if (ExceptionNoKeys == null) ExceptionNoKeys = new Exception(String.Format("No key definition found in type \"{0}\", please set the value of property \"IsPrimaryKey\" of key column to true.", Table.DefinitionType.FullName));
-                throw ExceptionNoKeys;
+                throw new Exception(String.Format("No key definition found in type \"{0}\", please set the value of property \"IsPrimaryKey\" of key column to true.", Table.DefinitionType.FullName));
+            }
+        }
+
+        /// <summary>
+        /// 检查是否对象类型是否匹配
+        /// </summary>
+        protected void ThrowExceptionIfTypeNotMatch(Type type)
+        {
+            if (!ObjectType.IsAssignableFrom(type))
+            {
+                throw new Exception(String.Format("Type {0} not match object type {2}.", type.FullName, ObjectType.FullName));
             }
         }
 
