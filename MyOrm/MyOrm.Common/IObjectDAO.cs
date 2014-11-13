@@ -10,7 +10,7 @@ namespace MyOrm.Common
     /// 实体类的增删改等基本操作的泛型接口
     /// </summary>
     /// <typeparam name="T">实体类类型</typeparam>
-    public interface IObjectDAO<T> : IObjectDAO
+    public interface IObjectDAO<T> : IObjectViewDAO<T>,IObjectDAO
     {
         /// <summary>
         /// 添加对象
@@ -24,7 +24,7 @@ namespace MyOrm.Common
         /// </summary>
         /// <param name="o">待更新的对象</param>
         /// <returns>是否成功更新</returns>
-        bool Update(T o);        
+        bool Update(T o);
 
         /// <summary>
         /// 更新或添加对象，若存在则更新，若不存在则添加
@@ -46,7 +46,7 @@ namespace MyOrm.Common
     /// <summary>
     /// 实体类的增删改等基本操作的非泛型接口
     /// </summary>
-    public interface IObjectDAO
+    public interface IObjectDAO : IObjectViewDAO
     {
         /// <summary>
         /// 添加对象
