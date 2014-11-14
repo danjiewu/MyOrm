@@ -14,7 +14,7 @@ namespace MyOrm
     /// 实体类的查询操作
     /// </summary>
     /// <typeparam name="T">实体类型</typeparam>
-    public class ObjectViewDAO<T> : ObjectDAOBase, IObjectViewDAO<T>, IObjectViewDAO where T : new()
+    public abstract class ObjectViewDAO<T> : ObjectDAOBase, IObjectViewDAO<T>, IObjectViewDAO where T : new()
     {
         #region 私有变量
         private IDbCommand getObjectCommand = null;
@@ -100,6 +100,7 @@ namespace MyOrm
         #endregion
 
         #region 方法
+
         /// <summary>
         /// 根据主键获取对象
         /// </summary>

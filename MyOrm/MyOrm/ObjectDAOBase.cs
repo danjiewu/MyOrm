@@ -36,8 +36,6 @@ namespace MyOrm
         #endregion
 
         #region 私有变量
-
-        private IDbConnection dbConnection;
         private ReadOnlyCollection<Column> selectColumns;
         private string allFieldsSql = null;
         private string tableName = null;
@@ -73,9 +71,17 @@ namespace MyOrm
         /// <summary>
         /// 构建SQL语句的SQLBuilder
         /// </summary>
-        protected virtual SqlBuilder SqlBuilder
+        protected internal virtual SqlBuilder SqlBuilder
         {
             get { return Configuration.DefaultSqlBuilder; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public abstract SessionManager SessionManager
+        {
+            get;
         }
 
         /// <summary>
@@ -92,6 +98,17 @@ namespace MyOrm
         protected virtual TableInfoProvider Provider
         {
             get { return Configuration.DefaultProvider; }
+        }
+
+        /// <summary>
+        /// 数据库连接
+        /// </summary>
+        public IDbConnection Connection
+        {
+            get
+            {
+                return SessionManager.Connection;
+            }
         }
 
         /// <summary>
@@ -154,19 +171,6 @@ namespace MyOrm
 
         #region 方法
         /// <summary>
-        /// 数据库连接
-        /// </summary>
-        public IDbConnection Connection
-        {
-            get
-            {
-                if (dbConnection == null) dbConnection = Configuration.DefaultConnection;
-                return dbConnection;
-            }
-            set { dbConnection = value; }
-        }
-
-        /// <summary>
         /// 预定义Command是否使用Prepare方法
         /// </summary>
         protected virtual bool PrepareCommand
@@ -180,7 +184,7 @@ namespace MyOrm
         /// <returns></returns>
         public virtual IDbCommand NewCommand()
         {
-            return Configuration.UseAutoCommand ? new AutoCommand(SqlBuilder, Connection.CreateCommand()) : Connection.CreateCommand();
+            return Configuration.UseAutoCommand ? new AutoCommand(this) : Connection.CreateCommand();
         }
 
         /// <summary>

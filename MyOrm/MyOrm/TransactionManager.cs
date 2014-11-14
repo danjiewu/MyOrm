@@ -8,107 +8,78 @@ namespace MyOrm
     /// <summary>
     /// 事务管理类
     /// </summary>
-    public static class TransactionManager
+    public class SessionManager
     {
-        private static Dictionary<IDbConnection, IDbTransaction> transactionCache = new Dictionary<IDbConnection, IDbTransaction>();
+        private IDbConnection connection;
+        private IDbTransaction currentTransaction;
+        private readonly object transactionLock = new object();
+
+        public SessionManager(IDbConnection con)
+        {
+            connection = con;
+        }
 
         /// <summary>
         /// 在指定数据库链接开始事务
         /// </summary>
-        /// <param name="connection">数据库链接</param>
         /// <returns></returns>
-        public static IDbTransaction BeginTransaction(IDbConnection connection)
+        public IDbTransaction BeginTransaction()
         {
-            lock (transactionCache)
+            lock (transactionLock)
             {
-                if (CurrentTransaction(connection) == null || CurrentTransaction(connection).Connection == null)
-                {
-                    transactionCache[connection] = connection.BeginTransaction();
-                }
-                return transactionCache[connection];
+                if (currentTransaction == null) currentTransaction = connection.BeginTransaction();
+                return currentTransaction;
             }
         }
 
         /// <summary>
-        /// 在默认数据库链接开始事务
+        /// 获取当前事务
         /// </summary>
         /// <returns></returns>
-        public static IDbTransaction BeginDefaultTransaction()
+        public IDbTransaction CurrentTransaction
         {
-            return BeginTransaction(Configuration.DefaultConnection);
+            get { return currentTransaction; }
         }
 
         /// <summary>
-        /// 获取指定数据库链接的当前事务
+        /// 数据库链接
         /// </summary>
-        /// <param name="connection">数据库链接</param>
-        /// <returns></returns>
-        public static IDbTransaction CurrentTransaction(IDbConnection connection)
+        public IDbConnection Connection
         {
-            IDbTransaction transaction;
-            transactionCache.TryGetValue(connection, out transaction);
-            return transaction;
+            get { return connection; }
         }
 
         /// <summary>
-        /// 获取默认数据库链接的当前事务
+        /// 提交数据库链接的事务
         /// </summary>
-        /// <returns></returns>
-        public static IDbTransaction DefaultTransaction()
+        public void Commit()
         {
-            IDbTransaction transaction;
-            transactionCache.TryGetValue(Configuration.DefaultConnection, out transaction);
-            return transaction;
-        }
-
-        /// <summary>
-        /// 回滚指定数据库链接的事务
-        /// </summary>
-        /// <param name="connection">数据库链接</param>
-        public static void Commit(IDbConnection connection)
-        {
-            lock (transactionCache)
+            lock (transactionLock)
             {
-                IDbTransaction transaction = CurrentTransaction(connection);
+                IDbTransaction transaction = CurrentTransaction;
                 if (transaction != null)
                 {
                     transaction.Commit();
-                    transactionCache[connection] = null;
+                    currentTransaction = null;
                 }
             }
-        }
-
-        /// <summary>
-        /// 提交默认数据库连接事务
-        /// </summary>
-        public static void CommitDefault()
-        {
-            Commit(Configuration.DefaultConnection);
         }
 
         /// <summary>
         /// 回滚指定数据库链接的事务
         /// </summary>
         /// <param name="connection">数据库链接</param>
-        public static void Rollback(IDbConnection connection)
+        public void Rollback()
         {
-            lock (transactionCache)
+            lock (transactionLock)
             {
-                IDbTransaction transaction = CurrentTransaction(connection);
+                IDbTransaction transaction = CurrentTransaction;
                 if (transaction != null)
                 {
                     transaction.Rollback();
-                    transactionCache[connection] = null;
+                    currentTransaction = null;
                 }
             }
-        }
-
-        /// <summary>
-        /// 回滚默认数据库连接事务
-        /// </summary>
-        public static void RollbackDefault()
-        {
-            Rollback(Configuration.DefaultConnection);
         }
     }
 }

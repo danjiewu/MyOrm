@@ -9,7 +9,7 @@ namespace MyOrm
     /// <summary>
     /// 数据访问类
     /// </summary>
-    public class DataDAO : ObjectDAOBase
+    public abstract class DataDAO : ObjectDAOBase
     {
         /// <summary>
         /// 创建指定对象类型的数据访问类

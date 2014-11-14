@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Collections;
 using System.ComponentModel;
 using System.Xml.Serialization;
+using System.Text.RegularExpressions;
 
 namespace MyOrm.Common
 {
@@ -23,6 +24,8 @@ namespace MyOrm.Common
         [DefaultValue(false)]
         [XmlAttribute]
         public bool Opposite { get; set; }
+
+        public abstract EnsureResult Ensure(object target);
     }
 
     /// <summary>
@@ -93,6 +96,40 @@ namespace MyOrm.Common
         [DefaultValue(ConditionOperator.Equals)]
         [XmlAttribute]
         public ConditionOperator Operator { get; set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public override EnsureResult Ensure(object target)
+        {
+            object targetValue = target is IIndexedProperty ? ((IIndexedProperty)target)[Property] : target.GetType().GetProperty(Property).GetValue(target, null);
+            bool result = false;
+            switch (Operator)
+            {
+                case ConditionOperator.Equals: result = String.Compare(Convert.ToString(targetValue), Convert.ToString(Value), true) == 0; break;
+                case ConditionOperator.Contains: result = Convert.ToString(targetValue ?? String.Empty).Contains(Convert.ToString(Value ?? String.Empty)); break;
+                case ConditionOperator.EndsWith: result = Convert.ToString(targetValue ?? String.Empty).EndsWith(Convert.ToString(Value ?? String.Empty), StringComparison.OrdinalIgnoreCase); break;
+                case ConditionOperator.StartsWith: result = Convert.ToString(targetValue ?? String.Empty).StartsWith(Convert.ToString(Value ?? String.Empty), StringComparison.OrdinalIgnoreCase); break;
+                case ConditionOperator.SmallerThan: result = Comparer.Default.Compare(targetValue, Value) < 0; break;
+                case ConditionOperator.LargerThan: result = Comparer.Default.Compare(targetValue, Value) > 0; break;
+                case ConditionOperator.In:
+                    foreach (object o in Value as IEnumerable)
+                    {
+                        if (Equals(targetValue, o))
+                        {
+                            result = true;
+                            break;
+                        }
+                    } break;
+                case ConditionOperator.Like: result = new Regex(Convert.ToString(Value ?? String.Empty).ToString().Replace(".", "\\.").Replace("_", ".").Replace("%", ".*"), RegexOptions.IgnoreCase).IsMatch(Convert.ToString(targetValue ?? String.Empty));///TODO
+                    break;
+                default: return EnsureResult.Undetermined;
+            }
+            if (Opposite) result = !result;
+            return result ? EnsureResult.True : EnsureResult.False;
+        }
 
         /// <summary>
         /// 重写ToString方法
@@ -231,6 +268,32 @@ namespace MyOrm.Common
         {
             get { return subConditions; }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        public override EnsureResult Ensure(object target)
+        {
+            bool undetermined = false;
+            bool opposite = Opposite;
+            ConditionJoinType joinType = JoinType;
+            foreach (Condition subCondition in SubConditions)
+            {
+                EnsureResult subResult = subCondition == null ? EnsureResult.True : subCondition.Ensure(target);
+                if (subResult == EnsureResult.False && joinType == ConditionJoinType.And) return opposite ? EnsureResult.True : EnsureResult.False;
+                else if (subResult == EnsureResult.True && joinType == ConditionJoinType.Or) return opposite ? EnsureResult.True : EnsureResult.False;
+                else if (subResult == EnsureResult.Undetermined) undetermined = true;
+            }
+            if (undetermined)
+                return EnsureResult.Undetermined;
+            else if (joinType == ConditionJoinType.Or && SubConditions.Count > 0)
+                return opposite ? EnsureResult.True : EnsureResult.False;
+            else
+                return opposite ? EnsureResult.False : EnsureResult.True;
+        }
+
 
         /// <summary>
         /// 重写ToString方法
@@ -380,6 +443,11 @@ namespace MyOrm.Common
         public override string ToString()
         {
             return String.Format("{0}{1}{2}{3}{{{4}}}", Opposite ? "Not " : null, JoinedProperty == null ? null : JoinedProperty + "=", ForeignType, ForeignProperty == null ? null : "." + ForeignProperty, Condition);
+        }
+
+        public override EnsureResult Ensure(object target)
+        {
+            return EnsureResult.Undetermined;
         }
     }
 }
