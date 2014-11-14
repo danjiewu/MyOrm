@@ -27,55 +27,7 @@ namespace MyOrm.Common
                 return Ensure(condition as ConditionSet, target);
             else
                 return EnsureResult.Undetermined;
-        }
-
-        private static EnsureResult Ensure(SimpleCondition condition, object target)
-        {
-            object value = target is IIndexedProperty ? ((IIndexedProperty)target)[condition.Property] : target.GetType().GetProperty(condition.Property).GetValue(target, null);
-            bool result = false;
-            switch (condition.Operator)
-            {
-                case ConditionOperator.Equals: result = String.Compare(Convert.ToString(value), Convert.ToString(condition.Value), true) == 0; break;
-                case ConditionOperator.Contains: result = Convert.ToString(value ?? String.Empty).Contains(Convert.ToString(condition.Value ?? String.Empty)); break;
-                case ConditionOperator.EndsWith: result = Convert.ToString(value ?? String.Empty).EndsWith(Convert.ToString(condition.Value ?? String.Empty), StringComparison.OrdinalIgnoreCase); break;
-                case ConditionOperator.StartsWith: result = Convert.ToString(value ?? String.Empty).StartsWith(Convert.ToString(condition.Value ?? String.Empty), StringComparison.OrdinalIgnoreCase); break;
-                case ConditionOperator.SmallerThan: result = Comparer.Default.Compare(value, condition.Value) < 0; break;
-                case ConditionOperator.LargerThan: result = Comparer.Default.Compare(value, condition.Value) > 0; break;
-                case ConditionOperator.In:
-                    foreach (object o in condition.Value as IEnumerable)
-                    {
-                        if (Equals(value, o))
-                        {
-                            result = true;
-                            break;
-                        }
-                    } break;
-                default: return EnsureResult.Undetermined;
-            }
-            if (condition.Opposite) result = !result;
-            return result ? EnsureResult.True : EnsureResult.False;
-        }
-
-        private static EnsureResult Ensure(ConditionSet condition, object target)
-        {
-            bool undetermined = false;
-            bool opposite = condition.Opposite;
-            ConditionJoinType joinType = condition.JoinType;
-            foreach (Condition subCondition in condition.SubConditions)
-            {
-                EnsureResult subResult = Ensure(subCondition, target);
-                if (subResult == EnsureResult.False && joinType == ConditionJoinType.And) return opposite ? EnsureResult.True : EnsureResult.False;
-                else if (subResult == EnsureResult.True && joinType == ConditionJoinType.Or) return opposite ? EnsureResult.True : EnsureResult.False;
-                else if (subResult == EnsureResult.Undetermined) undetermined = true;
-            }
-            if (undetermined)
-                return EnsureResult.Undetermined;
-            else if (joinType == ConditionJoinType.Or && condition.SubConditions.Count > 0)
-                return opposite ? EnsureResult.True : EnsureResult.False;
-            else
-                return opposite ? EnsureResult.False : EnsureResult.True;
-        }
-
+        } 
 
         /// <summary>
         /// 将属性和字符串转换为简单查询条件

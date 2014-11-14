@@ -11,22 +11,17 @@ namespace MyOrm
     /// </summary>
     public class AutoCommand : IDbCommand
     {
+        private ObjectDAOBase objectDAO;
         /// <summary>
         /// 
         /// </summary>
         /// <param name="sqlBuilder"></param>
         /// <param name="target"></param>
-        public AutoCommand(SqlBuilder sqlBuilder, IDbCommand target)
+        public AutoCommand(ObjectDAOBase dao)
         {
-            this.sqlBuilder = sqlBuilder;
-            this.target = target;
+            this.objectDAO = dao;
         }
 
-        private SqlBuilder sqlBuilder;
-        /// <summary>
-        /// 生成Sql语句的辅助类
-        /// </summary>
-        public SqlBuilder SqlBuilder { get { return sqlBuilder; } }
 
         private IDbCommand target;
         /// <summary>
@@ -39,7 +34,7 @@ namespace MyOrm
 
         protected virtual void PreExcuteCommand(ExcuteType excuteType)
         {
-            Transaction = TransactionManager.CurrentTransaction(Connection);
+            if (objectDAO.SessionManager != null) Transaction = objectDAO.SessionManager.CurrentTransaction;
             if (Connection.State == ConnectionState.Closed) Connection.Open();
             //Console.WriteLine(CommandText);//TODO: Add log here.
         }
@@ -62,7 +57,7 @@ namespace MyOrm
             set
             {
                 commandText = value;
-                target.CommandText = SqlBuilder.ReplaceSqlName(value);
+                target.CommandText = objectDAO.SqlBuilder.ReplaceSqlName(value);
             }
         }
 
@@ -128,7 +123,7 @@ namespace MyOrm
 
         public void Prepare()
         {
-            Transaction = TransactionManager.CurrentTransaction(Connection);
+            if (objectDAO.SessionManager != null) Transaction = objectDAO.SessionManager.CurrentTransaction;
             if (Connection.State == ConnectionState.Closed) Connection.Open();
             target.Prepare();
         }
@@ -161,5 +156,5 @@ namespace MyOrm
         ExecuteNonQuery,
         ExecuteReader,
         ExecuteScalar
-    }    
+    }
 }

@@ -12,7 +12,7 @@ namespace MyOrm
     /// 实体类的增删改操作
     /// </summary>
     /// <typeparam name="T">实体类型</typeparam>
-    public class ObjectDAO<T> : ObjectDAOBase, IObjectDAO<T>, IObjectDAO
+    public abstract class ObjectDAO<T> : ObjectViewDAO<T>, IObjectDAO<T>, IObjectDAO where T:new()
     {
         #region 私有变量
         private IDbCommand insertCommand;
