@@ -79,10 +79,7 @@ namespace MyOrm
         /// <summary>
         /// 
         /// </summary>
-        public abstract SessionManager SessionManager
-        {
-            get;
-        }
+        public SessionManager SessionManager { get; set; }
 
         /// <summary>
         /// 当前生成sql的上下文
@@ -107,6 +104,7 @@ namespace MyOrm
         {
             get
             {
+                if (SessionManager == null) return null;
                 return SessionManager.Connection;
             }
         }
@@ -280,7 +278,7 @@ namespace MyOrm
         /// <returns>IDbCommand</returns>
         public IDbCommand MakeNamedParamCommand(string SQL, IEnumerable<KeyValuePair<string, object>> paramValues)
         {
-            IDbCommand command = NewCommand();            
+            IDbCommand command = NewCommand();
             command.CommandText = SQL;
             AddParamsToCommand(command, paramValues);
             return command;
