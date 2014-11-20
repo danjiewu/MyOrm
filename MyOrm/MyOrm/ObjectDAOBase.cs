@@ -385,7 +385,7 @@ namespace MyOrm
             if (objectType.IsInstanceOfType(dbValue))
                 return dbValue;
 
-            if (objectType.IsEnum && dbValue.GetType().IsPrimitive) return Enum.ToObject(objectType, dbValue);
+            if (objectType.IsEnum && dbValue.GetType().IsValueType) return Enum.ToObject(objectType, Convert.ToInt32(dbValue));
 
             return Convert.ChangeType(dbValue, objectType);
         }
