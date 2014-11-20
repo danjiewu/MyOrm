@@ -15,21 +15,29 @@ namespace MyOrm
         /// <summary>
         /// 
         /// </summary>
-        /// <param name="sqlBuilder"></param>
-        /// <param name="target"></param>
+        /// <param name="dao"></param>
         public AutoCommand(ObjectDAOBase dao)
         {
+            if (dao == null) throw new ArgumentNullException("dao");
             this.objectDAO = dao;
         }
 
-
         private IDbCommand target;
+
         /// <summary>
         /// Ä¿±êCommand
         /// </summary>
         public IDbCommand Target
         {
-            get { return target; }
+            get
+            {
+                if (target == null)
+                {
+                    if (objectDAO.Connection == null) throw new ArgumentNullException("objectDAO.Connection");
+                    target = objectDAO.Connection.CreateCommand();
+                }
+                return target;
+            }
         }
 
         protected virtual void PreExcuteCommand(ExcuteType excuteType)
@@ -47,7 +55,7 @@ namespace MyOrm
 
         public void Cancel()
         {
-            target.Cancel();
+            Target.Cancel();
         }
 
         private string commandText;
@@ -57,37 +65,37 @@ namespace MyOrm
             set
             {
                 commandText = value;
-                target.CommandText = objectDAO.SqlBuilder.ReplaceSqlName(value);
+                Target.CommandText = objectDAO.SqlBuilder.ReplaceSqlName(value);
             }
         }
 
         public int CommandTimeout
         {
-            get { return target.CommandTimeout; }
-            set { target.CommandTimeout = value; }
+            get { return Target.CommandTimeout; }
+            set { Target.CommandTimeout = value; }
         }
 
         public CommandType CommandType
         {
-            get { return target.CommandType; }
-            set { target.CommandType = value; }
+            get { return Target.CommandType; }
+            set { Target.CommandType = value; }
         }
 
         public IDbConnection Connection
         {
-            get { return target.Connection; }
-            set { target.Connection = value; }
+            get { return Target.Connection; }
+            set { Target.Connection = value; }
         }
 
         public IDbDataParameter CreateParameter()
         {
-            return target.CreateParameter();
+            return Target.CreateParameter();
         }
 
         public int ExecuteNonQuery()
         {
             PreExcuteCommand(ExcuteType.ExecuteNonQuery);
-            int ret = target.ExecuteNonQuery();
+            int ret = Target.ExecuteNonQuery();
             PostExcuteCommand(ExcuteType.ExecuteNonQuery);
             return ret;
         }
@@ -95,7 +103,7 @@ namespace MyOrm
         public IDataReader ExecuteReader(CommandBehavior behavior)
         {
             PreExcuteCommand(ExcuteType.ExecuteReader);
-            IDataReader ret = target.ExecuteReader(behavior);
+            IDataReader ret = Target.ExecuteReader(behavior);
             PostExcuteCommand(ExcuteType.ExecuteReader);
             return ret;
         }
@@ -103,7 +111,7 @@ namespace MyOrm
         public IDataReader ExecuteReader()
         {
             PreExcuteCommand(ExcuteType.ExecuteReader);
-            IDataReader ret = target.ExecuteReader();
+            IDataReader ret = Target.ExecuteReader();
             PostExcuteCommand(ExcuteType.ExecuteReader);
             return ret;
         }
@@ -111,33 +119,33 @@ namespace MyOrm
         public object ExecuteScalar()
         {
             PreExcuteCommand(ExcuteType.ExecuteScalar);
-            object ret = target.ExecuteScalar();
+            object ret = Target.ExecuteScalar();
             PostExcuteCommand(ExcuteType.ExecuteScalar);
             return ret;
         }
 
         public IDataParameterCollection Parameters
         {
-            get { return target.Parameters; }
+            get { return Target.Parameters; }
         }
 
         public void Prepare()
         {
             if (objectDAO.SessionManager != null) Transaction = objectDAO.SessionManager.CurrentTransaction;
             if (Connection.State == ConnectionState.Closed) Connection.Open();
-            target.Prepare();
+            Target.Prepare();
         }
 
         public IDbTransaction Transaction
         {
-            get { return target.Transaction; }
-            set { target.Transaction = value; }
+            get { return Target.Transaction; }
+            set { Target.Transaction = value; }
         }
 
         public UpdateRowSource UpdatedRowSource
         {
-            get { return target.UpdatedRowSource; }
-            set { target.UpdatedRowSource = value; }
+            get { return Target.UpdatedRowSource; }
+            set { Target.UpdatedRowSource = value; }
         }
 
         #endregion
@@ -146,7 +154,7 @@ namespace MyOrm
 
         public void Dispose()
         {
-            target.Dispose();
+            Target.Dispose();
         }
         #endregion
     }
