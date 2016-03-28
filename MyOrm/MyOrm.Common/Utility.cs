@@ -11,6 +11,35 @@ namespace MyOrm.Common
     /// </summary>
     public static class Utility
     {
+        private static Dictionary<Type, DbType> typeToDbTypeCache = new Dictionary<Type, DbType>();
+
+        static Utility()
+        {
+            typeToDbTypeCache[typeof(Enum)] = DbType.Int32;
+            typeToDbTypeCache[typeof(Byte)] = DbType.Byte;
+            typeToDbTypeCache[typeof(Byte[])] = DbType.Binary;
+            typeToDbTypeCache[typeof(Boolean)] = DbType.Boolean;
+            typeToDbTypeCache[typeof(DateTime)] = DbType.DateTime;
+            typeToDbTypeCache[typeof(Decimal)] = DbType.Decimal;
+            typeToDbTypeCache[typeof(Double)] = DbType.Double;
+            typeToDbTypeCache[typeof(Guid)] = DbType.Guid;
+            typeToDbTypeCache[typeof(Int16)] = DbType.Int16;
+            typeToDbTypeCache[typeof(Int32)] = DbType.Int32;
+            typeToDbTypeCache[typeof(Int64)] = DbType.Int64;
+            typeToDbTypeCache[typeof(SByte)] = DbType.SByte;
+            typeToDbTypeCache[typeof(Single)] = DbType.Single;
+            typeToDbTypeCache[typeof(String)] = DbType.String;
+            typeToDbTypeCache[typeof(TimeSpan)] = DbType.Time;
+            typeToDbTypeCache[typeof(UInt16)] = DbType.UInt16;
+            typeToDbTypeCache[typeof(UInt32)] = DbType.UInt32;
+            typeToDbTypeCache[typeof(UInt64)] = DbType.UInt64;
+            typeToDbTypeCache[typeof(DateTimeOffset)] = DbType.DateTimeOffset;
+        }
+
+        public static void RegisterDbType(Type type, DbType dbType)
+        {
+            typeToDbTypeCache[type] = dbType;
+        }
         /// <summary>
         /// 获取自定义Attribute
         /// </summary>
@@ -31,25 +60,9 @@ namespace MyOrm.Common
         public static DbType GetDbType(Type type)
         {
             type = Nullable.GetUnderlyingType(type) ?? type;
-            if (type == typeof(Byte)) return DbType.Byte;
-            else if (type == typeof(Byte[])) return DbType.Binary;
-            else if (type == typeof(Boolean)) return DbType.Boolean;
-            else if (type == typeof(DateTime)) return DbType.DateTime;
-            else if (type == typeof(Decimal)) return DbType.Decimal;
-            else if (type == typeof(Double)) return DbType.Double;
-            else if (type == typeof(Guid)) return DbType.Guid;
-            else if (type == typeof(Int16)) return DbType.Int16;
-            else if (type.IsEnum || type == typeof(Int32)) return DbType.Int32;
-            else if (type == typeof(Int64)) return DbType.Int64;
-            else if (type == typeof(SByte)) return DbType.SByte;
-            else if (type == typeof(Single)) return DbType.Single;
-            else if (type == typeof(String)) return DbType.String;
-            else if (type == typeof(TimeSpan)) return DbType.Time;
-            else if (type == typeof(UInt16)) return DbType.UInt16;
-            else if (type == typeof(UInt32)) return DbType.UInt32;
-            else if (type == typeof(UInt64)) return DbType.UInt64;
-            else if (type == typeof(DateTimeOffset)) return DbType.DateTimeOffset;
-            else return DbType.Object;
+            if (!typeToDbTypeCache.ContainsKey(type) && type.IsEnum) type = typeof(Enum);
+            if (typeToDbTypeCache.ContainsKey(type)) return typeToDbTypeCache[type];
+            return DbType.Object;
         }
 
         /// <summary>

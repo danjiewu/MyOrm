@@ -56,13 +56,10 @@ namespace MyOrm.Common
         /// <summary>
         /// 格式化的表达式
         /// </summary>
-        public override string FormattedExpression
+        public override string FormattedExpression(ISqlBuilder sqlBuilder)
         {
-            get
-            {
-                return Table == null ? Column.FormattedExpression :
-                    String.Format("{0}.{1}", Table.FormattedName, Column.FormattedName);
-            }
+            return Table == null ? Column.FormattedExpression(sqlBuilder) :
+                String.Format("{0}.{1}", Table.FormattedName(sqlBuilder), Column.FormattedName(sqlBuilder));
         }
     }
 
@@ -86,12 +83,9 @@ namespace MyOrm.Common
         /// <summary>
         /// 格式化的表达式
         /// </summary>
-        public override string FormattedExpression
+        public override string FormattedExpression(ISqlBuilder sqlBuilder)
         {
-            get
-            {
-                return TargetColumn.FormattedExpression;
-            }
+            return TargetColumn.FormattedExpression(sqlBuilder);
         }
 
         /// <summary>
@@ -126,7 +120,6 @@ namespace MyOrm.Common
         {
             this.property = property;
             PropertyName = Name = property.Name;
-            FormattedPropertyName = String.Format(SqlNameFormat, property.Name);
             if (property.CanWrite) this.setValueHandle = FastInvoke.GetMethodInvoker(property.GetSetMethod());
             if (property.CanRead) this.getValueHandle = FastInvoke.GetMethodInvoker(property.GetGetMethod());
         }
@@ -140,11 +133,6 @@ namespace MyOrm.Common
         /// 属性名
         /// </summary>
         public string PropertyName { get; private set; }
-
-        /// <summary>
-        /// 格式化的属性名
-        /// </summary>
-        public string FormattedPropertyName { get; private set; }
 
         /// <summary>
         /// 列所对应的属性类型
@@ -189,12 +177,9 @@ namespace MyOrm.Common
         /// <summary>
         /// 格式化的表达式
         /// </summary>
-        public override string FormattedExpression
+        public override string FormattedExpression(ISqlBuilder sqlBuilder)
         {
-            get
-            {
-                return String.Format("{0}.{1}", Table.FormattedName, FormattedName);
-            }
+            return String.Format("{0}.{1}", Table.FormattedName(sqlBuilder), FormattedName(sqlBuilder));
         }
     }
 

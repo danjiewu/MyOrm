@@ -12,7 +12,7 @@ namespace MyOrm
     /// <summary>
     /// 生成Sql语句的辅助类
     /// </summary>
-    public class SqlBuilder : IConditionSqlBuilder
+    public class SqlBuilder : IConditionSqlBuilder, ISqlBuilder
     {
         #region 预定义变量
         /// <summary>
@@ -176,7 +176,7 @@ namespace MyOrm
             if (column == null) throw new Exception(String.Format("Property \"{0}\" does not exist in type \"{1}\".", simpleCondition.Property, context.Table.DefinitionType.FullName));
 
             string tableAlias = context.TableAliasName;
-            string columnName = tableAlias == null ? column.FormattedExpression : String.Format("[{0}].[{1}]", tableAlias, column.Name);
+            string columnName = tableAlias == null ? column.FormattedExpression(this) : String.Format("[{0}].[{1}]", tableAlias, column.Name);
             string expression = columnName;
             object value = simpleCondition.Value;
 
@@ -340,24 +340,5 @@ namespace MyOrm
         /// <param name="outputParams">存放参数的集合</param>
         /// <returns>生成的sql字符串</returns>
         string BuildConditionSql(SqlBuildContext context, Condition customConditon, IList outputParams);
-    }
-
-    /// <summary>
-    /// SqlBuilder生成sql时的上下文
-    /// </summary>
-    public class SqlBuildContext
-    {
-        /// <summary>
-        /// 表别名
-        /// </summary>
-        public string TableAliasName { get; set; }
-        /// <summary>
-        /// 表信息
-        /// </summary>
-        public Table Table { get; set; }
-        /// <summary>
-        /// 序列，用来生成表别名
-        /// </summary>
-        public int Sequence { get; set; }
     }
 }

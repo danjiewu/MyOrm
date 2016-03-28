@@ -104,7 +104,7 @@ namespace MyOrm
         {
             get
             {
-                if (SessionManager == null) return null;
+                if (SessionManager == null) SessionManager = new SessionManager(Configuration.DefaultConnection);
                 return SessionManager.Connection;
             }
         }
@@ -130,7 +130,7 @@ namespace MyOrm
             {
                 if (fromTable == null)
                 {
-                    fromTable = Table.FormattedExpression;
+                    fromTable = Table.FormattedExpression(SqlBuilder);
                 }
                 return fromTable;
             }
@@ -196,8 +196,8 @@ namespace MyOrm
             foreach (Column column in selectColumns)
             {
                 if (strAllFields.Length != 0) strAllFields.Append(",");
-                strAllFields.Append(column.FormattedExpression);
-                if (!String.Equals(column.Name, column.PropertyName, StringComparison.OrdinalIgnoreCase)) strAllFields.Append(" as " + column.FormattedPropertyName);
+                strAllFields.Append(column.FormattedExpression(SqlBuilder));
+                if (!String.Equals(column.Name, column.PropertyName, StringComparison.OrdinalIgnoreCase)) strAllFields.Append(" as " + column.FormattedName(SqlBuilder));
             }
             return strAllFields.ToString();
         }
@@ -217,7 +217,7 @@ namespace MyOrm
                     foreach (ColumnDefinition key in TableDefinition.Keys)
                     {
                         if (orderBy.Length != 0) orderBy.Append(",");
-                        orderBy.AppendFormat("{0}.{1}", Table.FormattedName, key.FormattedName);
+                        orderBy.AppendFormat("{0}.{1}", Table.FormattedName(SqlBuilder), key.FormattedName(SqlBuilder));
                     }
                 }
                 else
@@ -233,7 +233,7 @@ namespace MyOrm
                     Column column = Table.GetColumn(sorting.PropertyName);
                     if (column == null) throw new ArgumentException(String.Format("Type \"{0}\" does not have property \"{1}\"", ObjectType.Name, sorting.PropertyName), "section");
                     if (orderBy.Length > 0) orderBy.Append(",");
-                    orderBy.Append(column.FormattedExpression);
+                    orderBy.Append(column.FormattedExpression(SqlBuilder));
                     orderBy.Append(sorting.Direction == ListSortDirection.Ascending ? " asc" : " desc");
                 }
             }

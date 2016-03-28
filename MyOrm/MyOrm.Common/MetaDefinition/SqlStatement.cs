@@ -24,19 +24,25 @@ namespace MyOrm.Common
             internal set
             {
                 name = value;
-                FormattedName = String.Format(SqlNameFormat, name);
             }
         }
 
         /// <summary>
         /// 格式化的名称
         /// </summary>
-        public string FormattedName { get; private set; }
+        /// <param name="sqlBuilder"></param>
+        /// <returns></returns>
+        public virtual string FormattedName(ISqlBuilder sqlBuilder)
+        {
+            return sqlBuilder.ToSqlName(Name);
+        }
 
         /// <summary>
         /// 格式化的表达式
         /// </summary>
-        public abstract string FormattedExpression { get; }
+        /// <param name="sqlBuilder"></param>
+        /// <returns></returns>
+        public abstract string FormattedExpression(ISqlBuilder sqlBuilder);
 
 
         /// <summary>
@@ -45,7 +51,7 @@ namespace MyOrm.Common
         /// <returns></returns>
         public override string ToString()
         {
-            return FormattedName;
+            return Name;
         }
     }
 }
