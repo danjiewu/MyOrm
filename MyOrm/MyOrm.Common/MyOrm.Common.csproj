@@ -67,6 +67,7 @@
     <Compile Include="Attributes\ForeignTypeAttribute.cs" />
     <Compile Include="Attributes\TableAttributes.cs" />
     <Compile Include="Attributes\TableJoinAttribute.cs" />
+    <Compile Include="ISqlBuilder.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Condition.cs" />
     <Compile Include="ConditionConvert.cs" />
@@ -82,6 +83,7 @@
     <Compile Include="MetaDefinition\TableView.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SectionSet.cs" />
+    <Compile Include="SqlBuildContext.cs" />
     <Compile Include="Utility.cs" />
     <Compile Include="XmlTableInfoProvider.cs" />
   </ItemGroup>

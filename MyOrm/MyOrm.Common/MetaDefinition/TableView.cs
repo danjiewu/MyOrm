@@ -58,19 +58,16 @@ namespace MyOrm.Common
         /// <summary>
         /// 格式化的表达式
         /// </summary>
-        public override string FormattedExpression
+        public override string FormattedExpression(ISqlBuilder sqlBuilder)
         {
-            get
+            StringBuilder sb = new StringBuilder();
+            sb.AppendFormat(" {0} join {1} {2} on ", JoinType, base.FormattedExpression(sqlBuilder), FormattedName(sqlBuilder));
+            for (int i = 0; i < ForeignKeys.Count; i++)
             {
-                StringBuilder sb = new StringBuilder();
-                sb.AppendFormat(" {0} join {1} {2} on ", JoinType, base.FormattedExpression, FormattedName);
-                for (int i = 0; i < ForeignKeys.Count; i++)
-                {
-                    if (i > 0) sb.Append(" and ");
-                    sb.AppendFormat("{0} = {1}", ForeignKeys[i].FormattedExpression, ForeignPrimeKeys[i].FormattedExpression);
-                }
-                return sb.ToString();
+                if (i > 0) sb.Append(" and ");
+                sb.AppendFormat("{0} = {1}", ForeignKeys[i].FormattedExpression(sqlBuilder), ForeignPrimeKeys[i].FormattedExpression(sqlBuilder));
             }
+            return sb.ToString();
         }
     }
 
@@ -135,17 +132,14 @@ namespace MyOrm.Common
         /// <summary>
         /// 格式化的表达式
         /// </summary>
-        public override string FormattedExpression
+        public override string FormattedExpression(ISqlBuilder sqlBuilder)
         {
-            get
+            StringBuilder sb = new StringBuilder(table.FormattedName(sqlBuilder) + " " + FormattedName(sqlBuilder));
+            foreach (JoinedTable joinedTable in JoinedTables)
             {
-                StringBuilder sb = new StringBuilder(table.FormattedName + " " + FormattedName);
-                foreach (JoinedTable joinedTable in JoinedTables)
-                {
-                    sb.Append(joinedTable.FormattedExpression);
-                }
-                return sb.ToString();
+                sb.Append(joinedTable.FormattedExpression(sqlBuilder));
             }
+            return sb.ToString();
         }
 
         /// <summary>

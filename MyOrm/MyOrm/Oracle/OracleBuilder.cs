@@ -31,9 +31,33 @@ namespace MyOrm.Oracle
             return ReplaceSqlName(sql, '"', '"');
         }
 
+        public override string ToSqlName(string name)
+        {
+            if (name == null) throw new ArgumentNullException("name");
+            return String.Format("\"{0}\"", name.ToUpper());
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="nativeName"></param>
+        /// <returns></returns>
         public override string ToSqlParam(string nativeName)
         {
+            if (nativeName == null) throw new ArgumentNullException("nativeName");
             return ":" + nativeName;
+        }
+
+        public override string ToParamName(string nativeName)
+        {
+            if (nativeName == null) throw new ArgumentNullException("nativeName");
+            return nativeName;
+        }
+
+        public override string ToNativeName(string paramName)
+        {
+            if (paramName == null) throw new ArgumentNullException("paramName");
+            return paramName.TrimStart(':');
         }
     }
 }

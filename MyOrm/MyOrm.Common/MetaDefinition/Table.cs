@@ -20,7 +20,7 @@ namespace MyOrm.Common
         private ReadOnlyCollection<Column> columns;
         private Dictionary<string, Column> namedColumnCache = new Dictionary<string, Column>(StringComparer.OrdinalIgnoreCase);
         #endregion
-        
+
         /// <summary>
         /// 对应的数据库表的定义
         /// </summary>
@@ -94,12 +94,9 @@ namespace MyOrm.Common
         /// <summary>
         /// 格式化的表达式
         /// </summary>
-        public override string FormattedExpression
+        public override string FormattedExpression(ISqlBuilder sqlBuilder)
         {
-            get
-            {
-                return FormattedName;
-            }
+            return FormattedName(sqlBuilder);
         }
     }
 
@@ -243,12 +240,9 @@ namespace MyOrm.Common
         /// <summary>
         /// 格式化的表达式
         /// </summary>
-        public override string FormattedExpression
+        public override string FormattedExpression(ISqlBuilder sqlBuilder)
         {
-            get
-            {
-                return String.Format("{0}", tableDefinition.FormattedExpression);
-            }
+            return tableDefinition.FormattedExpression(sqlBuilder);
         }
     }
 }

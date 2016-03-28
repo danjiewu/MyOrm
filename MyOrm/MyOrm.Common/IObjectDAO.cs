@@ -10,7 +10,7 @@ namespace MyOrm.Common
     /// 实体类的增删改等基本操作的泛型接口
     /// </summary>
     /// <typeparam name="T">实体类类型</typeparam>
-    public interface IObjectDAO<T> : IObjectViewDAO<T>,IObjectDAO
+    public interface IObjectDAO<T> : IObjectViewDAO<T>, IObjectDAO
     {
         /// <summary>
         /// 添加对象
@@ -68,6 +68,22 @@ namespace MyOrm.Common
         /// <param name="o">待更新或添加的对象</param>
         /// <returns>是否更新或添加</returns>
         UpdateOrInsertResult UpdateOrInsert(Object o);
+
+        /// <summary>
+        /// 根据条件更新数据
+        /// </summary>
+        /// <param name="values">需要更新的属性及数值，key为属性名，value为数值</param>
+        /// <param name="condition">更新的条件</param>
+        /// <returns>更新的记录数</returns>
+        int UpdateValues(IEnumerable<KeyValuePair<string, object>> values, Condition condition);
+
+        /// <summary>
+        /// 根据主键更新数据
+        /// </summary>
+        /// <param name="values">需要更新的属性及数值，key为属性名，value为数值</param>
+        /// <param name="condition">更新的条件</param>
+        /// <returns>更新是否成功</returns>
+        bool UpdateValues(IEnumerable<KeyValuePair<string, object>> values, params object[] keys);
 
         /// <summary>
         /// 删除对象

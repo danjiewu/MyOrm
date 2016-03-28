@@ -5,6 +5,7 @@ using System.Data;
 using MyOrm.Common;
 using System.Data.SqlClient;
 using System.Data.Common;
+using System.Collections;
 
 namespace MyOrm
 {
@@ -12,7 +13,7 @@ namespace MyOrm
     /// 实体类的增删改操作
     /// </summary>
     /// <typeparam name="T">实体类型</typeparam>
-    public abstract class ObjectDAO<T> : ObjectViewDAO<T>, IObjectDAO<T>, IObjectDAO where T:new()
+    public abstract class ObjectDAO<T> : ObjectViewDAO<T>, IObjectDAO<T>, IObjectDAO where T : new()
     {
         #region 私有变量
         private IDbCommand insertCommand;
@@ -265,6 +266,52 @@ namespace MyOrm
             {
                 return UpdateOrInsertResult.Updated;
             }
+        }
+
+        /// <summary>
+        /// 根据条件更新数据
+        /// </summary>
+        /// <param name="values">需要更新的属性及数值，key为属性名，value为数值</param>
+        /// <param name="condition">更新的条件</param>
+        /// <returns>更新的记录数</returns>
+        public virtual int UpdateValues(IEnumerable<KeyValuePair<string, object>> values, Condition condition)
+        {
+            List<string> strSets = new List<string>();
+            List<object> paramValues = new List<object>();
+            foreach (KeyValuePair<string, object> value in values)
+            {
+                Column column = Table.GetColumn(value.Key);
+                if (column == null) throw new Exception(String.Format("Property \"{0}\" does not exist in type \"{1}\".", value.Key, Table.DefinitionType.FullName));
+                paramValues.Add(value.Value);
+                strSets.Add(column.FormattedName(SqlBuilder) + "=" + ToSqlParam(paramValues.Count.ToString()));
+            }
+            string updateSql = "udpate " + TableName + " set " + String.Join(",", strSets.ToArray()) + " where " + SqlBuilder.BuildConditionSql(CurrentContext, condition, paramValues);
+            using (IDbCommand command = MakeParamCommand(updateSql, paramValues))
+            {
+                using (IDataReader reader = command.ExecuteReader())
+                {
+                    return command.ExecuteNonQuery();
+                }
+            }
+        }
+
+        /// <summary>
+        /// 根据主键更新数据
+        /// </summary>
+        /// <param name="values">需要更新的属性及数值，key为属性名，value为数值</param>
+        /// <param name="condition">更新的条件</param>
+        /// <returns>更新是否成功</returns>
+        public virtual bool UpdateValues(IEnumerable<KeyValuePair<string, object>> values, params object[] keys)
+        {
+            ThrowExceptionIfNoKeys();
+            ThrowExceptionIfWrongKeys(keys);
+            ConditionSet condition = new ConditionSet();
+            int i = 0;
+            foreach (ColumnDefinition column in TableDefinition.Keys)
+            {
+                condition.Add(new SimpleCondition(column.PropertyName, keys[i++]));
+            }
+            return UpdateValues(values, condition) > 0;
         }
 
         /// <summary>
