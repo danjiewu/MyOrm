@@ -34,7 +34,7 @@ namespace MyOrm.Oracle
         public override string ToSqlName(string name)
         {
             if (name == null) throw new ArgumentNullException("name");
-            return String.Format("\"{0}\"", name.ToUpper());
+            return String.Join(".", Array.ConvertAll(name.Split('.'), n => String.Format("\"{0}\"", n.ToUpper())));
         }
 
         /// <summary>

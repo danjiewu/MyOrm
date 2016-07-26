@@ -18,6 +18,7 @@ namespace MyOrm.Common
             typeToDbTypeCache[typeof(Enum)] = DbType.Int32;
             typeToDbTypeCache[typeof(Byte)] = DbType.Byte;
             typeToDbTypeCache[typeof(Byte[])] = DbType.Binary;
+            typeToDbTypeCache[typeof(Char)] = DbType.String;
             typeToDbTypeCache[typeof(Boolean)] = DbType.Boolean;
             typeToDbTypeCache[typeof(DateTime)] = DbType.DateTime;
             typeToDbTypeCache[typeof(Decimal)] = DbType.Decimal;
