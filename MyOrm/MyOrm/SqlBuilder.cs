@@ -241,7 +241,8 @@ namespace MyOrm
         /// <returns>数据库合法名称</returns>
         public virtual string ToSqlName(string name)
         {
-            return String.Format("[{0}]", name);
+            if (name == null) throw new ArgumentNullException("name");
+            return String.Join(".", Array.ConvertAll(name.Split('.'), n => String.Format("[{0}]", n)));
         }
 
         /// <summary>

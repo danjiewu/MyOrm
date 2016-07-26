@@ -197,7 +197,7 @@ namespace MyOrm
             {
                 if (strAllFields.Length != 0) strAllFields.Append(",");
                 strAllFields.Append(column.FormattedExpression(SqlBuilder));
-                if (!String.Equals(column.Name, column.PropertyName, StringComparison.OrdinalIgnoreCase)) strAllFields.Append(" as " + column.FormattedName(SqlBuilder));
+                if (!String.Equals(column.Name, column.PropertyName, StringComparison.OrdinalIgnoreCase)) strAllFields.Append(" " + SqlBuilder.ToSqlName(column.PropertyName));
             }
             return strAllFields.ToString();
         }
