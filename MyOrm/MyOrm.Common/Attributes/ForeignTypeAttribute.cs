@@ -29,6 +29,10 @@ namespace MyOrm.Common
         }
 
         /// <summary>
+        /// 别名
+        /// </summary>
+        public string Alias { get; set; }
+        /// <summary>
         /// 附加筛选属性
         /// </summary>
         public string FilterProperty { get; set; }

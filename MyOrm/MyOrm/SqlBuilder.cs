@@ -210,6 +210,20 @@ namespace MyOrm
         }
 
         /// <summary>
+        /// 生成带标识列的插入SQL
+        /// </summary>
+        /// <param name="command">SQLCommand</param>
+        /// <param name="identityColumn">标识列</param>
+        /// <param name="tableName">表名</param>
+        /// <param name="strColumns">插入数据列名称</param>
+        /// <param name="strValues">插入数据名称</param>
+        /// <returns></returns>
+        public virtual string BuildIdentityInsertSQL(IDbCommand command,ColumnDefinition identityColumn, string tableName, string strColumns, string strValues)
+        {
+            return String.Format("BEGIN insert into {0} ({1}) values ({2}); {3} END;", tableName, strColumns, strValues, "select @@IDENTITY as [ID];");
+        }
+
+        /// <summary>
         /// 连接各字符串的SQL语句
         /// </summary>
         /// <param name="strs">需要连接的sql字符串</param>

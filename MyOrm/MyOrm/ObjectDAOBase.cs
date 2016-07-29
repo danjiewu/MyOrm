@@ -43,6 +43,21 @@ namespace MyOrm
         private ArgumentOutOfRangeException ExceptionWrongKeys;
         #endregion
 
+
+        public ObjectDAOBase()
+            : this(Configuration.DefaultConnection, Configuration.DefaultSqlBuilder)
+        { }
+
+        public ObjectDAOBase(IDbConnection connection)
+            : this(connection, Configuration.DefaultSqlBuilder)
+        { }
+
+        public ObjectDAOBase(IDbConnection connection, SqlBuilder builder)
+        {
+            Connection = connection;
+            SqlBuilder = builder;
+        }
+
         #region 属性
         /// <summary>
         /// 实体对象类型
@@ -73,7 +88,8 @@ namespace MyOrm
         /// </summary>
         protected internal virtual SqlBuilder SqlBuilder
         {
-            get { return Configuration.DefaultSqlBuilder; }
+            get;
+            protected set;
         }
 
         /// <summary>
@@ -84,9 +100,9 @@ namespace MyOrm
         /// <summary>
         /// 当前生成sql的上下文
         /// </summary>
-        protected SqlBuildContext CurrentContext
+        protected SqlBuildContext CreateNewContext()
         {
-            get { return new SqlBuildContext() { Table = Table }; }
+            return new SqlBuildContext() { Table = Table };
         }
 
         /// <summary>
@@ -102,11 +118,8 @@ namespace MyOrm
         /// </summary>
         public IDbConnection Connection
         {
-            get
-            {
-                if (SessionManager == null) SessionManager = new SessionManager(Configuration.DefaultConnection);
-                return SessionManager.Connection;
-            }
+            get;
+            protected set;
         }
 
         /// <summary>
@@ -168,13 +181,6 @@ namespace MyOrm
         #endregion
 
         #region 方法
-        /// <summary>
-        /// 预定义Command是否使用Prepare方法
-        /// </summary>
-        protected virtual bool PrepareCommand
-        {
-            get { return true; }
-        }
 
         /// <summary>
         /// 创建IDbCommand
@@ -182,6 +188,7 @@ namespace MyOrm
         /// <returns></returns>
         public virtual IDbCommand NewCommand()
         {
+            if (Connection.State != ConnectionState.Open) Connection.Open();
             return Configuration.UseAutoCommand ? new AutoCommand(this) : Connection.CreateCommand();
         }
 
@@ -314,7 +321,7 @@ namespace MyOrm
         public IDbCommand MakeConditionCommand(string SQLWithParam, Condition condition)
         {
             List<object> paramList = new List<object>();
-            string strCondition = SqlBuilder.BuildConditionSql(CurrentContext, condition, paramList);
+            string strCondition = SqlBuilder.BuildConditionSql(CreateNewContext(), condition, paramList);
             if (String.IsNullOrEmpty(strCondition)) strCondition = " 1 = 1 ";
             return MakeParamCommand(ReplaceParam(SQLWithParam.Replace(ParamCondition, strCondition)), paramList);
         }

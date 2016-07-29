@@ -67,6 +67,11 @@ namespace MyOrm.Common
         public bool IsIdentity { get; set; }
 
         /// <summary>
+        /// 自增长列表达式
+        /// </summary>
+        public string IdentityExpression { get; set; }
+
+        /// <summary>
         /// 是否是索引
         /// </summary>
         public bool IsIndex { get; set; }

@@ -16,6 +16,11 @@ namespace MyOrm
     /// <typeparam name="T">实体类型</typeparam>
     public abstract class ObjectViewDAO<T> : ObjectDAOBase, IObjectViewDAO<T>, IObjectViewDAO where T : new()
     {
+        public ObjectViewDAO() : base() { }
+
+        public ObjectViewDAO(IDbConnection connection) : base(connection) { }
+
+        public ObjectViewDAO(IDbConnection connection, SqlBuilder builder) : base(connection, builder) { }
         #region 私有变量
         private IDbCommand getObjectCommand = null;
         private IDbCommand objectExistsCommand = null;
@@ -40,7 +45,7 @@ namespace MyOrm
         #endregion
 
 
-        #region 预定义Command        
+        #region 预定义Command
         /// <summary>
         /// 实现获取对象操作的IDbCommand
         /// </summary>
@@ -58,7 +63,6 @@ namespace MyOrm
         {
             IDbCommand command = NewCommand();
             command.CommandText = String.Format("select {0} from {1} where {2}", AllFieldsSql, From, MakeIsKeyCondition(command));
-            if (PrepareCommand) command.Prepare();
             return command;
         }
 
@@ -94,7 +98,6 @@ namespace MyOrm
                 }
             }
             command.CommandText = String.Format("select count(1) from {0} where {1}", ToSqlName(Table.Definition.Name), strConditions);
-            if (PrepareCommand) command.Prepare();
             return command;
         }
         #endregion

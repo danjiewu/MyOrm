@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using MyOrm.Common;
 using System.Collections;
+using System.Data;
 
 namespace MyOrm.Oracle
 {
@@ -11,6 +12,18 @@ namespace MyOrm.Oracle
     /// </summary>
     public class OracleBuilder : SqlBuilder
     {
+        public override string BuildIdentityInsertSQL(IDbCommand command, ColumnDefinition identityColumn, string tableName, string strColumns, string strValues)
+        {
+            string identityName = String.IsNullOrEmpty(identityColumn.IdentityExpression) ? tableName + "_seq" : identityColumn.IdentityExpression;
+            IDbDataParameter param = command.CreateParameter();
+            param.Direction = ParameterDirection.Output;
+            param.Size = identityColumn.Length;
+            param.DbType = identityColumn.DbType;
+            param.ParameterName = ToParamName(identityColumn.PropertyName);
+            command.Parameters.Add(param);
+            return String.Format("insert into {0} ({1}) values ({2}) returning {3} into {4}", ToSqlName(tableName), strColumns + "," + ToSqlName(identityColumn.Name), strValues + "," + identityName + ".nextval", ToSqlName(identityColumn.Name), ToSqlParam(identityColumn.PropertyName));
+        }
+
         /// <summary>
         /// 连接各字符串的SQL语句
         /// </summary>

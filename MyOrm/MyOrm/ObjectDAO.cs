@@ -15,6 +15,11 @@ namespace MyOrm
     /// <typeparam name="T">实体类型</typeparam>
     public abstract class ObjectDAO<T> : ObjectViewDAO<T>, IObjectDAO<T>, IObjectDAO where T : new()
     {
+        public ObjectDAO() : base() { }
+
+        public ObjectDAO(IDbConnection connection) : base(connection) { }
+
+        public ObjectDAO(IDbConnection connection, SqlBuilder builder) : base(connection, builder) { }
         #region 私有变量
         private IDbCommand insertCommand;
         private IDbCommand updateCommand;
@@ -85,8 +90,10 @@ namespace MyOrm
                     command.Parameters.Add(param);
                 }
             }
-            command.CommandText = String.Format("BEGIN insert into {0} ({1}) values ({2}); {3} END;", ToSqlName(TableName), strColumns, strValues, IdentityColumn == null ? null : "select @@IDENTITY as [ID];");
-            if (PrepareCommand) command.Prepare();
+
+            command.CommandText = IdentityColumn == null ?
+                String.Format("insert into {0} ({1}) values ({2})", ToSqlName(TableName), strColumns, strValues)
+                : SqlBuilder.BuildIdentityInsertSQL(command, IdentityColumn, TableName, strColumns.ToString(), strValues.ToString());
             return command;
         }
 
@@ -121,7 +128,6 @@ namespace MyOrm
                 }
             }
             command.CommandText = String.Format("update {0} set {1} where {2}", ToSqlName(TableName), strColumns, MakeIsKeyCondition(command));
-            if (PrepareCommand) command.Prepare();
             return command;
         }
 
@@ -142,7 +148,6 @@ namespace MyOrm
         {
             IDbCommand command = NewCommand();
             command.CommandText = String.Format("delete from {0} where {1}", ToSqlName(TableName), MakeIsKeyCondition(command));
-            if (PrepareCommand) command.Prepare();
             return command;
         }
 
@@ -193,11 +198,11 @@ namespace MyOrm
                     command.Parameters.Add(param);
                 }
             }
-            string insertCommandText = String.Format("insert into {0} ({1}) values ({2}); {3}", ToSqlName(TableName), strColumns, strValues, IdentityColumn == null ? null : "select @@IDENTITY as [ID];");
+            string insertCommandText = IdentityColumn == null ? String.Format("insert into {0} ({1}) values ({2})", ToSqlName(TableName), strColumns, strValues)
+                : SqlBuilder.BuildIdentityInsertSQL(command, IdentityColumn, ToSqlName(TableName), strColumns.ToString(), strValues.ToString());
             string updateCommandText = String.Format("update {0} set {1} where {2};", ToSqlName(TableName), strUpdateColumns, MakeIsKeyCondition(command));
 
             command.CommandText = String.Format("BEGIN if exists(select 1 from {0} where {1}) begin {2} select -1; end else begin {3} end END;", ToSqlName(TableName), MakeIsKeyCondition(command), updateCommandText, insertCommandText);
-            if (PrepareCommand) command.Prepare();
             return command;
         }
 
@@ -218,12 +223,23 @@ namespace MyOrm
                 param.Value = ConvertToDBValue(column.GetValue(t), column);
             }
             if (IdentityColumn == null)
-                return InsertCommand.ExecuteNonQuery() > 0;
+            {
+                InsertCommand.ExecuteNonQuery();
+            }
             else
             {
-                IdentityColumn.SetValue(t, Convert.ChangeType(InsertCommand.ExecuteScalar(), IdentityColumn.PropertyType));
-                return true;
+                IDataParameter param = (IDataParameter)InsertCommand.Parameters[ToParamName(IdentityColumn.PropertyName)];
+                if (param != null && param.Direction == ParameterDirection.Output)
+                {
+                    InsertCommand.ExecuteNonQuery();
+                    IdentityColumn.SetValue(t, ConvertValue(param.Value, IdentityColumn.PropertyType));
+                }
+                else
+                {
+                    IdentityColumn.SetValue(t, ConvertValue(InsertCommand.ExecuteScalar(), IdentityColumn.PropertyType));
+                }
             }
+            return true;
         }
 
         /// <summary>
@@ -285,7 +301,7 @@ namespace MyOrm
                 paramValues.Add(value.Value);
                 strSets.Add(column.FormattedName(SqlBuilder) + "=" + ToSqlParam(paramValues.Count.ToString()));
             }
-            string updateSql = "udpate " + TableName + " set " + String.Join(",", strSets.ToArray()) + " where " + SqlBuilder.BuildConditionSql(CurrentContext, condition, paramValues);
+            string updateSql = "udpate " + TableName + " set " + String.Join(",", strSets.ToArray()) + " where " + SqlBuilder.BuildConditionSql(CreateNewContext(), condition, paramValues);
             using (IDbCommand command = MakeParamCommand(updateSql, paramValues))
             {
                 using (IDataReader reader = command.ExecuteReader())

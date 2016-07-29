@@ -153,6 +153,11 @@ namespace MyOrm.Common
         public Type ForeignType { get; internal set; }
 
         /// <summary>
+        /// 关联的外部对象别名
+        /// </summary>
+        public string ForeignAlias { get; internal set; }
+
+        /// <summary>
         /// 赋值
         /// </summary>
         /// <param name="target">要赋值的对象</param>
@@ -207,6 +212,11 @@ namespace MyOrm.Common
         /// 是否是自增长标识
         /// </summary>
         public bool IsIdentity { get; internal set; }
+
+        /// <summary>
+        /// 标识表达式
+        /// </summary>
+        public string IdentityExpression { get; internal set; }
 
         /// <summary>
         /// 是否是索引

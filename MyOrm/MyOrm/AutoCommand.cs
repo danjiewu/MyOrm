@@ -42,7 +42,7 @@ namespace MyOrm
 
         protected virtual void PreExcuteCommand(ExcuteType excuteType)
         {
-            if (objectDAO.SessionManager != null) Transaction = objectDAO.SessionManager.CurrentTransaction;
+            if (objectDAO.SessionManager != null) Transaction = objectDAO.SessionManager.GetCurrentTransaction(Connection);
             if (Connection.State == ConnectionState.Closed) Connection.Open();
             //Console.WriteLine(CommandText);//TODO: Add log here.
         }
@@ -131,7 +131,7 @@ namespace MyOrm
 
         public void Prepare()
         {
-            if (objectDAO.SessionManager != null) Transaction = objectDAO.SessionManager.CurrentTransaction;
+            if (objectDAO.SessionManager != null) Transaction = objectDAO.SessionManager.GetCurrentTransaction(Connection);
             if (Connection.State == ConnectionState.Closed) Connection.Open();
             Target.Prepare();
         }

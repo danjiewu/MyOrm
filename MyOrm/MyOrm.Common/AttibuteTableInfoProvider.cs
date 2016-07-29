@@ -116,6 +116,7 @@ namespace MyOrm.Common
                     if (!String.IsNullOrEmpty(columnAttribute.ColumnName)) column.Name = columnAttribute.ColumnName;
                     column.IsPrimaryKey = columnAttribute.IsPrimaryKey;
                     column.IsIdentity = columnAttribute.IsIdentity;
+                    column.IdentityExpression = columnAttribute.IdentityExpression;
                     column.IsUnique = columnAttribute.IsUnique;
                     column.IsIndex = columnAttribute.IsIndex;
                     column.DbType = columnAttribute.DbType == DbType.Object ? Utility.GetDbType(property.PropertyType) : columnAttribute.DbType;
@@ -197,7 +198,7 @@ namespace MyOrm.Common
                     bool foreignTypeExists = false;
                     foreach (JoinedTable joinedTable in joinedTables.Values)
                     {
-                        if (joinedTable.TableDefinition.ObjectType == column.ForeignType)
+                        if (joinedTable.TableDefinition.ObjectType == column.ForeignType && (joinedTable.Name == column.ForeignAlias || String.IsNullOrEmpty(column.ForeignAlias)))
                         {
                             foreignTypeExists = true;
                             break;
@@ -208,6 +209,7 @@ namespace MyOrm.Common
                     {
                         TableDefinition foreignTable = GetTableDefinition(column.ForeignType);
                         JoinedTable joinedTable = new JoinedTable(foreignTable);
+                        if (!String.IsNullOrEmpty(column.ForeignAlias)) joinedTable.Name = column.ForeignAlias;
                         List<ColumnRef> foreignKeys = new List<ColumnRef>();
                         foreignKeys.Add(new ColumnRef(column));
                         joinedTable.ForeignKeys = foreignKeys.AsReadOnly();
