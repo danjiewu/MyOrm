@@ -10,25 +10,43 @@ namespace MyOrm
     /// </summary>
     public class SessionManager
     {
-        private IDbConnection connection;
-        private IDbTransaction currentTransaction;
         private readonly object transactionLock = new object();
 
-        public SessionManager(IDbConnection con)
+        private Dictionary<IDbConnection, IDbTransaction> transactions = new Dictionary<IDbConnection, IDbTransaction>();
+
+        public SessionManager()
         {
-            connection = con;
+        }
+
+        public void RegisterConnection(IDbConnection connection)
+        {
+            lock (transactionLock)
+            {
+                if (!transactions.ContainsKey(connection)) transactions[connection] = null;
+            }
         }
 
         /// <summary>
         /// 在指定数据库链接开始事务
         /// </summary>
         /// <returns></returns>
-        public IDbTransaction BeginTransaction()
+        public IDbTransaction BeginTransaction(IDbConnection connection)
         {
             lock (transactionLock)
             {
-                if (currentTransaction == null) currentTransaction = connection.BeginTransaction();
-                return currentTransaction;
+                if (!transactions.ContainsKey(connection) || transactions[connection] == null) transactions[connection] = connection.BeginTransaction();
+                return transactions[connection];
+            }
+        }
+
+        public void BeginTransaction()
+        {
+            lock (transactionLock)
+            {
+                foreach (IDbConnection connection in new List<IDbConnection>(transactions.Keys))
+                {
+                    if (transactions[connection] == null) transactions[connection] = connection.BeginTransaction();
+                }
             }
         }
 
@@ -36,31 +54,38 @@ namespace MyOrm
         /// 获取当前事务
         /// </summary>
         /// <returns></returns>
-        public IDbTransaction CurrentTransaction
+        public IDbTransaction GetCurrentTransaction(IDbConnection connection)
         {
-            get { return currentTransaction; }
-        }
-
-        /// <summary>
-        /// 数据库链接
-        /// </summary>
-        public IDbConnection Connection
-        {
-            get { return connection; }
+            if (transactions.ContainsKey(connection)) return transactions[connection];
+            else return null;
         }
 
         /// <summary>
         /// 提交数据库链接的事务
         /// </summary>
+        public void Commit(IDbConnection connection)
+        {
+            lock (transactionLock)
+            {
+                if (transactions.ContainsKey(connection) && transactions[connection] != null)
+                {
+                    transactions[connection].Commit();
+                    transactions[connection] = null;
+                }
+            }
+        }
+
         public void Commit()
         {
             lock (transactionLock)
             {
-                IDbTransaction transaction = CurrentTransaction;
-                if (transaction != null)
+                foreach (IDbConnection connection in new List<IDbConnection>(transactions.Keys))
                 {
-                    transaction.Commit();
-                    currentTransaction = null;
+                    if (transactions[connection] != null)
+                    {
+                        transactions[connection].Commit();
+                        transactions[connection] = null;
+                    }
                 }
             }
         }
@@ -69,15 +94,29 @@ namespace MyOrm
         /// 回滚指定数据库链接的事务
         /// </summary>
         /// <param name="connection">数据库链接</param>
+        public void Rollback(IDbConnection connection)
+        {
+            lock (transactionLock)
+            {
+                if (transactions.ContainsKey(connection) && transactions[connection] != null)
+                {
+                    transactions[connection].Rollback();
+                    transactions[connection] = null;
+                }
+            }
+        }
+
         public void Rollback()
         {
             lock (transactionLock)
             {
-                IDbTransaction transaction = CurrentTransaction;
-                if (transaction != null)
+                foreach (IDbConnection connection in new List<IDbConnection>(transactions.Keys))
                 {
-                    transaction.Rollback();
-                    currentTransaction = null;
+                    if (transactions[connection] != null)
+                    {
+                        transactions[connection].Rollback();
+                        transactions[connection] = null;
+                    }
                 }
             }
         }

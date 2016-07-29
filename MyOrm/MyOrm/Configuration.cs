@@ -118,6 +118,10 @@ namespace MyOrm
             set { defaultSqlBuilder = value; }
         }
 
+        private static SessionManager sessionManager = new SessionManager();
+
+        public static SessionManager DefaultSessionManager { get { return sessionManager; } }
+
         /// <summary>
         /// 是否使用自动管理的Command，包括打开关闭数据库、设置事务
         /// </summary>

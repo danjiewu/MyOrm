@@ -141,7 +141,7 @@ namespace MyOrm
                 strColumns.AppendFormat("{0} = {1}", ToSqlName(column.Name), ToSqlParam(paramList.Count.ToString()));
                 paramList.Add(updateValue.Value);
             }
-            string sql = String.Format("update {0} set {1} where {2}", ToSqlName(TableName), strColumns, SqlBuilder.BuildConditionSql(CurrentContext, condition, paramList));
+            string sql = String.Format("update {0} set {1} where {2}", ToSqlName(TableName), strColumns, SqlBuilder.BuildConditionSql(CreateNewContext(), condition, paramList));
             using (IDbCommand command = MakeParamCommand(sql, paramList))
             {
                 return command.ExecuteNonQuery();
