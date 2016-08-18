@@ -100,7 +100,8 @@ namespace MyOrm.Common
         private ColumnDefinition GenerateColumnDefinition(PropertyInfo property)
         {
             if (property.GetIndexParameters().Length != 0) return null;
-            Type foreignType = Utility.GetAttribute<ForeignTypeAttribute>(property) != null ? Utility.GetAttribute<ForeignTypeAttribute>(property).ObjectType : null;
+            ForeignTypeAttribute foreignTypeAttr = Utility.GetAttribute<ForeignTypeAttribute>(property);
+            Type foreignType = foreignTypeAttr != null ? foreignTypeAttr.ObjectType : null;
 
             if (Utility.GetAttribute<ForeignColumnAttribute>(property) != null) return null;
             ColumnAttribute columnAttribute = Utility.GetAttribute<ColumnAttribute>(property);
@@ -124,6 +125,7 @@ namespace MyOrm.Common
                     column.AllowNull = columnAttribute.AllowNull && (property.PropertyType.IsValueType ? Nullable.GetUnderlyingType(property.PropertyType) != null : true);
                     column.Mode = columnAttribute.ColumnMode & ((property.CanRead ? ColumnMode.Write : ColumnMode.None) | (property.CanWrite ? ColumnMode.Read : ColumnMode.None));
                     column.ForeignType = foreignType;
+                    column.ForeignAlias = foreignTypeAttr == null ? null : foreignTypeAttr.Alias;
                     return column;
                 }
             }
@@ -136,6 +138,7 @@ namespace MyOrm.Common
                 column.Length = Utility.GetDefaultLength(column.DbType);
                 column.AllowNull = property.PropertyType.IsValueType ? Nullable.GetUnderlyingType(column.PropertyType) != null : true;
                 column.ForeignType = foreignType;
+                column.ForeignAlias = foreignTypeAttr == null ? null : foreignTypeAttr.Alias;
                 return column;
             }
         }

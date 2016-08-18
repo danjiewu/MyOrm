@@ -303,7 +303,12 @@ namespace MyOrm
                 {
                     IDbDataParameter param = command.CreateParameter();
                     param.ParameterName = ToParamName(paramSet.Key);
-                    param.Value = paramSet.Value ?? DBNull.Value;
+                    object value = paramSet.Value ?? DBNull.Value;
+                    if (value is Enum)
+                    {
+                        value = Convert.ToInt32(value);
+                    }
+                    param.Value = value;
                     command.Parameters.Add(param);
                 }
         }
@@ -392,7 +397,7 @@ namespace MyOrm
             if (objectType.IsInstanceOfType(dbValue))
                 return dbValue;
 
-            if (objectType.IsEnum && dbValue.GetType().IsValueType) return Enum.ToObject(objectType, Convert.ToInt32(dbValue));
+            if (objectType.IsEnum && (dbValue.GetType().IsValueType || dbValue.GetType() == typeof(string))) return Enum.ToObject(objectType, Convert.ToInt32(dbValue));
 
             return Convert.ChangeType(dbValue, objectType);
         }
