@@ -145,7 +145,7 @@ namespace MyOrm
         public virtual bool Exists(object o)
         {
             if (o == null) return false;
-            return Exists(GetKeyValues(o));
+            return ExistsKey(GetKeyValues(o));
         }
 
         /// <summary>
@@ -153,7 +153,7 @@ namespace MyOrm
         /// </summary>
         /// <param name="keys">主键，多个主键按照名称顺序排列</param>
         /// <returns>是否存在</returns>
-        public virtual bool Exists(params object[] keys)
+        public virtual bool ExistsKey(params object[] keys)
         {
             ThrowExceptionIfWrongKeys(keys);
             int i = 0;
