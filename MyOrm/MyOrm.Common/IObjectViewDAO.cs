@@ -71,7 +71,7 @@ namespace MyOrm.Common
         /// </summary>
         /// <param name="keys">主键，多个主键按照名称顺序排列</param>
         /// <returns>是否存在</returns>
-        bool Exists(params object[] keys);
+        bool ExistsKey(params object[] keys);
 
         /// <summary>
         /// 检查对象是否存在
