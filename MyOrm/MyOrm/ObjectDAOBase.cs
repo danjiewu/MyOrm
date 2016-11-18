@@ -304,7 +304,7 @@ namespace MyOrm
                     IDbDataParameter param = command.CreateParameter();
                     param.ParameterName = ToParamName(paramSet.Key);
                     object value = paramSet.Value ?? DBNull.Value;
-                    if (value is Enum)
+                    if (value is Enum || value.GetType() == typeof(bool))
                     {
                         value = Convert.ToInt32(value);
                     }
