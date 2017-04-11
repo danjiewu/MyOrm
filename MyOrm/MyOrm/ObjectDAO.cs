@@ -228,7 +228,7 @@ namespace MyOrm
             }
             else
             {
-                IDataParameter param = (IDataParameter)InsertCommand.Parameters[ToParamName(IdentityColumn.PropertyName)];
+                IDataParameter param = InsertCommand.Parameters.Contains(ToParamName(IdentityColumn.PropertyName)) ? (IDataParameter)InsertCommand.Parameters[ToParamName(IdentityColumn.PropertyName)] : null;
                 if (param != null && param.Direction == ParameterDirection.Output)
                 {
                     InsertCommand.ExecuteNonQuery();
