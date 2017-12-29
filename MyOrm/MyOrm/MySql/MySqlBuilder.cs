@@ -1,5 +1,7 @@
-﻿using System;
+﻿using MyOrm.Common;
+using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Text;
 
 namespace MyOrm.MySql
@@ -17,6 +19,11 @@ namespace MyOrm.MySql
         protected override string ConcatSql(params string[] strs)
         {
             return String.Format("CONCAT({0})", String.Join(",", strs));
+        }
+
+        public override string BuildIdentityInsertSQL(IDbCommand command, ColumnDefinition identityColumn, string tableName, string strColumns, string strValues)
+        {
+            return String.Format("insert into {0} ({1}) values ({2}); {3};", tableName, strColumns, strValues, "select @@IDENTITY as [ID];");
         }
 
         /// <summary>
